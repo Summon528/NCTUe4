@@ -35,7 +35,7 @@ class CourseDocFragment : Fragment() {
         val fragments = listOf(CourseDocListFragment(), CourseDocListFragment())
         fragments[0].arguments = bundle0
         fragments[1].arguments = bundle1
-        val adapter = CourseDocAdapter(activity.supportFragmentManager,
+        val adapter = CourseDocGroupAdapter(activity.supportFragmentManager,
                 fragments,
                 listOf(getString(R.string.course_doc_type_handout), getString(R.string.course_doc_type_reference)))
         course_doc_view_pager.adapter = adapter

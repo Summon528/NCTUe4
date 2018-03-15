@@ -5,18 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.codytseng.nctue4.R
-import com.example.codytseng.nctue4.model.CourseItem
-import com.example.codytseng.nctue4.model.DocItem
-import kotlinx.android.synthetic.main.course_card.view.*
-import kotlinx.android.synthetic.main.course_doc_list_card.view.*
+import com.example.codytseng.nctue4.model.DocGroupItem
+import kotlinx.android.synthetic.main.course_doc_group_list_card.view.*
 
-class CourseDocListAdapter(val myDataset: ArrayList<DocItem>, val itemClickListener: (DocItem)->Unit) :
+class CourseDocListAdapter(val myDataset: ArrayList<DocGroupItem>, val itemClickListener: (DocGroupItem)->Unit) :
         RecyclerView.Adapter<CourseDocListAdapter.ViewHolder>() {
 
-    class ViewHolder(val view: View, val itemClickListener: (DocItem) -> Unit) : RecyclerView.ViewHolder(view) {
-        fun bind(doc: DocItem) {
-            view.doc_display_name.text = doc.displayName
-            view.course_doc_list_item.setOnClickListener{
+    class ViewHolder(val view: View, val itemClickListener: (DocGroupItem) -> Unit) : RecyclerView.ViewHolder(view) {
+        fun bind(doc: DocGroupItem) {
+            view.doc_group_display_name.text = doc.displayName
+            view.course_doc_group_list_item.setOnClickListener{
                 itemClickListener(doc)
             }
         }
@@ -29,7 +27,7 @@ class CourseDocListAdapter(val myDataset: ArrayList<DocItem>, val itemClickListe
                                     viewType: Int): CourseDocListAdapter.ViewHolder {
         // create a new view
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.course_doc_list_card, parent, false)
+                .inflate(R.layout.course_doc_group_list_card, parent, false)
         // set the view's size, margins, paddings and layout parameters
         return ViewHolder(view, itemClickListener)
     }
