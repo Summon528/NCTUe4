@@ -27,6 +27,7 @@ import org.json.JSONObject
 class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         announcement_refreshLayout.isRefreshing = false
+        if (announcement_course_recycler_view.adapter.notifyDataSetChanged() != null)
         announcement_course_recycler_view.adapter.notifyDataSetChanged()
     }
 
@@ -55,7 +56,9 @@ class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     service.getCourseAnn(courseId) { status, response ->
                         when (status) {
                             OldE3Interface.Status.SUCCESS -> {
-                                update(response!!)
+                                if (response != null) {
+                                    update(response!!)
+                                }
                             }
                         }
                     }

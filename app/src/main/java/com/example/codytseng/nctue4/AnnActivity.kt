@@ -36,9 +36,9 @@ class AnnActivity : AppCompatActivity() {
                                 announctment_courseName.text = courseName
                                 announctment_date.text = response!!.getString("BeginDate")
                                 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
-                                    announctment_content.text = Html.fromHtml(response!!.getString("Content"))
+                                    announctment_content.text = Html.fromHtml(response!!.getString("Content")).replace("\\n\\n+".toRegex(), "\n\n")
                                 } else {
-                                    announctment_content.text = Html.fromHtml(response!!.getString("Content"), Html.FROM_HTML_MODE_COMPACT)
+                                    announctment_content.text = Html.fromHtml(response!!.getString("Content"), Html.FROM_HTML_MODE_COMPACT).replace("\\n\\n+".toRegex(), "\n\n")
                                 }
                             }
                         }
