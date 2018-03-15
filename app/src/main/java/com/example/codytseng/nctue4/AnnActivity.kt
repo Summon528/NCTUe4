@@ -5,6 +5,9 @@ import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.ScrollView
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_ann.*
@@ -24,6 +27,10 @@ class AnnActivity : AppCompatActivity() {
         val studentPassword = prefs.getString("studentPassword", "")
         val courseName = intent.getString("courseName")
         val annId = intent.getString("annId")
+        val loading = findViewById<ProgressBar>(R.id.loading_spinner)
+        val ann_content = findViewById<ScrollView>(R.id.ann_content)
+        loading.visibility = View.VISIBLE
+        ann_content.visibility = View.GONE
         Log.d("arguments", annId)
         val service = OldE3Connect()
         service.getLoginTicket(studentId, studentPassword) { status, response ->
@@ -40,6 +47,8 @@ class AnnActivity : AppCompatActivity() {
                                 } else {
                                     announctment_content.text = Html.fromHtml(response!!.getString("Content"), Html.FROM_HTML_MODE_COMPACT)
                                 }
+                                loading.visibility = View.GONE
+                                ann_content.visibility = View.VISIBLE
                             }
                         }
                     }
