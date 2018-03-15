@@ -6,6 +6,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/course_doc_list_recycler_view"/>
-
-    <include layout="@layout/content_bottom_sheet" />
+    
 </LinearLayout>
