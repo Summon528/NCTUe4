@@ -113,7 +113,11 @@ class OldE3Connect() : OldE3Interface {
             if (status == OldE3Interface.Status.SUCCESS) {
                 val arrayOfMaterialDocData = response!!.getJSONObject("ArrayOfMaterialDocData")
                 if (arrayOfMaterialDocData.has("MaterialDocData"))
-                    completionHandler(status, arrayOfMaterialDocData.getJSONArray("MaterialDocData"))
+                    try { //TODO FIX THIS
+                        completionHandler(status, arrayOfMaterialDocData.getJSONArray("MaterialDocData"))
+                    } catch (e:Exception){
+                        completionHandler(status, org.json.JSONArray())
+                    }
                 else
                     completionHandler(status, JSONArray())
             } else {

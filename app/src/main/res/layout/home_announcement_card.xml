@@ -5,11 +5,30 @@
     android:padding="10dp"
     android:background="?android:attr/selectableItemBackground">
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="80dp"
-        android:src="@drawable/ic_brightness_1_black_24dp"
-        android:layout_height="80dp" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="80dp"
+            android:src="@drawable/ic_brightness_1_black_24dp"
+            android:layout_height="80dp" />
+
+        <TextView
+            android:id="@+id/announcement_name_in_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img"
+            android:layout_alignLeft="@id/img"
+            android:layout_alignRight="@id/img"
+            android:layout_alignTop="@id/img"
+            android:gravity="center"
+            android:text="資"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

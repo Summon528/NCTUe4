@@ -20,6 +20,9 @@ import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.fragment_course_doc_list.*
 import org.json.JSONArray
 import org.json.JSONObject
+import android.webkit.MimeTypeMap
+import android.widget.Toast
+
 
 /**
  * Created by CodyTseng on 3/14/2018.
@@ -43,7 +46,7 @@ class CourseDocListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private lateinit var uri : String
+    private lateinit var uri: String
 
     private fun updateList(data: JSONArray) {
         val docItems = ArrayList<DocItem>()
@@ -59,15 +62,21 @@ class CourseDocListFragment : Fragment() {
                     uri = response!!.getString("RealityFileName")
                     if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions( arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                                 0)
+                        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                                0)
                     } else {
                         val request = DownloadManager.Request(Uri.parse(uri))
-                        request.setTitle("OHOHOH")
-                        request.setDescription("YOYOYO")
+                        val extension = MimeTypeMap.getFileExtensionFromUrl(uri)
+                        val mimeType = if (extension != null)
+                            MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+                        else
+                            "application/octet-stream"
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                                .setMimeType(mimeType);
                         val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
                         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-                        Log.d("URI",uri)
+                        Log.d("URI", uri)
+                        Toast.makeText(activity, R.string.download_start, Toast.LENGTH_SHORT).show();
                         manager.enqueue(request)
                     }
                 }
@@ -87,10 +96,17 @@ class CourseDocListFragment : Fragment() {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     val request = DownloadManager.Request(Uri.parse(uri))
-                    request.setTitle("OHOHOH")
-                    request.setDescription("YOYOYO")
+                    val extension = MimeTypeMap.getFileExtensionFromUrl(uri)
+                    val mimeType = if (extension != null)
+                        MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+                    else
+                        "application/octet-stream"
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                            .setMimeType(mimeType);
+                    val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-                    val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                    Log.d("URI", uri)
+                    Toast.makeText(activity, R.string.download_start, Toast.LENGTH_SHORT).show();
                     manager.enqueue(request)
 
                 } else {
