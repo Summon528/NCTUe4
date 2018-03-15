@@ -101,7 +101,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener  {
         Log.d("TEST",announcementItems.toString())
         announcement_login_recycler_view.layoutManager = LinearLayoutManager(context)
         announcement_login_recycler_view.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-        announcement_login_recycler_view.adapter= AnnouncementAdapter(announcementItems){
+        announcement_login_recycler_view.adapter= HomeAnnAdapter(announcementItems){
             val intent = Intent()
             intent.setClass(activity, AnnActivity::class.java)
             intent.putExtra("annId", it.mBulletinId)

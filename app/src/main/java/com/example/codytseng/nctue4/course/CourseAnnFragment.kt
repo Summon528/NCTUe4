@@ -1,22 +1,34 @@
-package com.example.codytseng.nctue4.course
+package com.example.codytseng.nctue4
 
 
+import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.codytseng.nctue4.R
+import com.example.codytseng.nctue4.course.CourseAnnAdapter
+import com.example.codytseng.nctue4.model.AnnouncementItem
+import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.fragment_course_ann.*
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class CourseAnnFragment : Fragment() {
-
+class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+    override fun onRefresh() {
+        announcement_refreshLayout.isRefreshing = false
+        announcement_course_recycler_view.adapter.notifyDataSetChanged()
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -26,17 +38,58 @@ class CourseAnnFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        announcement_refreshLayout.setOnRefreshListener(this)
+        getData()
+    }
+
+    private fun getData() {
+        val service = OldE3Connect()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val studentId = prefs.getString("studentId", "")
+        val studentPassword = prefs.getString("studentPassword", "")
         Log.d("arguments", arguments.toString())
-        val parentActivity = activity as CourseActivity
-        val service = parentActivity.service
         val courseId = arguments.getString("courseId")
-        service.getCourseAnn(courseId) { status, response ->
+        service.getLoginTicket(studentId, studentPassword) { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
-                    if (course_ann_text_view != null)
-                        course_ann_text_view.text = response.toString()
+                    service.getCourseAnn(courseId) { status, response ->
+                        when (status) {
+                            OldE3Interface.Status.SUCCESS -> {
+                                update(response!!)
+                            }
+                        }
+                    }
                 }
             }
         }
     }
-}
+
+    private fun update(data: JSONArray) {
+        val announcementItems = ArrayList<AnnouncementItem>()
+        val courseName = arguments.getString("courseName")
+        for (i in 0 until data.length()) {
+            val tmp = data.get(i) as JSONObject
+            announcementItems.add(AnnouncementItem(
+                    tmp.getInt("BulType"),
+                    tmp.getString("BulletinId"),
+                    courseName,
+                    tmp.getString("Caption"),
+                    tmp.getString("Content"),
+                    tmp.getString("BeginDate"),
+                    tmp.getString("EndDate")
+            )
+            )
+        }
+        Log.d("TEST",announcementItems.toString())
+        announcement_course_recycler_view.layoutManager = LinearLayoutManager(context)
+        announcement_course_recycler_view.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        announcement_course_recycler_view.adapter= CourseAnnAdapter(announcementItems) {
+            val intent = Intent()
+            intent.setClass(activity, AnnActivity::class.java)
+            intent.putExtra("annId", it.mBulletinId)
+            intent.putExtra("courseName", it.mCourseName)
+            startActivity(intent)
+        }
+    }
+
+}// Required empty public constructor

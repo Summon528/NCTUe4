@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="?android:attr/selectableItemBackground">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/announcement_caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="qwertyuioasdfghjkzxcertyuasd"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"/>
+
+        <TextView
+            android:id="@+id/announcement_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="qwertyuioasdfghjkzxcertyuasdfghjzxcvbmnqwertyuasdfghjzxcvbnm"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="2"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_timeline_black_24dp"/>
+            <TextView
+                android:id="@+id/announcement_beginDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textSize="16sp"
+                android:text="2002/10/23" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

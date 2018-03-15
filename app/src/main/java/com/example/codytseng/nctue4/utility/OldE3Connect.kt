@@ -88,14 +88,15 @@ class OldE3Connect() : OldE3Interface {
         }
     }
 
-    override fun getCourseAnn(courseId: String, completionHandler: (status: OldE3Interface.Status, response: JSONObject?) -> Unit) {
+    override fun getCourseAnn(courseId: String, completionHandler: (status: OldE3Interface.Status, response: JSONArray?) -> Unit) {
         val params = HashMap<String, String>()
         params.put("loginTicket", loginTicket)
         params["courseId"] = courseId
         params.put("bulType", "1")
         post("/GetAnnouncementList", params) { status, response ->
             if (status == OldE3Interface.Status.SUCCESS) {
-                completionHandler(status, response!!)
+                completionHandler(status, response!!.getJSONObject("ArrayOfBulletinData")
+                        .getJSONArray("BulletinData"))
             } else {
                 completionHandler(status, null)
             }
@@ -121,7 +122,7 @@ class OldE3Connect() : OldE3Interface {
         }
     }
 
-    fun getAnnouncementDetail(bulletinId: String, completionHandler: (status: OldE3Interface.Status, response: JSONObject?) -> Unit) {
+    override fun getAnnouncementDetail(bulletinId: String, completionHandler: (status: OldE3Interface.Status, response: JSONObject?) -> Unit) {
         val params = HashMap<String, String>()
         params["loginTicket"] = loginTicket
         params["bulletinId"] = bulletinId

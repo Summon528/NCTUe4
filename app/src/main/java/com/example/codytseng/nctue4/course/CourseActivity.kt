@@ -5,6 +5,7 @@ import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import com.example.codytseng.nctue4.BlankFragment
+import com.example.codytseng.nctue4.CourseAnnFragment
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.utility.BottomNavigationViewHelper
 import com.example.codytseng.nctue4.utility.OldE3Connect

@@ -8,7 +8,7 @@ import android.util.Log
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_ann.*
-import kotlinx.android.synthetic.main.announcement_card.*
+import kotlinx.android.synthetic.main.home_announcement_card.*
 import kotlinx.android.synthetic.main.fragment_course_ann.*
 
 /**
