@@ -38,6 +38,7 @@
     <string name="course_nav_other">Others</string>
     <string name="course_doc_type_handout">Handout</string>
     <string name="course_doc_type_reference">Reference</string>
+    <string name="download_start">Start downloading...</string>
 
     <!--Title Activity-->
     <string name="title_activity_ann">Anouncement</string>

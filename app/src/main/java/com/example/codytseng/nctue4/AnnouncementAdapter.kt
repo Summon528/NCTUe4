@@ -17,6 +17,7 @@ class AnnouncementAdapter(val myDataset: ArrayList<AnnouncementItem>, val itemCl
     // Each data item is just a string in this case that is shown in a TextView.
     class ViewHolder(val view: View, val itemClickListener: (AnnouncementItem) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bind(announcement: AnnouncementItem) {
+            view.announcement_name_in_image.text = announcement.mCourseName.first().toString()
             view.announcement_name.text = announcement.mCourseName
 
             view.announcement_caption.text = announcement.mCaption
