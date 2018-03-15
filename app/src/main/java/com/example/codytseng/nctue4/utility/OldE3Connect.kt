@@ -133,11 +133,17 @@ class OldE3Connect : OldE3Interface {
 
     override fun getAnnouncementDetail(bulletinId: String, completionHandler: (status: OldE3Interface.Status, response: JSONObject?) -> Unit) {
         val params = HashMap<String, String>()
-        params["loginTicket"] = loginTicket
-        params["bulletinId"] = bulletinId
-        post("/GetAnnouncementDetail", params) { status, response ->
+        params.put("loginTicket", loginTicket)
+        params.put("studentId", accountId)
+        params.put("ShowCount", "100")
+        post("/GetAnnouncementList_LoginByCountWithAttach", params) { status, response ->
             if (status == OldE3Interface.Status.SUCCESS) {
-                completionHandler(status, response!!.getJSONObject("BulletinData"))
+                val tmp = response!!.getJSONObject("ArrayOfBulletinData").getJSONArray("BulletinData")
+                for (i in 0 until tmp.length()) {
+                    if (tmp.getJSONObject(i).getString("BulletinId") == bulletinId){
+                        completionHandler(status, tmp.getJSONObject(i))
+                    }
+                }
             } else {
                 completionHandler(status, null)
             }

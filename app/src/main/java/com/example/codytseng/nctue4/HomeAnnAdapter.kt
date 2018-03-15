@@ -18,7 +18,6 @@ class HomeAnnAdapter(val myDataset: ArrayList<AnnouncementItem>, val itemClickLi
         fun bind(announcement: AnnouncementItem) {
             view.announcement_name_in_image.text = announcement.mCourseName.first().toString()
             view.announcement_name.text = announcement.mCourseName
-
             view.announcement_caption.text = announcement.mCaption
 //            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
 //                view.announcement_content.text = Html.fromHtml(announcement.mContent).take(50)

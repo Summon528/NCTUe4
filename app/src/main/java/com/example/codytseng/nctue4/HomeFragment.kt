@@ -84,7 +84,9 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener  {
         for (i in 0 until courseList.length()) {
             val tmp = courseList.get(i) as JSONObject
             courseDetail.put(tmp.getString("CourseId"), tmp.getString("CourseName"))
+
         }
+
         for (i in 0 until data.length()) {
             val tmp = data.get(i) as JSONObject
             announcementItems.add(AnnouncementItem(
