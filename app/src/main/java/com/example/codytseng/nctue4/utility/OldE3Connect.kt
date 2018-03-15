@@ -6,24 +6,24 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import fr.arnaudguyon.xmltojsonlib.XmlToJson
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 
 
-class OldE3Connect() : OldE3Interface {
-    private var loginTicket: String = ""
-    private var accountId: String = ""
+class OldE3Connect : OldE3Interface {
+    private lateinit var loginTicket: String
+    private lateinit var accountId: String
     private val tag = OldE3Connect::class.java.simpleName
 
     private fun post(path: String, params: HashMap<String, String>,
                      completionHandler: (status: OldE3Interface.Status, response: JSONObject?) -> Unit) {
-        val url = "http://e3.nctu.edu.tw/mService/service.asmx" + path
+        val url = "http://e3.nctu.edu.tw/mService/service.asmx${path}"
         val stringRequest = object : StringRequest(Request.Method.POST, url,
                 Response.Listener<String> { response ->
                     val xmlToJson = XmlToJson.Builder(response).build().toJson()
                     completionHandler(OldE3Interface.Status.SUCCESS, xmlToJson)
                 },
                 Response.ErrorListener { response ->
-                    Log.d("jizz", response.toString())
                     completionHandler(OldE3Interface.Status.SERVICE_ERROR, null)
                 }) {
             override fun getParams(): Map<String, String> {
@@ -116,10 +116,12 @@ class OldE3Connect() : OldE3Interface {
             if (status == OldE3Interface.Status.SUCCESS) {
                 val arrayOfMaterialDocData = response!!.getJSONObject("ArrayOfMaterialDocData")
                 if (arrayOfMaterialDocData.has("MaterialDocData"))
-                    try { //TODO FIX THIS
+                    try {
                         completionHandler(status, arrayOfMaterialDocData.getJSONArray("MaterialDocData"))
-                    } catch (e:Exception){
-                        completionHandler(status, org.json.JSONArray())
+                    } catch (e: JSONException) {
+                        val tmp = JSONArray()
+                        tmp.put(arrayOfMaterialDocData.getJSONObject("MaterialDocData"))
+                        completionHandler(status, tmp)
                     }
                 else
                     completionHandler(status, JSONArray())
@@ -142,8 +144,7 @@ class OldE3Connect() : OldE3Interface {
         }
     }
 
-    //TODO Handle more than one files
-    override fun getAttachFileList(documentId: String, courseId: String, completionHandler: (status: OldE3Interface.Status, response: JSONObject?) -> Unit) {
+    override fun getAttachFileList(documentId: String, courseId: String, completionHandler: (status: OldE3Interface.Status, response: JSONArray?) -> Unit) {
         post("/GetAttachFileList", hashMapOf(
                 "loginTicket" to loginTicket,
                 "resId" to documentId,
@@ -151,9 +152,16 @@ class OldE3Connect() : OldE3Interface {
                 "courseId" to courseId
         )) { status, response ->
             if (status == OldE3Interface.Status.SUCCESS) {
-                Log.d("asd",response.toString())
-                completionHandler(status, response!!.getJSONObject("ArrayOfAttachFileInfoData")
-                        .getJSONObject("AttachFileInfoData"))
+                Log.d("asd", response.toString())
+                try {
+                    completionHandler(status, response!!.getJSONObject("ArrayOfAttachFileInfoData")
+                            .getJSONArray("AttachFileInfoData"))
+                } catch (e: JSONException) {
+                    val tmp = JSONArray()
+                    tmp.put(response!!.getJSONObject("ArrayOfAttachFileInfoData")
+                            .getJSONObject("AttachFileInfoData"))
+                    completionHandler(status, tmp)
+                }
             } else {
                 completionHandler(status, null)
             }

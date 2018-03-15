@@ -15,8 +15,8 @@ interface OldE3Interface {
     }
 
     fun getLoginTicket(studentId: String, studentPassword: String,
-                   completionHandler: (status: OldE3Interface.Status,
-                                       response: Pair<String, String>?) -> Unit)
+                       completionHandler: (status: OldE3Interface.Status,
+                                           response: Pair<String, String>?) -> Unit)
 
     fun getCourseList(completionHandler: (status: OldE3Interface.Status, response: JSONArray?) -> Unit)
 
@@ -28,5 +28,5 @@ interface OldE3Interface {
 
     fun getMaterialDocList(courseId :String, docType:String, completionHandler: (status: Status, response: JSONArray?) -> Unit)
 
-    fun getAttachFileList(documentId : String, courseId: String, completionHandler: (status: Status, response: JSONObject?) -> Unit)
+    fun getAttachFileList(documentId : String, courseId: String, completionHandler: (status: Status, response: JSONArray?) -> Unit)
 }
