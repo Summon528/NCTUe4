@@ -1,6 +1,47 @@
 <resources>
     <string name="app_name">NCTU e4</string>
+    <string name="action_settings">設定</string>
 
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
 
+    <!--Nav Bar-->
+    <string name="home">首頁</string>
+    <string name="starred_courses">收藏課程</string>
+    <string name="old_e3">e3 教學平台</string>
+    <string name="new_e3">New e3 教學平台</string>
+    <string name="switch_account">帳號管理</string>
+    <string name="settings">設定</string>
+
+    <string name="constructing">本頁面還沒做好</string>
+
+    <!--Login Activity-->
+    <string name="next_step">下一步</string>
+    <string name="student_id">學號</string>
+    <string name="student_password">密碼</string>
+    <string name="login_hint">請輸入學號以及 e3 密碼</string>
+    <string name="login">登入</string>
+    <string name="logout">登出</string>
+    <string name="login_id_or_password_error">學號或密碼錯誤</string>
+    <string name="login_success">登入成功</string>
+    <string name="logout_success">登出成功</string>
+
+    <string name="generic_error">錯誤</string>
+
+
+    <!--Course Activity-->
+    <string name="title_activity_course">課程</string>
+    <string name="course_nav_ann">公告</string>
+    <string name="course_nav_doc">文件</string>
+    <string name="course_nav_assignment">作業</string>
+    <string name="course_nav_score">成績</string>
+    <string name="course_nav_other">其他</string>
+    <string name="course_doc_type_handout">課程講義</string>
+    <string name="course_doc_type_reference">參考資料</string>
+
+    <!--Title Activity-->
+    <string name="title_activity_ann">公告</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
