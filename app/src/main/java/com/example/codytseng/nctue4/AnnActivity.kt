@@ -6,11 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.util.Log
 import android.view.View
-<<<<<<< HEAD
 import android.widget.ProgressBar
 import android.widget.ScrollView
-=======
->>>>>>> f2fb318a5e1d4051f8478c24e7878be493bda755
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_ann.*

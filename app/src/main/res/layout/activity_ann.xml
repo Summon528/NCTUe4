@@ -12,35 +12,11 @@
             android:id="@+id/loading_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
             android:layout_gravity="center"
             android:indeterminateTint="#000000"
             android:indeterminateTintMode="src_atop" />
 
-=======
-            android:textSize="25sp"
-            android:text="BIBIBIBI"/>
-        <TextView
-            android:id="@+id/announctment_courseName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_gravity="end"
-            android:text="資料結構"/>
-        <TextView
-            android:id="@+id/announctment_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_gravity="end"
-            android:text="2023/9/1"/>
-        <TextView
-            android:id="@+id/announctment_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"
-            android:text="fdasffff"/>
+
         <LinearLayout
             android:id="@+id/announcement_attach"
             android:visibility="gone"
