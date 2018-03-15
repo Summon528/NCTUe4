@@ -32,6 +32,7 @@ class CourseAnnFragment : Fragment() {
         val studentPassword = prefs.getString("studentPassword", "")
         Log.d("arguments", arguments.toString())
         val courseId = arguments.getString("courseId")
+        val courseName = arguments.getString("courseName")
         service.getLoginTicket(studentId, studentPassword) { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {

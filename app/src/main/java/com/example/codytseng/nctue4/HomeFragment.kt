@@ -105,6 +105,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener  {
             val intent = Intent()
             intent.setClass(activity, AnnActivity::class.java)
             intent.putExtra("annId", it.mBulletinId)
+            intent.putExtra("courseName", it.mCourseName)
             startActivity(intent)
         }
     }

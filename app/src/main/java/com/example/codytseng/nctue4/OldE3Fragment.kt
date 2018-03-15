@@ -65,6 +65,7 @@ class OldE3Fragment : Fragment() {
             val intent = Intent()
             intent.setClass(activity, CourseActivity::class.java)
             intent.putExtra("courseId", it.mCourseId)
+            intent.putExtra("courseName", it.mCourseName)
             startActivity(intent)
         }
     }
