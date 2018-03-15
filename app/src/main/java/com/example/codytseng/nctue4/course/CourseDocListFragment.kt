@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
+import android.os.Environment
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -14,14 +14,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.DocItem
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.fragment_course_doc_list.*
 import org.json.JSONArray
 import org.json.JSONObject
-import android.webkit.MimeTypeMap
-import android.widget.Toast
 
 
 /**
@@ -46,7 +45,8 @@ class CourseDocListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private lateinit var uri: String
+    private var uri =  ArrayList<String>()
+    private var fileName = ArrayList<String>()
 
     private fun updateList(data: JSONArray) {
         val docItems = ArrayList<DocItem>()
@@ -58,27 +58,26 @@ class CourseDocListFragment : Fragment() {
             course_doc_list_recycler_view.layoutManager = LinearLayoutManager(context)
             course_doc_list_recycler_view.adapter = CourseDocListAdapter(docItems) {
                 val service = (activity as CourseActivity).service
-                service.getAttachFileList(it.documented, it.courseId) { status, response ->
-                    uri = response!!.getString("RealityFileName")
+                service.getAttachFileList(it.documentId, it.courseId) { status, response ->
+                    uri.add((response!![0] as JSONObject).getString("RealityFileName"))
+                    fileName.add((response[0] as JSONObject).getString("DisplayFileName"))
                     if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                                 0)
                     } else {
-                        val request = DownloadManager.Request(Uri.parse(uri))
-                        val extension = MimeTypeMap.getFileExtensionFromUrl(uri)
-                        val mimeType = if (extension != null)
-                            MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
-                        else
-                            "application/octet-stream"
+                        val request = DownloadManager.Request(Uri.parse(uri[0]))
+                        request.setTitle(fileName[0])
                         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                                .setMimeType(mimeType);
                         val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-                        Log.d("URI", uri)
+                        Log.d("URI", uri[0])
+                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/" + fileName)
+                        request.setVisibleInDownloadsUi(true)
                         Toast.makeText(activity, R.string.download_start, Toast.LENGTH_SHORT).show();
                         manager.enqueue(request)
+
                     }
+
                 }
             }
 
@@ -95,19 +94,16 @@ class CourseDocListFragment : Fragment() {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    val request = DownloadManager.Request(Uri.parse(uri))
-                    val extension = MimeTypeMap.getFileExtensionFromUrl(uri)
-                    val mimeType = if (extension != null)
-                        MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
-                    else
-                        "application/octet-stream"
+                    val request = DownloadManager.Request(Uri.parse(uri[0]))
+                    request.setTitle(fileName[0])
                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                            .setMimeType(mimeType);
                     val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-                    Log.d("URI", uri)
+                    Log.d("URI", uri[0])
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/" + fileName)
+                    request.setVisibleInDownloadsUi(true)
                     Toast.makeText(activity, R.string.download_start, Toast.LENGTH_SHORT).show();
                     manager.enqueue(request)
+
 
                 } else {
 
