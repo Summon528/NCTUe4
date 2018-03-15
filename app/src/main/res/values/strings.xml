@@ -40,7 +40,7 @@
     <string name="course_doc_type_reference">Reference</string>
 
     <!--Title Activity-->
-    <string name="title_activity_ann">AnnActivity</string>
+    <string name="title_activity_ann">Anouncement</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
