@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.AnnouncementItem
 import kotlinx.android.synthetic.main.course_announcement_card.view.*
+import com.example.codytseng.nctue4.utility.HtmlCleaner
 
 class CourseAnnAdapter(val myDataset: ArrayList<AnnouncementItem>, val itemClickListener: (AnnouncementItem)->Unit) :
         RecyclerView.Adapter<CourseAnnAdapter.ViewHolder>() {
@@ -20,10 +21,11 @@ class CourseAnnAdapter(val myDataset: ArrayList<AnnouncementItem>, val itemClick
         fun bind(announcement: AnnouncementItem) {
 
             view.announcement_caption.text = announcement.mCaption
+
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
-                view.announcement_content.text = Html.fromHtml(announcement.mContent).replace("\\s+".toRegex(), " ")
+                view.announcement_content.text = Html.fromHtml(HtmlCleaner(announcement.mContent)).replace("\\s+".toRegex(), " ")
             } else {
-                view.announcement_content.text = Html.fromHtml(announcement.mContent, Html.FROM_HTML_MODE_COMPACT).replace("\\s+".toRegex(), " ")
+                view.announcement_content.text = Html.fromHtml(HtmlCleaner(announcement.mContent), Html.FROM_HTML_MODE_COMPACT).replace("\\s+".toRegex(), " ")
             }
             view.announcement_beginDate.text = announcement.mBeginDate
             view.setOnClickListener(){

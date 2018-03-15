@@ -33,7 +33,15 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_marginTop="10dp"
+            android:clickable="true"
             android:text="fdasffff"/>
+        <!--<us.feras.mdv.MarkdownView-->
+            <!--android:id="@+id/announctment_content"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="20sp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:clickable="true"/>-->
         <LinearLayout
             android:id="@+id/announcement_attach"
             android:visibility="gone"

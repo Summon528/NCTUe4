@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.codytseng.nctue4.course.CourseAnnAdapter
 import com.example.codytseng.nctue4.model.AnnouncementItem
+import com.example.codytseng.nctue4.utility.HtmlCleaner
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.fragment_course_ann.*
@@ -77,7 +78,7 @@ class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     tmp.getString("BulletinId"),
                     courseName,
                     tmp.getString("Caption"),
-                    tmp.getString("Content"),
+                    HtmlCleaner(tmp.getString("Content")),
                     tmp.getString("BeginDate"),
                     tmp.getString("EndDate")
             )

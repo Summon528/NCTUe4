@@ -20,7 +20,7 @@ class OldE3Connect : OldE3Interface {
         val url = "http://e3.nctu.edu.tw/mService/service.asmx${path}"
         val stringRequest = object : StringRequest(Request.Method.POST, url,
                 Response.Listener<String> { response ->
-                    val xmlToJson = XmlToJson.Builder(response).build().toJson()
+                    val xmlToJson = (XmlToJson.Builder(response).build()).toJson()
                     completionHandler(OldE3Interface.Status.SUCCESS, xmlToJson)
                 },
                 Response.ErrorListener { response ->

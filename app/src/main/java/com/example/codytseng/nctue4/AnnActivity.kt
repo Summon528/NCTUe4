@@ -6,8 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.util.Log
 import android.view.View
-import com.example.codytseng.nctue4.utility.OldE3Connect
-import com.example.codytseng.nctue4.utility.OldE3Interface
+import com.example.codytseng.nctue4.utility.*
 import kotlinx.android.synthetic.main.activity_ann.*
 import kotlinx.android.synthetic.main.home_announcement_card.*
 import kotlinx.android.synthetic.main.fragment_course_ann.*
@@ -34,22 +33,31 @@ class AnnActivity : AppCompatActivity() {
                     service.getAnnouncementDetail(annId) { status, response ->
                         when (status) {
                             OldE3Interface.Status.SUCCESS -> {
-                                var attachFile = hashMapOf<String, String>()
-
                                 announctment_caption.text = response!!.getString("Caption")
                                 announctment_courseName.text = courseName
                                 announctment_date.text = response!!.getString("BeginDate")
-                                if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
-                                    announctment_content.text = Html.fromHtml(response!!.getString("Content")).replace("\\n\\n+".toRegex(), "\n\n")
-                                } else {
-                                    announctment_content.text = Html.fromHtml(response!!.getString("Content"), Html.FROM_HTML_MODE_COMPACT).replace("\\n\\n+".toRegex(), "\n\n")
-                                }
+
                                 if (response!!.getJSONObject("AttachFileName").getString("string").length > 0) {
                                     announcement_attach.visibility = View.VISIBLE
 //                                    announcement_attach_url.text = response!!.getJSONObject("AttachFileName").getString("string")
                                     announcement_attach_name.text = response!!.getJSONObject("AttachFileName").getString("string")
                                     announcement_attach_fileSize.text = response!!.getJSONObject("AttachFileFileSize").getString("string")
                                 }
+                                val Html2Md = Html2MdConnect()
+                                var trashHtml: String
+                                if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
+                                    trashHtml = Html.fromHtml(HtmlCleaner(response!!.getString("Content"))).replace("\\n\\n+".toRegex(), "\n\n")
+                                } else {
+                                    trashHtml = Html.fromHtml(HtmlCleaner(response!!.getString("Content")), Html.FROM_HTML_MODE_COMPACT).replace("\\n\\n+".toRegex(), "\n\n")
+                                }
+                                announctment_content.text = trashHtml
+//                                Html2Md.getMd(trashHtml) { status, response ->
+//                                    when (status) {
+//                                        Html2MdInterface.Status.SUCCESS -> {
+//                                            announctment_content.loadMarkdown(response!!)
+//                                        }
+//                                    }
+//                                }
                             }
                         }
                     }
