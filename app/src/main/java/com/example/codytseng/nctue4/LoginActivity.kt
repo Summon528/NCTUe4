@@ -13,6 +13,12 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : AppCompatActivity() {
+    lateinit var oldE3Service: OldE3Connect
+
+    override fun onStop() {
+        super.onStop()
+        if (::oldE3Service.isInitialized) oldE3Service.cancelPendingRequests()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,20 +30,20 @@ class LoginActivity : AppCompatActivity() {
             login_progressbar.visibility = View.VISIBLE;
             val studentId = student_id.text.toString()
             val studentPassword = student_password.text.toString()
-            val service = OldE3Connect()
-            service.getLoginTicket(studentId, studentPassword) { status, response ->
+            val service = OldE3Connect(studentId, studentPassword)
+            service.getLoginTicket { status, response ->
                 when (status) {
                     OldE3Interface.Status.SUCCESS -> {
                         val prefsEditor = prefs.edit()
                         prefsEditor.putString("studentId", studentId)
                         prefsEditor.putString("studentPassword", studentPassword)
                         prefsEditor.putString("studentName", response!!.first)
-                        prefsEditor.putString("studentEmail", response!!.second)
-                        prefsEditor.commit()
+                        prefsEditor.putString("studentEmail", response.second)
+                        prefsEditor.apply()
                         login_progressbar.visibility = View.GONE;
                         val intent = Intent()
                         setResult(Activity.RESULT_OK, intent);
-                        Toast.makeText(this@LoginActivity,getString(R.string.login_success),Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
                         finish()
                     }
                     OldE3Interface.Status.WRONG_CREDENTIALS -> {
@@ -60,10 +66,10 @@ class LoginActivity : AppCompatActivity() {
             prefsEditor.remove("studentPassword")
             prefsEditor.remove("studentName")
             prefsEditor.remove("studentEmail")
-            prefsEditor.commit()
+            prefsEditor.apply()
             val intent = Intent()
             setResult(Activity.RESULT_OK, intent);
-            Toast.makeText(this@LoginActivity,getString(R.string.logout_success),Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@LoginActivity, getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
             finish()
         }
     }

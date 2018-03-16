@@ -2,7 +2,6 @@ package com.example.codytseng.nctue4.course
 
 
 import android.Manifest
-import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
 import android.content.pm.PackageManager
@@ -10,39 +9,37 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.DialogFragment
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.DocItem
+import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.fragment_course_doc_dialog.*
-import org.json.JSONArray
-import org.json.JSONObject
 
 
-/**
- * A simple [Fragment] subclass.
- */
 class CourseDocDialog : DialogFragment() {
 
+    private lateinit var oldE3Service: OldE3Connect
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater!!.inflate(R.layout.fragment_course_doc_dialog, container, false)
     }
 
+    override fun onStop() {
+        super.onStop()
+        oldE3Service.cancelPendingRequests()
+    }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val service = (activity as CourseActivity).service
-        service.getAttachFileList(arguments.getString("documentId"),
+        oldE3Service = (activity as CourseActivity).oldE3Service
+        oldE3Service.getAttachFileList(arguments.getString("documentId"),
                 arguments.getString("courseId"), { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
@@ -56,18 +53,17 @@ class CourseDocDialog : DialogFragment() {
     private lateinit var fileName: String
 
     private fun updateList(docItems: ArrayList<DocItem>) {
-        course_doc_dialog_recycler_view.layoutManager = LinearLayoutManager(context)
-        course_doc_dialog_recycler_view.adapter = CourseDocAdapter(docItems) {
+        course_doc_dialog_recycler_view?.layoutManager = LinearLayoutManager(context)
+        course_doc_dialog_recycler_view?.adapter = CourseDocAdapter(docItems) {
             uri = it.docPath
             fileName = it.displayName
-                downloadFile()
-
+            downloadFile()
             dismiss()
         }
 
     }
 
-    fun downloadFile() {
+    private fun downloadFile() {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -84,6 +80,7 @@ class CourseDocDialog : DialogFragment() {
         }
 
     }
+
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {

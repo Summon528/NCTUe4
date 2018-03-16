@@ -10,16 +10,11 @@ import com.example.codytseng.nctue4.R
 import kotlinx.android.synthetic.main.fragment_course_doc.*
 
 
-/**
- * A simple [Fragment] subclass.
- */
 class CourseDocFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-//        setSupportActionBar(course_doc_toolbar)
         return inflater!!.inflate(R.layout.fragment_course_doc, container, false)
     }
 
@@ -38,8 +33,7 @@ class CourseDocFragment : Fragment() {
         val adapter = CourseDocGroupAdapter(activity.supportFragmentManager,
                 fragments,
                 listOf(getString(R.string.course_doc_type_handout), getString(R.string.course_doc_type_reference)))
-        course_doc_view_pager.adapter = adapter
-        course_doc_tab_layout.setupWithViewPager(course_doc_view_pager)
+        course_doc_view_pager?.adapter = adapter
+        course_doc_tab_layout?.setupWithViewPager(course_doc_view_pager)
     }
-
 }

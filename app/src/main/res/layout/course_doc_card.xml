@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:minHeight="50dp"
     android:maxHeight="500dp"
-    android:id="@+id/single_doc_card_layout"
+    android:id="@+id/course_doc_card_layout"
     >
     <TextView
         android:layout_width="wrap_content"

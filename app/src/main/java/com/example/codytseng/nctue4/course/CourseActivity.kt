@@ -5,7 +5,6 @@ import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import com.example.codytseng.nctue4.BlankFragment
-import com.example.codytseng.nctue4.CourseAnnFragment
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.utility.BottomNavigationViewHelper
 import com.example.codytseng.nctue4.utility.OldE3Connect
@@ -13,7 +12,12 @@ import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_course.*
 
 class CourseActivity : AppCompatActivity() {
-    val service = OldE3Connect()
+    lateinit var oldE3Service: OldE3Connect
+
+    override fun onStop() {
+        super.onStop()
+        oldE3Service.cancelPendingRequests()
+    }
 
     private val mOnNavigationItemSelectedListener =
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -51,21 +55,18 @@ class CourseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course)
-
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val studentId = prefs.getString("studentId", "")
         val studentPassword = prefs.getString("studentPassword", "")
         BottomNavigationViewHelper.disableShiftMode(course_bottom_nav)
-
-        service.getLoginTicket(studentId, studentPassword) { status, _ ->
+        oldE3Service = OldE3Connect(studentId, studentPassword)
+        oldE3Service.getLoginTicket { status, _ ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
                     switchFragment(-1)
                 }
             }
         }
-
         course_bottom_nav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
-
 }
