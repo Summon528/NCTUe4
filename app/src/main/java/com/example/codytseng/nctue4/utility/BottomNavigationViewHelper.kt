@@ -1,11 +1,11 @@
+//https://stackoverflow.com/questions/40176244/how-to-disable-bottomnavigationview-shift-mode
 package com.example.codytseng.nctue4.utility
 
 import android.support.design.internal.BottomNavigationItemView
 import android.support.design.internal.BottomNavigationMenuView
 import android.support.design.widget.BottomNavigationView
 import android.util.Log
-import java.lang.reflect.Field
-//https://stackoverflow.com/questions/40176244/how-to-disable-bottomnavigationview-shift-mode
+
 object BottomNavigationViewHelper {
     fun disableShiftMode(view: BottomNavigationView) {
         val menuView = view.getChildAt(0) as BottomNavigationMenuView
@@ -16,10 +16,8 @@ object BottomNavigationViewHelper {
             shiftingMode.isAccessible = false
             for (i in 0 until menuView.childCount) {
                 val item = menuView.getChildAt(i) as BottomNavigationItemView
-
                 item.setShiftingMode(false)
                 // set once again checked value, so view will be updated
-
                 item.setChecked(item.itemData.isChecked)
             }
         } catch (e: NoSuchFieldException) {

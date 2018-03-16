@@ -1,6 +1,7 @@
 package com.example.codytseng.nctue4.utility
 
 import android.content.Context
+import com.example.codytseng.nctue4.model.DocItem
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -28,5 +29,5 @@ interface OldE3Interface {
 
     fun getMaterialDocList(courseId :String, docType:String, completionHandler: (status: Status, response: JSONArray?) -> Unit)
 
-    fun getAttachFileList(documentId : String, courseId: String, completionHandler: (status: Status, response: JSONArray?) -> Unit)
+    fun getAttachFileList(documentId : String, courseId: String, completionHandler: (status: Status, response: ArrayList<DocItem>?) -> Unit)
 }

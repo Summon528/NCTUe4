@@ -2,6 +2,7 @@ package com.example.codytseng.nctue4.course
 
 
 import android.Manifest
+import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
 import android.content.pm.PackageManager
@@ -54,61 +55,44 @@ class CourseDocDialog : DialogFragment() {
     private lateinit var uri: String
     private lateinit var fileName: String
 
-    private fun updateList(data: JSONArray) {
-        val docItems = ArrayList<DocItem>()
-        for (i in 0 until data.length()) {
-            val tmp = data.get(i) as JSONObject
-            docItems.add(DocItem(
-                    tmp.getString("DisplayFileName"),
-                    tmp.getString("RealityFileName")))
-        }
-        Log.d("TASG", docItems.toString())
+    private fun updateList(docItems: ArrayList<DocItem>) {
         course_doc_dialog_recycler_view.layoutManager = LinearLayoutManager(context)
         course_doc_dialog_recycler_view.adapter = CourseDocAdapter(docItems) {
             uri = it.docPath
             fileName = it.displayName
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        0)
-            } else {
                 downloadFile()
-            }
+
             dismiss()
         }
 
     }
 
+    fun downloadFile() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    0)
+        } else {
+            val request = DownloadManager.Request(Uri.parse(uri))
+            request.setTitle(fileName)
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/$fileName")
+            request.setVisibleInDownloadsUi(true)
+            Toast.makeText(context, R.string.download_start, Toast.LENGTH_SHORT).show();
+            manager.enqueue(request)
+        }
 
-    private fun downloadFile() {
-        val request = DownloadManager.Request(Uri.parse(uri))
-        request.setTitle(fileName)
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        Log.d("URI", uri)
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/${fileName}")
-        request.setVisibleInDownloadsUi(true)
-        Toast.makeText(activity, R.string.download_start, Toast.LENGTH_SHORT).show();
-        manager.enqueue(request)
     }
-
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             0 -> {
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                if ((grantResults.isNotEmpty() &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     downloadFile()
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                 }
                 return
-            }
-        // Add other 'when' lines to check for other
-        // permissions this app might request.
-            else -> {
-                // Ignore all other requests.
             }
         }
     }

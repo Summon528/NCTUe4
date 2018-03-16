@@ -4,6 +4,7 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
+import com.example.codytseng.nctue4.model.DocItem
 import fr.arnaudguyon.xmltojsonlib.XmlToJson
 import org.json.JSONArray
 import org.json.JSONException
@@ -150,7 +151,7 @@ class OldE3Connect : OldE3Interface {
             if (status == OldE3Interface.Status.SUCCESS) {
                 val tmp = response!!.getJSONObject("ArrayOfBulletinData").getJSONArray("BulletinData")
                 for (i in 0 until tmp.length()) {
-                    if (tmp.getJSONObject(i).getString("BulletinId") == bulletinId){
+                    if (tmp.getJSONObject(i).getString("BulletinId") == bulletinId) {
                         completionHandler(status, tmp.getJSONObject(i))
                     }
                 }
@@ -160,24 +161,26 @@ class OldE3Connect : OldE3Interface {
         }
     }
 
-    override fun getAttachFileList(documentId: String, courseId: String, completionHandler: (status: OldE3Interface.Status, response: JSONArray?) -> Unit) {
+    override fun getAttachFileList(documentId: String, courseId: String,
+                                   completionHandler: (status: OldE3Interface.Status,
+                                                       response: ArrayList<DocItem>?) -> Unit) {
         post("/GetAttachFileList", hashMapOf(
                 "loginTicket" to loginTicket,
                 "resId" to documentId,
-                "metaType" to "10",
+                "metaType" to "10", //No idea what is this for
                 "courseId" to courseId
         )) { status, response ->
             if (status == OldE3Interface.Status.SUCCESS) {
-                Log.d("asd", response.toString())
-                try {
-                    completionHandler(status, response!!.getJSONObject("ArrayOfAttachFileInfoData")
-                            .getJSONArray("AttachFileInfoData"))
-                } catch (e: JSONException) {
-                    val tmp = JSONArray()
-                    tmp.put(response!!.getJSONObject("ArrayOfAttachFileInfoData")
-                            .getJSONObject("AttachFileInfoData"))
-                    completionHandler(status, tmp)
-                }
+                val data = response!!.getJSONObject("ArrayOfAttachFileInfoData")
+                        .forceGetJsonArray("AttachFileInfoData")
+                val docItems = ArrayList<DocItem>()
+                (0 until data.length()).map { data.get(it) as JSONObject }
+                        .forEach {
+                            docItems.add(DocItem(
+                                    it.getString("DisplayFileName"),
+                                    it.getString("RealityFileName")))
+                        }
+                completionHandler(status, docItems)
             } else {
                 completionHandler(status, null)
             }
