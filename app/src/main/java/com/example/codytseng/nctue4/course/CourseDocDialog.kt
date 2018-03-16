@@ -38,6 +38,7 @@ class CourseDocDialog : DialogFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dialog.setTitle(R.string.download)
         oldE3Service = (activity as CourseActivity).oldE3Service
         oldE3Service.getAttachFileList(arguments.getString("documentId"),
                 arguments.getString("courseId"), { status, response ->
