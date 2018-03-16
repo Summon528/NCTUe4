@@ -13,9 +13,9 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Html
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import com.example.codytseng.nctue4.utility.htmlCleaner
@@ -24,10 +24,17 @@ import kotlinx.android.synthetic.main.activity_ann.*
 
 class AnnActivity : AppCompatActivity() {
     private lateinit var oldE3Service: OldE3Connect
+    private var dataStatus = DataStatus.INIT
 
     override fun onStop() {
         super.onStop()
         oldE3Service.cancelPendingRequests()
+        if (dataStatus == DataStatus.INIT) dataStatus = DataStatus.STOPPED
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (dataStatus == DataStatus.STOPPED) getData()
     }
 
     private lateinit var uri: String
@@ -66,6 +73,10 @@ class AnnActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ann)
+        getData()
+    }
+
+    private fun getData(){
         val bundle = intent.extras
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val studentId = prefs.getString("studentId", "")
@@ -101,6 +112,7 @@ class AnnActivity : AppCompatActivity() {
                                 ann_content.visibility = View.VISIBLE
                             }
                         }
+                        dataStatus = DataStatus.FINISHED
                     }
                 }
             }

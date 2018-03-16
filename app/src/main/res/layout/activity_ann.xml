@@ -14,7 +14,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:indeterminateTint="#000000"
             android:indeterminateTintMode="src_atop"
             android:textSize="20sp" />
 

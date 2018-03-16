@@ -60,6 +60,7 @@ class CourseDocDialog : DialogFragment() {
             downloadFile()
             dismiss()
         }
+        progress_bar.visibility = View.GONE
 
     }
 

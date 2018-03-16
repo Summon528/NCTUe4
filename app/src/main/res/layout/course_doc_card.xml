@@ -21,6 +21,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:id="@+id/doc_file_icon"
                 android:src="@drawable/file_alt" />
         </LinearLayout>
 
