@@ -16,8 +16,8 @@ class CourseAdapter(val myDataset: ArrayList<CourseItem>, val itemClickListener:
     // Each data item is just a string in this case that is shown in a TextView.
     class ViewHolder(val view: View, val itemClickListener: (CourseItem) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bind(course: CourseItem) {
-            view.course_name.text = course.mCourseName
-            view.course_teacher.text = course.mTeacherName
+            view.course_name.text = course.courseName
+            view.course_teacher.text = course.teacherName
             view.course_item.setOnClickListener{
                 itemClickListener(course)
             }

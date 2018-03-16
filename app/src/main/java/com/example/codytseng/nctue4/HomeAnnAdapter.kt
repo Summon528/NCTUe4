@@ -16,15 +16,15 @@ class HomeAnnAdapter(val myDataset: ArrayList<AnnouncementItem>, val itemClickLi
     // Each data item is just a string in this case that is shown in a TextView.
     class ViewHolder(val view: View, val itemClickListener: (AnnouncementItem) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bind(announcement: AnnouncementItem) {
-            view.announcement_name_in_image.text = announcement.mCourseName.first().toString()
-            view.announcement_name.text = announcement.mCourseName
-            view.announcement_caption.text = announcement.mCaption
+            view.announcement_name_in_image.text = announcement.courseName.first().toString()
+            view.announcement_name.text = announcement.courseName
+            view.announcement_caption.text = announcement.caption
 //            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
-//                view.announcement_content.text = Html.fromHtml(announcement.mContent).take(50)
+//                view.announcement_content.text = Html.fromHtml(announcement.content).take(50)
 //            } else {
-//                view.announcement_content.text = Html.fromHtml(announcement.mContent, Html.FROM_HTML_MODE_COMPACT).take(50)
+//                view.announcement_content.text = Html.fromHtml(announcement.content, Html.FROM_HTML_MODE_COMPACT).take(50)
 //            }
-            view.announcement_beginDate.text = announcement.mBeginDate
+            view.announcement_beginDate.text = announcement.beginDate
             view.setOnClickListener(){
                 itemClickListener(announcement)
             }        }

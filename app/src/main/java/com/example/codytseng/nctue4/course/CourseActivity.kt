@@ -15,10 +15,11 @@ import kotlinx.android.synthetic.main.activity_course.*
 class CourseActivity : AppCompatActivity() {
     val service = OldE3Connect()
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        switchFragment(item.itemId)
-        return@OnNavigationItemSelectedListener true
-    }
+    private val mOnNavigationItemSelectedListener =
+            BottomNavigationView.OnNavigationItemSelectedListener { item ->
+                switchFragment(item.itemId)
+                return@OnNavigationItemSelectedListener true
+            }
 
 
     private fun switchFragment(itemId: Int) {
@@ -50,10 +51,11 @@ class CourseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course)
+
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val studentId = prefs.getString("studentId", "")
         val studentPassword = prefs.getString("studentPassword", "")
-        BottomNavigationViewHelper.disableShiftMode( course_bottom_nav)
+        BottomNavigationViewHelper.disableShiftMode(course_bottom_nav)
 
         service.getLoginTicket(studentId, studentPassword) { status, _ ->
             when (status) {

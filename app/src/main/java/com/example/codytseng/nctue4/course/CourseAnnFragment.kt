@@ -90,8 +90,8 @@ class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         announcement_course_recycler_view.adapter= CourseAnnAdapter(announcementItems) {
             val intent = Intent()
             intent.setClass(activity, AnnActivity::class.java)
-            intent.putExtra("annId", it.mBulletinId)
-            intent.putExtra("courseName", it.mCourseName)
+            intent.putExtra("annId", it.bulletinId)
+            intent.putExtra("courseName", it.courseName)
             startActivity(intent)
         }
     }

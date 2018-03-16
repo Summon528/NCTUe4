@@ -65,8 +65,8 @@ class OldE3Fragment : Fragment() {
             old_e3_recycler_view.adapter = CourseAdapter(courseItems) {
                 val intent = Intent()
                 intent.setClass(activity, CourseActivity::class.java)
-                intent.putExtra("courseId", it.mCourseId)
-                intent.putExtra("courseName", it.mCourseName)
+                intent.putExtra("courseId", it.courseId)
+                intent.putExtra("courseName", it.courseName)
                 startActivity(intent)
             }
         }

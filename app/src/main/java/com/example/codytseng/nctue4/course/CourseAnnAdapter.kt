@@ -20,14 +20,14 @@ class CourseAnnAdapter(val myDataset: ArrayList<AnnouncementItem>, val itemClick
     class ViewHolder(val view: View, val itemClickListener: (AnnouncementItem) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bind(announcement: AnnouncementItem) {
 
-            view.announcement_caption.text = announcement.mCaption
+            view.announcement_caption.text = announcement.caption
 
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
-                view.announcement_content.text = Html.fromHtml(HtmlCleaner(announcement.mContent)).replace("\\s+".toRegex(), " ")
+                view.announcement_content.text = Html.fromHtml(HtmlCleaner(announcement.content)).replace("\\s+".toRegex(), " ")
             } else {
-                view.announcement_content.text = Html.fromHtml(HtmlCleaner(announcement.mContent), Html.FROM_HTML_MODE_COMPACT).replace("\\s+".toRegex(), " ")
+                view.announcement_content.text = Html.fromHtml(HtmlCleaner(announcement.content), Html.FROM_HTML_MODE_COMPACT).replace("\\s+".toRegex(), " ")
             }
-            view.announcement_beginDate.text = announcement.mBeginDate
+            view.announcement_beginDate.text = announcement.beginDate
             view.setOnClickListener(){
                 itemClickListener(announcement)
             }        }

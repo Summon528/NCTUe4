@@ -79,6 +79,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener  {
 
     }
     private fun updateList(data: JSONArray, courseList: JSONArray) {
+
         val announcementItems = ArrayList<AnnouncementItem>()
         var courseDetail = HashMap<String, String>()
         for (i in 0 until courseList.length()) {
@@ -90,7 +91,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener  {
         for (i in 0 until data.length()) {
             val tmp = data.get(i) as JSONObject
             announcementItems.add(AnnouncementItem(
-                    tmp.getInt("BulType"),
+                    tmp.getString("BulType").toInt(),
                     tmp.getString("BulletinId"),
                     courseDetail.get(tmp.getString("CourseId"))!!,
                     tmp.getString("Caption"),
@@ -106,8 +107,8 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener  {
         announcement_login_recycler_view.adapter= HomeAnnAdapter(announcementItems){
             val intent = Intent()
             intent.setClass(activity, AnnActivity::class.java)
-            intent.putExtra("annId", it.mBulletinId)
-            intent.putExtra("courseName", it.mCourseName)
+            intent.putExtra("annId", it.bulletinId)
+            intent.putExtra("courseName", it.courseName)
             startActivity(intent)
         }
     }
