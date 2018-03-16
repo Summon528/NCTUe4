@@ -95,9 +95,19 @@ class OldE3Connect : OldE3Interface {
         params.put("bulType", "1")
         post("/GetAnnouncementList", params) { status, response ->
             if (status == OldE3Interface.Status.SUCCESS) {
-                if (response!!.getJSONObject("ArrayOfBulletinData").has("BulletinData"))
-                    completionHandler(status, response!!.getJSONObject("ArrayOfBulletinData")
-                        .getJSONArray("BulletinData"))
+                Log.d("TEST", response.toString())
+                val arrayOfBulletinData = response!!.getJSONObject("ArrayOfBulletinData")
+                if (arrayOfBulletinData.has("BulletinData")) {
+
+                    try {
+                        completionHandler(status, arrayOfBulletinData.getJSONArray("BulletinData"))
+                    } catch (e: JSONException) {
+                        val tmp = JSONArray()
+                        tmp.put(arrayOfBulletinData.getJSONObject("BulletinData"))
+                        completionHandler(status, tmp)
+                    }
+
+                }
                 else
                     completionHandler(status, null)
             } else {
