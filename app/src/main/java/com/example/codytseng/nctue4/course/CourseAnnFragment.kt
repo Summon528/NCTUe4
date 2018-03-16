@@ -76,8 +76,8 @@ class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             announcementItems.add(AnnouncementItem(
                     tmp.getInt("BulType"),
                     tmp.getString("BulletinId"),
-                    courseName,
                     tmp.getString("Caption"),
+                    courseName,
                     HtmlCleaner(tmp.getString("Content")),
                     tmp.getString("BeginDate"),
                     tmp.getString("EndDate")
