@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.DocItem
@@ -38,7 +39,7 @@ class CourseDocDialog : DialogFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog.setTitle(R.string.download)
+        dialog.window.requestFeature(Window.FEATURE_NO_TITLE)
         oldE3Service = (activity as CourseActivity).oldE3Service
         oldE3Service.getAttachFileList(arguments.getString("documentId"),
                 arguments.getString("courseId"), { status, response ->
