@@ -19,5 +19,4 @@ class CourseDocGroupAdapter(fm: FragmentManager, private val mFragments: List<Fr
     override fun getPageTitle(position: Int): CharSequence {
         return mTitles[position]
     }
-
 }

@@ -1,18 +1,26 @@
 package com.example.codytseng.nctue4
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.ScrollView
+import com.example.codytseng.nctue4.model.AttachItem
 import com.example.codytseng.nctue4.utility.Html2MdConnect
 import com.example.codytseng.nctue4.utility.HtmlCleaner
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_ann.*
+
+
+import org.json.JSONException
 
 
 /**
@@ -44,12 +52,6 @@ class AnnActivity : AppCompatActivity() {
                                 announctment_courseName.text = courseName
                                 announctment_date.text = response.getString("BeginDate")
 
-                                if (response.getJSONObject("AttachFileName").getString("string") != "") {
-                                    announcement_attach.visibility = View.VISIBLE
-//                                    announcement_attach_url.text = response!!.getJSONObject("AttachFileName").getString("string")
-                                    announcement_attach_name.text = response.getJSONObject("AttachFileName").getString("string")
-                                    announcement_attach_fileSize.text = response.getJSONObject("AttachFileFileSize").getString("string")
-                                }
                                 val Html2Md = Html2MdConnect()
                                 val trashHtml: String
                                 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
@@ -65,6 +67,38 @@ class AnnActivity : AppCompatActivity() {
 //                                        }
 //                                    }
 //                                }
+                                val attachFileName = response.getJSONObject("AttachFileName")
+                                val attachFileUrl = response.getJSONObject("AttachFileURL")
+                                val attachFileFileSize = response.getJSONObject("AttachFileFileSize")
+                                var attachItems = ArrayList<AttachItem>()
+                                try {
+                                    val attachFileNames = attachFileName.getJSONArray("string")
+                                    val attachFileUrls = attachFileUrl.getJSONArray("string")
+                                    val attachFileFileSizes = attachFileFileSize.getJSONArray("string")
+                                    for (i in 0 until attachFileFileSizes.length()) {
+                                        attachItems.add(AttachItem(
+                                                attachFileNames.get(i).toString().dropLast(1),
+                                                attachFileUrls.get(i).toString().dropLast(1),
+                                                attachFileFileSizes.get(i).toString().dropLast(1)
+                                        ))
+                                    }
+
+                                } catch (e: JSONException) {
+                                    if (attachFileName.getString("string") != "") {
+                                        attachItems.add(AttachItem(
+                                                attachFileName.getString("string").dropLast(1),
+                                                attachFileFileSize.getString("string").dropLast(1),
+                                                attachFileUrl.getString("string").dropLast(1)
+                                        ))
+                                    }
+                                }
+                                announcement_attach.layoutManager = LinearLayoutManager(this)
+//                                announcement_attach.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+                                announcement_attach.adapter= AnnAttachmentAdapter(attachItems){
+                                    val intent = Intent()
+                                    intent.setClass(this, AnnActivity::class.java)
+                                    startActivity(intent)
+                                }
                                 loading.visibility = View.GONE
                                 annContent.visibility = View.VISIBLE
                             }
