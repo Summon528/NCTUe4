@@ -8,10 +8,10 @@
     android:orientation="horizontal">
 
     <View
-        android:layout_width="1dp"
+        android:layout_width="3dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="15dp"
-        android:background="#000000" />
+        android:background="@color/colorPrimaryDark" />
 
 
     <LinearLayout
