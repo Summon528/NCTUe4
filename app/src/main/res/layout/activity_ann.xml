@@ -1,103 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/announctment_caption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="BIBIBIBI"/>
-        <TextView
-            android:id="@+id/announctment_courseName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_gravity="end"
-            android:text="資料結構"/>
-        <TextView
-            android:id="@+id/announctment_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_gravity="end"
-            android:text="2023/9/1"/>
-        <TextView
-            android:id="@+id/announctment_content"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ProgressBar
+            android:id="@+id/loading_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:text="fdasffff"/>
+            android:layout_gravity="center"
+            android:indeterminateTint="#000000"
+            android:indeterminateTintMode="src_atop" />
+
         <!--<us.feras.mdv.MarkdownView-->
-            <!--android:id="@+id/announctment_content"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textSize="20sp"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:clickable="true"/>-->
+        <!--android:id="@+id/announctment_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="20sp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:clickable="true"/>-->
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ann_content">
+
         <LinearLayout
-            android:id="@+id/announcement_attach"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp"
-            android:gravity="center_vertical">
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:id="@+id/img"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"/>
-                <ImageView
-                    android:id="@+id/announcement_attach_url"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_alignBottom="@id/img"
-                    android:layout_alignLeft="@id/img"
-                    android:layout_alignRight="@id/img"
-                    android:layout_alignTop="@id/img"
-                    android:gravity="center"
-                    android:src="@drawable/ic_file_download_black_24dp"
-                    android:textColor="#FFFFFF"
-                    android:textSize="32sp" />
-            </RelativeLayout>
-
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/announctment_caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/announcement_attach_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="fdasffff.doc"/>
+                android:text="BIBIBIBI"
+                android:textSize="25sp" />
 
-                <TextView
-                    android:id="@+id/announcement_attach_fileSize"
+            <TextView
+                android:id="@+id/announctment_courseName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="資料結構"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/announctment_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="2023/9/1"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/announctment_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="fdasffff"
+                android:textSize="20sp" />
+            <LinearLayout
+                android:id="@+id/announcement_attach"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:gravity="center_vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/img"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:contentDescription="button"/>
+
+                    <ImageView
+                        android:id="@+id/announcement_attach_url"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_alignBottom="@id/img"
+                        android:layout_alignTop="@id/img"
+                        android:gravity="center"
+                        android:src="@drawable/ic_file_download_black_24dp"
+                        android:textColor="#FFFFFF"
+                        android:contentDescription="button"
+                        android:textSize="32sp" />
+                </RelativeLayout>
+
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="20MB"/>
+                    android:layout_margin="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/announcement_attach_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="fdasffff.doc"/>
+
+                    <TextView
+                        android:id="@+id/announcement_attach_fileSize"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="20MB"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</RelativeLayout>
