@@ -8,10 +8,11 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import com.example.codytseng.nctue4.utility.OldE3Connect
+import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -19,27 +20,43 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var currentFragment = 0
+    lateinit var oldE3Service: OldE3Connect
+
+    override fun onStop() {
+        super.onStop()
+        oldE3Service.cancelPendingRequests()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setSupportActionBar(toolbar)
         val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-        updateNavDrawerData()
-        switchFragment(0)
+        updateNavDrawerData {
+            switchFragment(-1)
+        }
+
     }
 
-    private fun updateNavDrawerData() {
+    private fun updateNavDrawerData(completionHandler: () -> Unit) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val studentName = prefs.getString("studentName", "Banana")
-        val studentEmail = prefs.getString("studentEmail", "Banana@guava.com")
-        nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_name).text = studentName
-        nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_email).text = studentEmail
+        val studentId = prefs.getString("studentId", "")
+        val studentPassword = prefs.getString("studentPassword", "")
+        oldE3Service = OldE3Connect(studentId, studentPassword)
+        oldE3Service.getLoginTicket { status, response ->
+            when (status) {
+                OldE3Interface.Status.SUCCESS -> {
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_name).text = response!!.first
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_email).text = response.second
+                }
+            }
+            completionHandler()
+        }
     }
 
     override fun onBackPressed() {
@@ -57,9 +74,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
@@ -70,14 +84,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                updateNavDrawerData()
-                switchFragment(currentFragment)
+                updateNavDrawerData {
+                    switchFragment(currentFragment)
+                }
             }
         }
     }
 
     private fun switchFragment(id: Int) {
-
         val fragment = when (id) {
             R.id.nav_home -> {
                 currentFragment = id
@@ -110,7 +124,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         switchFragment(item.itemId)
         drawer_layout.closeDrawer(GravityCompat.START)
         return true

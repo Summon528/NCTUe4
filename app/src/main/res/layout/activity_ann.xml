@@ -12,26 +12,19 @@
             android:id="@+id/loading_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:indeterminateTint="#000000"
-            android:indeterminateTintMode="src_atop" />
-
-        <!--<us.feras.mdv.MarkdownView-->
-        <!--android:id="@+id/announctment_content"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textSize="20sp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:clickable="true"/>-->
+            android:indeterminateTintMode="src_atop"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/ann_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/ann_content">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,6 +62,7 @@
                 android:layout_marginTop="10dp"
                 android:text="fdasffff"
                 android:textSize="20sp" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/announcement_attach"
                 android:layout_width="match_parent"

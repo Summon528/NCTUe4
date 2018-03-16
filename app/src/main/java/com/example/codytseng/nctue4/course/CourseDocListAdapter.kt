@@ -8,38 +8,31 @@ import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.DocGroupItem
 import kotlinx.android.synthetic.main.course_doc_group_list_card.view.*
 
-class CourseDocListAdapter(val myDataset: ArrayList<DocGroupItem>, val itemClickListener: (DocGroupItem)->Unit) :
+class CourseDocListAdapter(private val DataSet: ArrayList<DocGroupItem>,
+                           private val itemClickListener: (DocGroupItem) -> Unit) :
         RecyclerView.Adapter<CourseDocListAdapter.ViewHolder>() {
 
-    class ViewHolder(val view: View, val itemClickListener: (DocGroupItem) -> Unit) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(private  val view: View,
+                     private val itemClickListener: (DocGroupItem) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bind(doc: DocGroupItem) {
             view.doc_group_display_name.text = doc.displayName
-            view.course_doc_group_list_item.setOnClickListener{
+            view.course_doc_group_list_item.setOnClickListener {
                 itemClickListener(doc)
             }
         }
     }
 
-
-
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): CourseDocListAdapter.ViewHolder {
-        // create a new view
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.course_doc_group_list_card, parent, false)
-        // set the view's size, margins, paddings and layout parameters
         return ViewHolder(view, itemClickListener)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.bind(myDataset[position])
+        holder.bind(DataSet[position])
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = myDataset.size
+    override fun getItemCount() = DataSet.size
 }
