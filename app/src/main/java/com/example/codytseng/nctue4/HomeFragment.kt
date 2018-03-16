@@ -10,19 +10,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.codytseng.nctue4.model.AnnItem
+import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
-import kotlinx.android.synthetic.main.home_fragment.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
-    private lateinit var oldE3Service : OldE3Connect
+    private lateinit var oldE3Service: OldE3Connect
+    private var dataStatus = DataStatus.INIT
 
     override fun onStop() {
         super.onStop()
         oldE3Service.cancelPendingRequests()
+        if (dataStatus == DataStatus.INIT) dataStatus = DataStatus.STOPPED
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (dataStatus == DataStatus.STOPPED) getData()
     }
 
     override fun onRefresh() {
@@ -32,23 +39,25 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.home_fragment, null)
+        return inflater?.inflate(R.layout.fragment_home, null)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        oldE3Service = (activity as MainActivity).oldE3Service
-        announcement_refreshLayout.setOnRefreshListener(this)
         getData()
     }
 
     private fun getData() {
+        Log.d("LOD", "data")
+        oldE3Service = (activity as MainActivity).oldE3Service
+        announcement_refreshLayout.setOnRefreshListener(this)
         oldE3Service.getAnnouncementListLogin { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
                     updateList(response!!)
                 }
             }
+            dataStatus = DataStatus.FINISHED
         }
     }
 
@@ -63,6 +72,8 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             intent.putExtra("courseName", it.courseName)
             startActivity(intent)
         }
+        progress_bar.visibility = View.GONE
+        announcement_refreshLayout.visibility = View.VISIBLE
     }
 }
 

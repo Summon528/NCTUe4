@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.DocGroupItem
+import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.fragment_course_doc_list.*
@@ -16,10 +17,17 @@ import kotlinx.android.synthetic.main.fragment_course_doc_list.*
 class CourseDocListFragment : Fragment() {
 
     private lateinit var oldE3Service: OldE3Connect
+    private var dataStatus = DataStatus.INIT
 
     override fun onStop() {
         super.onStop()
         oldE3Service.cancelPendingRequests()
+        if (dataStatus == DataStatus.INIT) dataStatus = DataStatus.STOPPED
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (dataStatus == DataStatus.STOPPED) getData()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -27,6 +35,11 @@ class CourseDocListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        getData()
+    }
+
+    private fun getData() {
         oldE3Service = (activity as CourseActivity).oldE3Service
         val docType = arguments.getString("docType")
         val courseId = arguments.getString("courseId")
@@ -36,8 +49,8 @@ class CourseDocListFragment : Fragment() {
                     updateList(response!!)
                 }
             }
+            dataStatus = DataStatus.FINISHED
         }
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun updateList(docGroupItems: ArrayList<DocGroupItem>) {
@@ -50,5 +63,7 @@ class CourseDocListFragment : Fragment() {
             dialog.arguments = bundle
             dialog.show(fragmentManager, "TAG")
         }
+        course_doc_list_recycler_view.visibility = View.VISIBLE
+        progress_bar.visibility = View.GONE
     }
 }

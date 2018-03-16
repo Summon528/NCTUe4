@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import com.example.codytseng.nctue4.R
 import kotlinx.android.synthetic.main.fragment_course_doc.*
 
-
 class CourseDocFragment : Fragment() {
 
 
@@ -20,6 +19,10 @@ class CourseDocFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getData()
+    }
+
+    private fun getData() {
         val bundle0 = Bundle()
         val bundle1 = Bundle()
         val courseId = arguments.getString("courseId")
