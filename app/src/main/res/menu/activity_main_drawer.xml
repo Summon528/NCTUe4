@@ -31,6 +31,7 @@
             android:title="@string/switch_account" />
         <item
             android:id="@+id/nav_about"
+            android:icon="@drawable/ic_license"
             android:title="@string/license" />
     </group>
 

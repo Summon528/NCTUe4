@@ -1,17 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/course_doc_group_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
 
-    <TextView
-        android:id="@+id/doc_group_display_name"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp"
-        android:textSize="20sp" />
+        android:layout_weight="1.5"
+        android:paddingRight="16dp"
+        android:gravity="right">
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/square"
+            android:tint="#3d3d3d" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="8.5"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/doc_group_display_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="檔案的名字"
+            android:textColor="#3d3d3d"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+
 </LinearLayout>
