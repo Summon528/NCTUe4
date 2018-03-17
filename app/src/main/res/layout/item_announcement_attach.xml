@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/img"
+            android:id="@+id/announcement_attach_button"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:contentDescription="button"/>

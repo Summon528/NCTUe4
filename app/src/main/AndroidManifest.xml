@@ -3,7 +3,8 @@
     package="com.example.codytseng.nctue4">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".utility.VolleyHandler"
         android:allowBackup="true"
@@ -39,7 +40,12 @@
         </activity>
         <activity
             android:name=".AnnActivity"
-            android:label="@string/title_activity_ann" />
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_ann">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.codytseng.nctue4.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

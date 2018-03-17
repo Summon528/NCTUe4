@@ -2,7 +2,6 @@ package com.example.codytseng.nctue4
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
@@ -11,104 +10,70 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.codytseng.nctue4.model.AnnouncementItem
+import com.example.codytseng.nctue4.model.AnnItem
+import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
-import kotlinx.android.synthetic.main.home_fragment.*
-import org.json.JSONArray
-import org.json.JSONObject
+import kotlinx.android.synthetic.main.fragment_home.*
 
-/**
- * Created by CodyTseng on 3/12/2018.
- */
 
-class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener  {
-    override fun onRefresh() {
-        announcement_refreshLayout.isRefreshing = false
-        announcement_login_recycler_view.adapter.notifyDataSetChanged()
+class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+    private lateinit var oldE3Service: OldE3Connect
+    private var dataStatus = DataStatus.INIT
+
+    override fun onStop() {
+        super.onStop()
+        oldE3Service.cancelPendingRequests()
+        if (dataStatus == DataStatus.INIT) dataStatus = DataStatus.STOPPED
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.home_fragment, null)
+    override fun onStart() {
+        super.onStart()
+        if (dataStatus == DataStatus.STOPPED) getData()
+    }
+
+    override fun onRefresh() {
+        announcement_refreshLayout.isRefreshing = false
+        ann_login_recycler_view.adapter.notifyDataSetChanged()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return inflater?.inflate(R.layout.fragment_home, null)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        announcement_refreshLayout.setOnRefreshListener(this)
         getData()
     }
-    private fun getData(){
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val studentId = prefs.getString("studentId", "")
-        val studentPassword = prefs.getString("studentPassword", "")
-        val service = OldE3Connect()
-        service.getLoginTicket(studentId, studentPassword) { status, response ->
+
+    private fun getData() {
+        Log.d("LOD", "data")
+        oldE3Service = (activity as MainActivity).oldE3Service
+        announcement_refreshLayout.setOnRefreshListener(this)
+        oldE3Service.getAnnouncementListLogin { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
-                    service.getCourseList { status, response ->
-                        when (status) {
-                            OldE3Interface.Status.SUCCESS -> {
-                                getAnnouncement(response!!)
-                            }
-                        }
-                    }
+                    updateList(response!!)
                 }
             }
+            dataStatus = DataStatus.FINISHED
         }
-
     }
 
-    private fun getAnnouncement(courseList: JSONArray) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val studentId = prefs.getString("studentId", "")
-        val studentPassword = prefs.getString("studentPassword", "")
-        val service = OldE3Connect()
-        service.getLoginTicket(studentId, studentPassword) { status, response ->
-            when (status) {
-                OldE3Interface.Status.SUCCESS -> {
-                    service.getAnnouncementList_Login { status, response ->
-                        when (status) {
-                            OldE3Interface.Status.SUCCESS -> {
-                                updateList(response!!, courseList)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-    private fun updateList(data: JSONArray, courseList: JSONArray) {
-        val announcementItems = ArrayList<AnnouncementItem>()
-        var courseDetail = HashMap<String, String>()
-        for (i in 0 until courseList.length()) {
-            val tmp = courseList.get(i) as JSONObject
-            courseDetail.put(tmp.getString("CourseId"), tmp.getString("CourseName"))
-
-        }
-
-        for (i in 0 until data.length()) {
-            val tmp = data.get(i) as JSONObject
-            announcementItems.add(AnnouncementItem(
-                    tmp.getInt("BulType"),
-                    tmp.getString("BulletinId"),
-                    courseDetail.get(tmp.getString("CourseId"))!!,
-                    tmp.getString("Caption"),
-                    tmp.getString("Content"),
-                    tmp.getString("BeginDate"),
-                    tmp.getString("EndDate")
-                )
-            )
-        }
-        Log.d("TEST",announcementItems.toString())
-        announcement_login_recycler_view.layoutManager = LinearLayoutManager(context)
-        announcement_login_recycler_view.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-        announcement_login_recycler_view.adapter= HomeAnnAdapter(announcementItems){
+    private fun updateList(annItems: ArrayList<AnnItem>) {
+        ann_login_recycler_view?.layoutManager = LinearLayoutManager(context)
+        ann_login_recycler_view?.addItemDecoration(DividerItemDecoration(context,
+                LinearLayoutManager.VERTICAL))
+        ann_login_recycler_view?.adapter = HomeAnnAdapter(annItems) {
             val intent = Intent()
             intent.setClass(activity, AnnActivity::class.java)
-            intent.putExtra("annId", it.mBulletinId)
-            intent.putExtra("courseName", it.mCourseName)
+            intent.putExtra("annId", it.bulletinId)
+            intent.putExtra("courseName", it.courseName)
             startActivity(intent)
         }
+        progress_bar.visibility = View.GONE
+        announcement_refreshLayout.visibility = View.VISIBLE
     }
 }
+
