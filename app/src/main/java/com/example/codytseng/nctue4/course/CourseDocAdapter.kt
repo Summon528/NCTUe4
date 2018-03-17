@@ -5,20 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.codytseng.nctue4.R
-import com.example.codytseng.nctue4.model.DocItem
+import com.example.codytseng.nctue4.model.AttachItem
 import com.example.codytseng.nctue4.utility.FileNameToIcon
 import kotlinx.android.synthetic.main.item_course_doc.view.*
 
-class CourseDocAdapter(private val dataSet: ArrayList<DocItem>,
-                       private val itemClickListener: (DocItem) -> Unit) :
+class CourseDocAdapter(private val dataSet: ArrayList<AttachItem>,
+                       private val itemClickListener: (AttachItem) -> Unit) :
         RecyclerView.Adapter<CourseDocAdapter.ViewHolder>() {
-    class ViewHolder(val view: View, private val itemClickListener: (DocItem) -> Unit) :
+    class ViewHolder(val view: View, private val itemClickListener: (AttachItem) -> Unit) :
             RecyclerView.ViewHolder(view) {
-        fun bind(doc: DocItem) {
-            view.doc_display_name.text = doc.displayName
-            view.doc_file_icon.setImageResource(FileNameToIcon().getId(doc.displayName))
+        fun bind(attach: AttachItem) {
+            view.doc_display_name.text = attach.name
+            view.doc_file_icon.setImageResource(FileNameToIcon().getId(attach.name))
             view.course_doc_card_layout.setOnClickListener {
-                itemClickListener(doc)
+                itemClickListener(attach)
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.codytseng.nctue4.utility
 
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -112,6 +113,7 @@ class OldE3Connect(private var studentId: String = "",
                                     it.getString("Content"),
                                     it.getString("BeginDate"),
                                     it.getString("EndDate"),
+                                    it.getString("CourseId"),
                                     ArrayList()
                             ))
                         }
@@ -144,6 +146,7 @@ class OldE3Connect(private var studentId: String = "",
                                     htmlCleaner(it.getString("Content")),
                                     it.getString("BeginDate"),
                                     it.getString("EndDate"),
+                                    it.getString("CourseId"),
                                     ArrayList()
                             ))
                         }
@@ -180,13 +183,17 @@ class OldE3Connect(private var studentId: String = "",
         }
     }
 
-    override fun getAnnouncementDetail(bulletinId: String,
+    override fun getAnnouncementDetail(bulletinId: String, from: Int?, courseId: String,
                                        completionHandler: (status: OldE3Interface.Status,
                                                            response: AnnItem?) -> Unit) {
-        post("/GetAnnouncementList_LoginByCountWithAttach", hashMapOf(
+        val path = if (from == OldE3AnnFrom.HOME) "/GetAnnouncementList_LoginByCountWithAttach"
+        else "/GetAnnouncementListWithAttach"
+        post(path, hashMapOf(
                 "loginTicket" to loginTicket,
                 "studentId" to accountId,
-                "ShowCount" to "100"
+                "ShowCount" to "100",
+                "courseId" to courseId,
+                "bulType" to "1"
         )) { status, response ->
             if (status == OldE3Interface.Status.SUCCESS) {
                 val data = response!!.getJSONObject("ArrayOfBulletinData").
@@ -201,9 +208,9 @@ class OldE3Connect(private var studentId: String = "",
                                 if ((attachNames.get(0) as JSONObject).getString("string") != "") {
                                     (0 until attachNames.length()).map {
                                         AttachItem(
-                                                (attachNames.get(it) as JSONObject).getString("string"),
-                                                (attachFileSizes.get(it) as JSONObject).getString("string"),
-                                                (attachUrls.get(it) as JSONObject).getString("string"))
+                                                (attachNames.get(it) as JSONObject).getString("string").dropLast(1),
+                                                (attachFileSizes.get(it) as JSONObject).getString("string").dropLast(1),
+                                                (attachUrls.get(it) as JSONObject).getString("string").dropLast(1))
                                     }.forEach {
                                         attachItemList.add(it)
                                     }
@@ -216,6 +223,7 @@ class OldE3Connect(private var studentId: String = "",
                                         htmlCleaner(it.getString("Content")),
                                         it.getString("BeginDate"),
                                         it.getString("EndDate"),
+                                        it.getString("CourseId"),
                                         attachItemList
                                 )
                                 completionHandler(status, annItem)
@@ -229,7 +237,7 @@ class OldE3Connect(private var studentId: String = "",
 
     override fun getAttachFileList(documentId: String, courseId: String,
                                    completionHandler: (status: OldE3Interface.Status,
-                                                       response: ArrayList<DocItem>?) -> Unit) {
+                                                       response: ArrayList<AttachItem>?) -> Unit) {
         post("/GetAttachFileList", hashMapOf(
                 "loginTicket" to loginTicket,
                 "resId" to documentId,
@@ -239,14 +247,15 @@ class OldE3Connect(private var studentId: String = "",
             if (status == OldE3Interface.Status.SUCCESS) {
                 val data = response!!.getJSONObject("ArrayOfAttachFileInfoData")
                         .forceGetJsonArray("AttachFileInfoData")
-                val docItems = ArrayList<DocItem>()
+                val attachItems = ArrayList<AttachItem>()
                 (0 until data.length()).map { data.get(it) as JSONObject }
                         .forEach {
-                            docItems.add(DocItem(
+                            attachItems.add(AttachItem(
                                     it.getString("DisplayFileName"),
+                                    it.getString("FileSize"),
                                     it.getString("RealityFileName")))
                         }
-                completionHandler(status, docItems)
+                completionHandler(status, attachItems)
             } else {
                 completionHandler(status, null)
             }

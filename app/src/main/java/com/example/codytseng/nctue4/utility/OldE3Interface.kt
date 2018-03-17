@@ -1,9 +1,6 @@
 package com.example.codytseng.nctue4.utility
 
-import com.example.codytseng.nctue4.model.AnnItem
-import com.example.codytseng.nctue4.model.CourseItem
-import com.example.codytseng.nctue4.model.DocGroupItem
-import com.example.codytseng.nctue4.model.DocItem
+import com.example.codytseng.nctue4.model.*
 
 interface OldE3Interface {
     enum class Status {
@@ -16,7 +13,7 @@ interface OldE3Interface {
     fun getCourseList(completionHandler: (status: OldE3Interface.Status,
                                           response: ArrayList<CourseItem>?) -> Unit)
 
-    fun getAnnouncementDetail(bulletinId: String,
+    fun getAnnouncementDetail(bulletinId: String, from: Int?, courseId: String,
                               completionHandler: (status: OldE3Interface.Status,
                                                   response: AnnItem?) -> Unit)
 
@@ -33,7 +30,7 @@ interface OldE3Interface {
 
     fun getAttachFileList(documentId: String, courseId: String,
                           completionHandler: (status: Status,
-                                              response: ArrayList<DocItem>?) -> Unit)
+                                              response: ArrayList<AttachItem>?) -> Unit)
 
     fun cancelPendingRequests()
 

@@ -7,4 +7,6 @@ class AnnItem(val bulType: Int,
               val content: String,
               val beginDate: String,
               val endDate: String,
-              val attachItems: ArrayList<AttachItem>)
+              val courseId: String,
+              val attachItems: ArrayList<AttachItem>
+)

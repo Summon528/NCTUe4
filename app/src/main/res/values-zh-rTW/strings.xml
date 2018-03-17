@@ -45,9 +45,9 @@
     <string name="download_start">開始下載&#8230;</string>
     <string name="download">下載</string>
     <string name="empty_request">這裡空空如也</string>
-    <string name="license">關於</string>
-    <string name="about_text">這個程式由三隻猴子共同努力敲出來的</string>
-    <string name="font_awesome_license">本程式使用 <a href="https://fontawesome.com/license">Font Awesome</a> 圖示.</string>
+
+    <string name="license">授權訊息</string>
+    <string name="font_awesome_license">本程式使用 <a href="https://fontawesome.com/license">Font Awesome</a> 圖示</string>
     <string name="flat_icon_license">這個圖示是由<a href="https://www.flaticon.com/authors/freepik"> Freepik from Flaticon.</a>製作</string>
 
 </resources>

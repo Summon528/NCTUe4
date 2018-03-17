@@ -94,13 +94,14 @@ class AnnActivity : AppCompatActivity() {
         val loginTicket = bundle.getString("loginTicket")
         val accountId = bundle.getString("accountId")
         val annId = bundle.getString("annId")
-
+        val from = bundle.getInt("from")
+        val courseId = bundle.getString("courseId")
         error_request?.visibility = View.GONE
         progress_bar.visibility = View.VISIBLE
 
         oldE3Service = OldE3Connect(loginTicket = loginTicket, accountId = accountId)
-        oldE3Service.getAnnouncementDetail(annId) { status2, response ->
-            when (status2) {
+        oldE3Service.getAnnouncementDetail(annId, from, courseId) { status, response ->
+            when (status) {
                 OldE3Interface.Status.SUCCESS -> {
                     ann_caption.text = response!!.caption
                     ann_courseName.text = response.courseName
@@ -116,8 +117,6 @@ class AnnActivity : AppCompatActivity() {
                             }
                     announcement_attach.layoutManager = LinearLayoutManager(this)
                     announcement_attach.adapter = AnnAttachmentAdapter(response.attachItems) {
-                        uri = it.url.dropLast(1)
-                        fileName = it.name.dropLast(1)
                         downloadFile()
                     }
                     ann_container.visibility = View.VISIBLE

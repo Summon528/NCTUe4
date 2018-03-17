@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.codytseng.nctue4.model.AnnItem
 import com.example.codytseng.nctue4.utility.DataStatus
+import com.example.codytseng.nctue4.utility.OldE3AnnFrom
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.status_empty.*
@@ -86,6 +87,8 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 intent.putExtra("courseName", it.courseName)
                 intent.putExtra("loginTicket", oldE3Service.getCredential().first)
                 intent.putExtra("accountId", oldE3Service.getCredential().second)
+                intent.putExtra("courseId", it.courseId)
+                intent.putExtra("from", OldE3AnnFrom.HOME)
                 startActivity(intent)
             }
             announcement_refreshLayout.visibility = View.VISIBLE

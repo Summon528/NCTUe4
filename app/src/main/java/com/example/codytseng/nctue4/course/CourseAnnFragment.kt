@@ -14,6 +14,7 @@ import com.example.codytseng.nctue4.AnnActivity
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.AnnItem
 import com.example.codytseng.nctue4.utility.DataStatus
+import com.example.codytseng.nctue4.utility.OldE3AnnFrom
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.status_empty.*
@@ -90,8 +91,10 @@ class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 intent.setClass(activity, AnnActivity::class.java)
                 intent.putExtra("annId", it.bulletinId)
                 intent.putExtra("courseName", it.courseName)
+                intent.putExtra("courseId", it.courseId)
                 intent.putExtra("loginTicket", oldE3Service.getCredential().first)
                 intent.putExtra("accountId", oldE3Service.getCredential().second)
+                intent.putExtra("from", OldE3AnnFrom.COURSE)
                 startActivity(intent)
             }
             announcement_refreshLayout.visibility = View.VISIBLE

@@ -7,3 +7,10 @@ class DataStatus{
         val STOPPED = 2
     }
 }
+
+class OldE3AnnFrom{
+    companion object {
+        val HOME = 0
+        val COURSE = 1
+    }
+}

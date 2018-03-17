@@ -17,7 +17,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import com.example.codytseng.nctue4.R
-import com.example.codytseng.nctue4.model.DocItem
+import com.example.codytseng.nctue4.model.AttachItem
 import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
@@ -71,11 +71,11 @@ class CourseDocDialog : DialogFragment() {
         })
     }
 
-    private fun updateList(docItems: ArrayList<DocItem>) {
+    private fun updateList(docItems: ArrayList<AttachItem>) {
         course_doc_dialog_recycler_view?.layoutManager = LinearLayoutManager(context)
         course_doc_dialog_recycler_view?.adapter = CourseDocAdapter(docItems) {
-            uri = it.docPath
-            fileName = it.displayName
+            uri = it.url
+            fileName = it.name
             downloadFile()
         }
         progress_bar.visibility = View.GONE
