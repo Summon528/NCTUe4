@@ -8,5 +8,7 @@ import android.util.Log
 fun HtmlCleaner(body: String): String {
     Log.d("TEXT", body)
     var result = body.replace("<!--[\\S\\s]*?-->".toRegex(), "")
+    result = result.replace("[0-9a-zA-Z[\\.]#]+ [\\{][\\s\\S]*?[\\}]".toRegex(), "")
+    result = result.replace("(?<=(<([a-z])+ ))(.*?)(?=(?=>))".toRegex(), "")
     return result
 }
