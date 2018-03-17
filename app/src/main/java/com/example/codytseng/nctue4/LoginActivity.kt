@@ -38,6 +38,8 @@ class LoginActivity : AppCompatActivity() {
         student_id.setText(prefs.getString("studentId", ""))
         student_password.setText(prefs.getString("studentPassword", ""))
         login_button.setOnClickListener {
+            student_id.isEnabled = false
+            student_password.isEnabled = false
             login_progressbar.visibility = View.VISIBLE
             val studentId = student_id.text.toString()
             val studentPassword = student_password.text.toString()
@@ -68,6 +70,8 @@ class LoginActivity : AppCompatActivity() {
                         login_progressbar.visibility = View.GONE
                     }
                 }
+                student_id.isEnabled = true
+                student_password.isEnabled = true
             }
         }
 

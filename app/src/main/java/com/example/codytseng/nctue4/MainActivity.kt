@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.provider.ContactsContract
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -50,8 +49,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setSupportActionBar(toolbar)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close)
@@ -116,6 +115,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val prefs = PreferenceManager.getDefaultSharedPreferences(this)
                 studentId = prefs.getString("studentId", "")
                 studentPassword = prefs.getString("studentPassword", "")
+                getData { switchFragment(currentFragment) }
             }
         }
     }
@@ -141,6 +141,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_switch_account -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivityForResult(intent, 1)
+                null
+            }
+            R.id.nav_about -> {
+                LicenseDialog().show(supportFragmentManager,"TAG")
                 null
             }
             else -> {

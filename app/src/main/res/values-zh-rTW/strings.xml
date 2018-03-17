@@ -2,8 +2,8 @@
     <string name="app_name">NCTU e4</string>
     <string name="action_settings">設定</string>
 
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">關閉側邊選單</string>
+    <string name="navigation_drawer_open">開啟側邊選單</string>
 
     <!--Nav Bar-->
     <string name="home">首頁</string>
@@ -13,10 +13,9 @@
     <string name="switch_account">帳號管理</string>
     <string name="settings">設定</string>
 
-    <string name="constructing">本頁面還沒做好</string>
+    <string name="constructing">這個頁面還在吸收日月精華</string>
 
     <!--Login Activity-->
-    <string name="next_step">下一步</string>
     <string name="student_id">學號</string>
     <string name="student_password">密碼</string>
     <string name="login_hint">請輸入學號以及 e3 密碼</string>
@@ -41,7 +40,14 @@
 
     <!--Title Activity-->
     <string name="title_activity_ann">公告</string>
+    <string name="try_again">再試一次</string>
+    <string name="not_logged_in">尚未登入</string>
+    <string name="download_start">開始下載&#8230;</string>
+    <string name="download">下載</string>
+    <string name="empty_request">這裡空空如也</string>
+    <string name="license">關於</string>
+    <string name="about_text">這個程式由三隻猴子共同努力敲出來的</string>
+    <string name="font_awesome_license">本程式使用 <a href="https://fontawesome.com/license">Font Awesome</a> 圖示.</string>
+    <string name="flat_icon_license">這個圖示是由<a href="https://www.flaticon.com/authors/freepik"> Freepik from Flaticon.</a>製作</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

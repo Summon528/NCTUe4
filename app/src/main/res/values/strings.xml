@@ -2,21 +2,20 @@
     <string name="app_name">NCTU e4</string>
     <string name="action_settings">Settings</string>
 
+    <!--Main Activity-->
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
 
-    <!--Nav Bar-->
+    <!--Nav Drawer-->
     <string name="home">Home</string>
     <string name="starred_courses">Starred Courses</string>
     <string name="old_e3">Old e3</string>
     <string name="new_e3">New e3</string>
     <string name="switch_account">Switch Account</string>
     <string name="settings">Settings</string>
-
-    <string name="constructing">This place is still under construction.</string>
+    <string name="license">License</string>
 
     <!--Login Activity-->
-    <string name="next_step">Next</string>
     <string name="student_id">Student ID</string>
     <string name="student_password">Password</string>
     <string name="login_hint">Please enter ID and e3 password.</string>
@@ -26,9 +25,12 @@
     <string name="login_success">Login Success</string>
     <string name="logout_success">Logout Success</string>
 
+    <!--Status-->
     <string name="generic_error">Error</string>
     <string name="try_again">Try Again</string>
     <string name="not_logged_in">Not Logged In</string>
+    <string name="constructing">This place is still under construction.</string>
+    <string name="empty_request">There\'s nothing here</string>
 
     <!--Course Activity-->
     <string name="title_activity_course">CourseActivity</string>
@@ -39,14 +41,14 @@
     <string name="course_nav_other">Others</string>
     <string name="course_doc_type_handout">Handout</string>
     <string name="course_doc_type_reference">Reference</string>
-    <string name="download_start">Start downloading...</string>
-
-    <!--Title Activity-->
-    <string name="title_activity_ann">Anouncement</string>
-
+    <string name="download_start">Start downloading&#8230;</string>
     <string name="download">Download</string>
 
-    <string name="empty_request">There\'s nothing here</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Ann Activity-->
+    <string name="title_activity_ann">Announcement</string>
+
+    <!--License-->
+    <string name="font_awesome_license">This app uses <a href="https://fontawesome.com/license">Font Awesome</a> icons.</string>
+    <string name="flat_icon_license">This icon is made by<a href="https://www.flaticon.com/authors/freepik"> Freepik from Flaticon.</a></string>
+
 </resources>
