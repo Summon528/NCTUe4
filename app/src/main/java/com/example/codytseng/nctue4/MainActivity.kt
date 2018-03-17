@@ -19,8 +19,13 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var currentFragment = 0
+    private var currentFragment = -1
     lateinit var oldE3Service: OldE3Connect
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putInt("currentFragment", currentFragment)
+    }
 
     override fun onStop() {
         super.onStop()
@@ -38,7 +43,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
         updateNavDrawerData {
-            switchFragment(-1)
+            switchFragment(
+                    if (savedInstanceState?.getInt("currentFragment") != null)
+                        savedInstanceState.getInt("currentFragment")
+                    else -1
+            )
         }
 
     }
@@ -71,13 +80,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

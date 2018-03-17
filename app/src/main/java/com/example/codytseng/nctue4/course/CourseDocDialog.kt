@@ -20,7 +20,7 @@ import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.DocItem
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
-import kotlinx.android.synthetic.main.fragment_course_doc_dialog.*
+import kotlinx.android.synthetic.main.dialog_course_doc.*
 
 
 class CourseDocDialog : DialogFragment() {
@@ -29,7 +29,7 @@ class CourseDocDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_course_doc_dialog, container, false)
+        return inflater!!.inflate(R.layout.dialog_course_doc, container, false)
     }
 
     override fun onStop() {
@@ -60,7 +60,6 @@ class CourseDocDialog : DialogFragment() {
             uri = it.docPath
             fileName = it.displayName
             downloadFile()
-            dismiss()
         }
         progress_bar.visibility = View.GONE
 
@@ -78,8 +77,9 @@ class CourseDocDialog : DialogFragment() {
             val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/$fileName")
             request.setVisibleInDownloadsUi(true)
-            Toast.makeText(context, R.string.download_start, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.download_start, Toast.LENGTH_SHORT).show()
             manager.enqueue(request)
+            dismiss()
         }
 
     }

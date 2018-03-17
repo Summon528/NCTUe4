@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Html
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.example.codytseng.nctue4.utility.DataStatus
@@ -52,13 +53,24 @@ class AnnActivity : AppCompatActivity() {
             val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/$fileName")
             request.setVisibleInDownloadsUi(true)
-            Toast.makeText(this, R.string.download_start, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.download_start, Toast.LENGTH_SHORT).show()
             manager.enqueue(request)
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             0 -> {
                 if ((grantResults.isNotEmpty() &&
@@ -76,7 +88,7 @@ class AnnActivity : AppCompatActivity() {
         getData()
     }
 
-    private fun getData(){
+    private fun getData() {
         val bundle = intent.extras
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val studentId = prefs.getString("studentId", "")
@@ -90,10 +102,10 @@ class AnnActivity : AppCompatActivity() {
                     oldE3Service.getAnnouncementDetail(annId) { status2, response ->
                         when (status2) {
                             OldE3Interface.Status.SUCCESS -> {
-                                announctment_caption.text = response!!.caption
-                                announctment_courseName.text = response.courseName
-                                announctment_date.text = response.beginDate
-                                announctment_content.text =
+                                ann_caption.text = response!!.caption
+                                ann_courseName.text = response.courseName
+                                ann_date.text = response.beginDate
+                                ann_content.text =
                                         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
                                             Html.fromHtml(htmlCleaner(response.content))
                                                     .replace("\\n\\n+".toRegex(), "\n\n")
@@ -109,7 +121,7 @@ class AnnActivity : AppCompatActivity() {
                                     downloadFile()
                                 }
                                 loading_spinner.visibility = View.GONE
-                                ann_content.visibility = View.VISIBLE
+                                ann_container.visibility = View.VISIBLE
                             }
                         }
                         dataStatus = DataStatus.FINISHED

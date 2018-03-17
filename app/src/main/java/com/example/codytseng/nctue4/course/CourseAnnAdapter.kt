@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.AnnItem
 import com.example.codytseng.nctue4.utility.htmlCleaner
-import kotlinx.android.synthetic.main.course_announcement_card.view.*
+import kotlinx.android.synthetic.main.item_course_announcement.view.*
 
 class CourseAnnAdapter(private val dataSet: ArrayList<AnnItem>,
                        private val itemClickListener: (AnnItem) -> Unit) :
@@ -35,7 +35,7 @@ class CourseAnnAdapter(private val dataSet: ArrayList<AnnItem>,
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.course_announcement_card, parent, false)
+                .inflate(R.layout.item_course_announcement, parent, false)
         return ViewHolder(view, itemClickListener)
     }
 

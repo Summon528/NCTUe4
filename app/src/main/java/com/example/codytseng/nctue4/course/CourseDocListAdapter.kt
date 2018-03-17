@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.DocGroupItem
-import kotlinx.android.synthetic.main.course_doc_group_list_card.view.*
+import kotlinx.android.synthetic.main.item_course_doc_group_list.view.*
 
-class CourseDocListAdapter(private val DataSet: ArrayList<DocGroupItem>,
+class CourseDocListAdapter(private val dataSet: ArrayList<DocGroupItem>,
                            private val itemClickListener: (DocGroupItem) -> Unit) :
         RecyclerView.Adapter<CourseDocListAdapter.ViewHolder>() {
 
@@ -25,14 +25,14 @@ class CourseDocListAdapter(private val DataSet: ArrayList<DocGroupItem>,
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): CourseDocListAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.course_doc_group_list_card, parent, false)
+                .inflate(R.layout.item_course_doc_group_list, parent, false)
         return ViewHolder(view, itemClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(DataSet[position])
+        holder.bind(dataSet[position])
 
     }
 
-    override fun getItemCount() = DataSet.size
+    override fun getItemCount() = dataSet.size
 }

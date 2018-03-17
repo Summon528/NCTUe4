@@ -14,13 +14,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:indeterminateTintMode="src_atop"
             android:textSize="20sp" />
 
     </LinearLayout>
 
     <ScrollView
-        android:id="@+id/ann_content"
+        android:id="@+id/ann_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
@@ -32,35 +31,31 @@
             android:padding="20dp">
 
             <TextView
-                android:id="@+id/announctment_caption"
+                android:id="@+id/ann_caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BIBIBIBI"
                 android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/announctment_courseName"
+                android:id="@+id/ann_courseName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="資料結構"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/announctment_date"
+                android:id="@+id/ann_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="2023/9/1"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/announctment_content"
+                android:id="@+id/ann_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:autoLink="web"
-                android:text="fdasffff"
+                android:autoLink="all"
                 android:textSize="20sp" />
 
             <android.support.v7.widget.RecyclerView
