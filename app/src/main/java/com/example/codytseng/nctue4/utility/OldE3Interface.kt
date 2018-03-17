@@ -36,4 +36,6 @@ interface OldE3Interface {
                                               response: ArrayList<DocItem>?) -> Unit)
 
     fun cancelPendingRequests()
+
+    fun getCredential() : Pair<String,String>
 }

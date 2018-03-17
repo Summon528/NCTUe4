@@ -18,6 +18,7 @@ import android.view.Window
 import android.widget.Toast
 import com.example.codytseng.nctue4.R
 import com.example.codytseng.nctue4.model.DocItem
+import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.dialog_course_doc.*
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.dialog_course_doc.*
 class CourseDocDialog : DialogFragment() {
 
     private lateinit var oldE3Service: OldE3Connect
+    private var dataStatus = DataStatus.INIT
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,11 +37,25 @@ class CourseDocDialog : DialogFragment() {
     override fun onStop() {
         super.onStop()
         oldE3Service.cancelPendingRequests()
+        if (dataStatus == DataStatus.INIT) dataStatus = DataStatus.STOPPED
     }
+
+    override fun onStart() {
+        super.onStart()
+        if (dataStatus == DataStatus.STOPPED) getData()
+    }
+
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.window.requestFeature(Window.FEATURE_NO_TITLE)
+        getData()
+    }
+
+    private lateinit var uri: String
+    private lateinit var fileName: String
+
+    private fun getData() {
         oldE3Service = (activity as CourseActivity).oldE3Service
         oldE3Service.getAttachFileList(arguments.getString("documentId"),
                 arguments.getString("courseId"), { status, response ->
@@ -47,12 +63,13 @@ class CourseDocDialog : DialogFragment() {
                 OldE3Interface.Status.SUCCESS -> {
                     updateList(response!!)
                 }
+                else -> {
+                    Toast.makeText(context, getString(R.string.generic_error), Toast.LENGTH_SHORT)
+                    dismiss()
+                }
             }
         })
     }
-
-    private lateinit var uri: String
-    private lateinit var fileName: String
 
     private fun updateList(docItems: ArrayList<DocItem>) {
         course_doc_dialog_recycler_view?.layoutManager = LinearLayoutManager(context)

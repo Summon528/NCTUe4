@@ -10,61 +10,86 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
+import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.status_login.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var currentFragment = -1
     lateinit var oldE3Service: OldE3Connect
-
+    private lateinit var studentId: String
+    private lateinit var studentPassword: String
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putInt("currentFragment", currentFragment)
     }
 
+    private var dataStatus = DataStatus.INIT
+
     override fun onStop() {
         super.onStop()
         oldE3Service.cancelPendingRequests()
+        if (dataStatus == DataStatus.INIT) dataStatus = DataStatus.STOPPED
     }
+
+
+    override fun onStart() {
+        super.onStart()
+        if (dataStatus == DataStatus.STOPPED) getData { switchFragment(currentFragment) }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        setContentView(R.layout.activity_main)
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-        updateNavDrawerData {
-            switchFragment(
-                    if (savedInstanceState?.getInt("currentFragment") != null)
-                        savedInstanceState.getInt("currentFragment")
-                    else -1
-            )
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        studentId = prefs.getString("studentId", "")
+        studentPassword = prefs.getString("studentPassword", "")
+        if (studentId == "" && studentPassword == "") {
+            switchFragment(R.id.nav_switch_account)
         }
-
+        currentFragment = if (savedInstanceState?.getInt("currentFragment") != null)
+            savedInstanceState.getInt("currentFragment")
+        else -1
+        getData { switchFragment(currentFragment) }
     }
 
-    private fun updateNavDrawerData(completionHandler: () -> Unit) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val studentId = prefs.getString("studentId", "")
-        val studentPassword = prefs.getString("studentPassword", "")
+    private fun getData(completionHandler: () -> Unit) {
         oldE3Service = OldE3Connect(studentId, studentPassword)
-        oldE3Service.getLoginTicket { status, response ->
-            when (status) {
-                OldE3Interface.Status.SUCCESS -> {
-                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_name).text = response!!.first
-                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_email).text = response.second
-                }
+        if (studentId == "" && studentPassword == "") {
+            login_request.visibility = View.VISIBLE
+            login_button.setOnClickListener {
+                switchFragment(R.id.nav_switch_account)
             }
             completionHandler()
+            main_container.visibility = View.GONE
+        } else {
+            login_request.visibility = View.GONE
+            oldE3Service.getLoginTicket { status, response ->
+                when (status) {
+                    OldE3Interface.Status.SUCCESS -> {
+                        nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_name).text = response!!.first
+                        nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_email).text = response.second
+                    }
+                }
+                main_container.visibility = View.VISIBLE
+                completionHandler()
+            }
         }
     }
 
@@ -86,9 +111,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                updateNavDrawerData {
-                    switchFragment(currentFragment)
-                }
+                val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+                studentId = prefs.getString("studentId", "")
+                studentPassword = prefs.getString("studentPassword", "")
             }
         }
     }

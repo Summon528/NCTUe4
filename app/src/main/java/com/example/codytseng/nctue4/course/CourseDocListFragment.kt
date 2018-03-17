@@ -11,7 +11,9 @@ import com.example.codytseng.nctue4.model.DocGroupItem
 import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
+import kotlinx.android.synthetic.main.status_empty.*
 import kotlinx.android.synthetic.main.fragment_course_doc_list.*
+import kotlinx.android.synthetic.main.status_error.*
 
 
 class CourseDocListFragment : Fragment() {
@@ -40,6 +42,9 @@ class CourseDocListFragment : Fragment() {
     }
 
     private fun getData() {
+        error_request?.visibility = View.GONE
+        progress_bar.visibility = View.VISIBLE
+
         oldE3Service = (activity as CourseActivity).oldE3Service
         val docType = arguments.getString("docType")
         val courseId = arguments.getString("courseId")
@@ -48,22 +53,31 @@ class CourseDocListFragment : Fragment() {
                 OldE3Interface.Status.SUCCESS -> {
                     updateList(response!!)
                 }
+                else -> {
+                    error_request.visibility = View.VISIBLE
+                    dataStatus = DataStatus.INIT
+                    error_request_retry.setOnClickListener { getData() }
+                }
             }
             dataStatus = DataStatus.FINISHED
+            progress_bar.visibility = View.GONE
         }
     }
 
     private fun updateList(docGroupItems: ArrayList<DocGroupItem>) {
-        course_doc_list_recycler_view?.layoutManager = LinearLayoutManager(context)
-        course_doc_list_recycler_view?.adapter = CourseDocListAdapter(docGroupItems) {
-            val dialog = CourseDocDialog()
-            val bundle = Bundle()
-            bundle.putString("documentId", it.documentId)
-            bundle.putString("courseId", it.courseId)
-            dialog.arguments = bundle
-            dialog.show(fragmentManager, "TAG")
+        if (docGroupItems.size == 0) {
+            empty_request.visibility = View.VISIBLE
+        } else {
+            course_doc_list_recycler_view?.layoutManager = LinearLayoutManager(context)
+            course_doc_list_recycler_view?.adapter = CourseDocListAdapter(docGroupItems) {
+                val dialog = CourseDocDialog()
+                val bundle = Bundle()
+                bundle.putString("documentId", it.documentId)
+                bundle.putString("courseId", it.courseId)
+                dialog.arguments = bundle
+                dialog.show(fragmentManager, "TAG")
+            }
+            course_doc_list_recycler_view.visibility = View.VISIBLE
         }
-        course_doc_list_recycler_view.visibility = View.VISIBLE
-        progress_bar.visibility = View.GONE
     }
 }

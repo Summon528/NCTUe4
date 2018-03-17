@@ -16,7 +16,9 @@ import com.example.codytseng.nctue4.model.AnnItem
 import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
+import kotlinx.android.synthetic.main.status_empty.*
 import kotlinx.android.synthetic.main.fragment_course_ann.*
+import kotlinx.android.synthetic.main.status_error.*
 
 
 class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -51,6 +53,9 @@ class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun getData() {
+        error_request?.visibility = View.GONE
+        progress_bar.visibility = View.VISIBLE
+
         oldE3Service = (activity as CourseActivity).oldE3Service
         announcement_refreshLayout.setOnRefreshListener(this)
         val courseId = arguments.getString("courseId")
@@ -62,23 +67,34 @@ class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                         update(response)
                     }
                 }
+                else -> {
+                    error_request.visibility = View.VISIBLE
+                    dataStatus = DataStatus.INIT
+                    error_request_retry.setOnClickListener { getData() }
+                }
             }
             dataStatus = DataStatus.FINISHED
+            progress_bar.visibility = View.GONE
         }
     }
 
     private fun update(annItems: ArrayList<AnnItem>) {
-        announcement_course_recycler_view?.layoutManager = LinearLayoutManager(context)
-        announcement_course_recycler_view?.addItemDecoration(DividerItemDecoration(context,
-                LinearLayoutManager.VERTICAL))
-        announcement_course_recycler_view?.adapter = CourseAnnAdapter(annItems) {
-            val intent = Intent()
-            intent.setClass(activity, AnnActivity::class.java)
-            intent.putExtra("annId", it.bulletinId)
-            intent.putExtra("courseName", it.courseName)
-            startActivity(intent)
+        if (annItems.size == 0) {
+            empty_request.visibility = View.VISIBLE
+        } else {
+            announcement_course_recycler_view?.layoutManager = LinearLayoutManager(context)
+            announcement_course_recycler_view?.addItemDecoration(DividerItemDecoration(context,
+                    LinearLayoutManager.VERTICAL))
+            announcement_course_recycler_view?.adapter = CourseAnnAdapter(annItems) {
+                val intent = Intent()
+                intent.setClass(activity, AnnActivity::class.java)
+                intent.putExtra("annId", it.bulletinId)
+                intent.putExtra("courseName", it.courseName)
+                intent.putExtra("loginTicket", oldE3Service.getCredential().first)
+                intent.putExtra("accountId", oldE3Service.getCredential().second)
+                startActivity(intent)
+            }
+            announcement_refreshLayout.visibility = View.VISIBLE
         }
-        announcement_refreshLayout.visibility = View.VISIBLE
-        progress_bar.visibility = View.GONE
     }
 }

@@ -21,6 +21,7 @@ import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import com.example.codytseng.nctue4.utility.htmlCleaner
 import kotlinx.android.synthetic.main.activity_ann.*
+import kotlinx.android.synthetic.main.status_error.*
 
 
 class AnnActivity : AppCompatActivity() {
@@ -90,44 +91,45 @@ class AnnActivity : AppCompatActivity() {
 
     private fun getData() {
         val bundle = intent.extras
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val studentId = prefs.getString("studentId", "")
-        val studentPassword = prefs.getString("studentPassword", "")
+        val loginTicket = bundle.getString("loginTicket")
+        val accountId = bundle.getString("accountId")
         val annId = bundle.getString("annId")
 
-        oldE3Service = OldE3Connect(studentId, studentPassword)
-        oldE3Service.getLoginTicket { status, _ ->
-            when (status) {
+        error_request?.visibility = View.GONE
+        progress_bar.visibility = View.VISIBLE
+
+        oldE3Service = OldE3Connect(loginTicket = loginTicket, accountId = accountId)
+        oldE3Service.getAnnouncementDetail(annId) { status2, response ->
+            when (status2) {
                 OldE3Interface.Status.SUCCESS -> {
-                    oldE3Service.getAnnouncementDetail(annId) { status2, response ->
-                        when (status2) {
-                            OldE3Interface.Status.SUCCESS -> {
-                                ann_caption.text = response!!.caption
-                                ann_courseName.text = response.courseName
-                                ann_date.text = response.beginDate
-                                ann_content.text =
-                                        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
-                                            Html.fromHtml(htmlCleaner(response.content))
-                                                    .replace("\\n\\n+".toRegex(), "\n\n")
-                                        } else {
-                                            Html.fromHtml(htmlCleaner(response.content),
-                                                    Html.FROM_HTML_MODE_COMPACT)
-                                                    .replace("\\n\\n+".toRegex(), "\n\n")
-                                        }
-                                announcement_attach.layoutManager = LinearLayoutManager(this)
-                                announcement_attach.adapter = AnnAttachmentAdapter(response.attachItems) {
-                                    uri = it.url.dropLast(1)
-                                    fileName = it.name.dropLast(1)
-                                    downloadFile()
-                                }
-                                loading_spinner.visibility = View.GONE
-                                ann_container.visibility = View.VISIBLE
+                    ann_caption.text = response!!.caption
+                    ann_courseName.text = response.courseName
+                    ann_date.text = response.beginDate
+                    ann_content.text =
+                            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
+                                Html.fromHtml(htmlCleaner(response.content))
+                                        .replace("\\n\\n+".toRegex(), "\n\n")
+                            } else {
+                                Html.fromHtml(htmlCleaner(response.content),
+                                        Html.FROM_HTML_MODE_COMPACT)
+                                        .replace("\\n\\n+".toRegex(), "\n\n")
                             }
-                        }
-                        dataStatus = DataStatus.FINISHED
+                    announcement_attach.layoutManager = LinearLayoutManager(this)
+                    announcement_attach.adapter = AnnAttachmentAdapter(response.attachItems) {
+                        uri = it.url.dropLast(1)
+                        fileName = it.name.dropLast(1)
+                        downloadFile()
                     }
+                    ann_container.visibility = View.VISIBLE
+                }
+                else -> {
+                    error_request.visibility = View.VISIBLE
+                    dataStatus = DataStatus.INIT
+                    error_request_retry.setOnClickListener { getData() }
                 }
             }
+            progress_bar.visibility = View.GONE
+            dataStatus = DataStatus.FINISHED
         }
     }
 }

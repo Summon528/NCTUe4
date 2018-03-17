@@ -9,6 +9,12 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
+    <include layout="@layout/status_empty" />
+
+    <include layout="@layout/status_error" />
+
+    <include layout="@layout/status_login" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/old_e3_recycler_view"
         android:layout_width="match_parent"

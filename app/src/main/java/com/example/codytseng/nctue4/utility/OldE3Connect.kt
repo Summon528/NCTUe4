@@ -8,11 +8,14 @@ import fr.arnaudguyon.xmltojsonlib.XmlToJson
 import org.json.JSONObject
 
 
-class OldE3Connect(private var studentId: String,
-                   private var studentPassword: String) : OldE3Interface {
-    private var loginTicket: String = ""
-    private var accountId: String = ""
+class OldE3Connect(private var studentId: String = "",
+                   private var studentPassword: String = "",
+                   private var loginTicket: String = "",
+                   private var accountId: String = "") : OldE3Interface {
+
     private val tag = OldE3Connect::class.java.simpleName
+
+    override fun getCredential() = Pair(loginTicket, accountId)
 
     private fun post(path: String, params: HashMap<String, String>,
                      secondTry: Boolean = false,

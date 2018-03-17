@@ -13,6 +13,7 @@ import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.fragment_old_e3.*
+import kotlinx.android.synthetic.main.status_error.*
 
 
 class OldE3Fragment : Fragment() {
@@ -40,14 +41,23 @@ class OldE3Fragment : Fragment() {
     }
 
     private fun getData() {
+        error_request?.visibility = View.GONE
+        progress_bar.visibility = View.VISIBLE
+
         oldE3Service = (activity as MainActivity).oldE3Service
         oldE3Service.getCourseList { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
                     updateList(response!!)
                 }
+                else -> {
+                    error_request.visibility = View.VISIBLE
+                    dataStatus = DataStatus.INIT
+                    error_request_retry.setOnClickListener { getData() }
+                }
             }
             dataStatus = DataStatus.FINISHED
+            progress_bar.visibility = View.GONE
         }
     }
 

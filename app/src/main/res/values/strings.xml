@@ -27,7 +27,8 @@
     <string name="logout_success">Logout Success</string>
 
     <string name="generic_error">Error</string>
-
+    <string name="try_again">Try Again</string>
+    <string name="not_logged_in">Not Logged In</string>
 
     <!--Course Activity-->
     <string name="title_activity_course">CourseActivity</string>
@@ -44,6 +45,8 @@
     <string name="title_activity_ann">Anouncement</string>
 
     <string name="download">Download</string>
+
+    <string name="empty_request">There\'s nothing here</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

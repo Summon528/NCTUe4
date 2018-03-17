@@ -14,7 +14,9 @@ import com.example.codytseng.nctue4.model.AnnItem
 import com.example.codytseng.nctue4.utility.DataStatus
 import com.example.codytseng.nctue4.utility.OldE3Connect
 import com.example.codytseng.nctue4.utility.OldE3Interface
+import kotlinx.android.synthetic.main.status_empty.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.status_error.*
 
 
 class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -48,7 +50,9 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun getData() {
-        Log.d("LOD", "data")
+        error_request?.visibility = View.GONE
+        progress_bar.visibility = View.VISIBLE
+
         oldE3Service = (activity as MainActivity).oldE3Service
         announcement_refreshLayout.setOnRefreshListener(this)
         oldE3Service.getAnnouncementListLogin { status, response ->
@@ -56,24 +60,36 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 OldE3Interface.Status.SUCCESS -> {
                     updateList(response!!)
                 }
+                else -> {
+                    error_request.visibility = View.VISIBLE
+                    dataStatus = DataStatus.INIT
+                    error_request_retry.setOnClickListener { getData() }
+                }
             }
             dataStatus = DataStatus.FINISHED
+            progress_bar.visibility = View.GONE
         }
+
     }
 
     private fun updateList(annItems: ArrayList<AnnItem>) {
-        ann_login_recycler_view?.layoutManager = LinearLayoutManager(context)
-        ann_login_recycler_view?.addItemDecoration(DividerItemDecoration(context,
-                LinearLayoutManager.VERTICAL))
-        ann_login_recycler_view?.adapter = HomeAnnAdapter(annItems) {
-            val intent = Intent()
-            intent.setClass(activity, AnnActivity::class.java)
-            intent.putExtra("annId", it.bulletinId)
-            intent.putExtra("courseName", it.courseName)
-            startActivity(intent)
+        if (annItems.size == 0) {
+            empty_request.visibility = View.VISIBLE
+        } else {
+            ann_login_recycler_view?.layoutManager = LinearLayoutManager(context)
+            ann_login_recycler_view?.addItemDecoration(DividerItemDecoration(context,
+                    LinearLayoutManager.VERTICAL))
+            ann_login_recycler_view?.adapter = HomeAnnAdapter(annItems) {
+                val intent = Intent()
+                intent.setClass(activity, AnnActivity::class.java)
+                intent.putExtra("annId", it.bulletinId)
+                intent.putExtra("courseName", it.courseName)
+                intent.putExtra("loginTicket", oldE3Service.getCredential().first)
+                intent.putExtra("accountId", oldE3Service.getCredential().second)
+                startActivity(intent)
+            }
+            announcement_refreshLayout.visibility = View.VISIBLE
         }
-        progress_bar.visibility = View.GONE
-        announcement_refreshLayout.visibility = View.VISIBLE
     }
 }
 

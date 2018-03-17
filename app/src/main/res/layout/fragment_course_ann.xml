@@ -9,6 +9,9 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
+    <include layout="@layout/status_empty" />
+    <include layout="@layout/status_error" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/announcement_refreshLayout"
         android:layout_width="match_parent"
