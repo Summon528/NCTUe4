@@ -33,7 +33,8 @@
             android:name=".course.CourseActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_course"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.codytseng.nctue4.MainActivity" />
@@ -41,7 +42,8 @@
         <activity
             android:name=".AnnActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_ann">
+            android:label="@string/title_activity_ann"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.codytseng.nctue4.MainActivity" />

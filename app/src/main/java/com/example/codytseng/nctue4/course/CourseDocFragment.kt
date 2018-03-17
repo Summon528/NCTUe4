@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.codytseng.nctue4.R
+import kotlinx.android.synthetic.main.activity_course.*
 import kotlinx.android.synthetic.main.fragment_course_doc.*
 
 class CourseDocFragment : Fragment() {
@@ -20,6 +21,16 @@ class CourseDocFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getData()
+    }
+
+    override fun onStop() {
+        activity.course_doc_tab_layout?.visibility = View.GONE
+        super.onStop()
+    }
+
+    override fun onStart() {
+        activity.course_doc_tab_layout?.visibility = View.VISIBLE
+        super.onStart()
     }
 
     private fun getData() {
@@ -36,7 +47,7 @@ class CourseDocFragment : Fragment() {
         val adapter = CourseDocGroupAdapter(activity.supportFragmentManager,
                 fragments,
                 listOf(getString(R.string.course_doc_type_handout), getString(R.string.course_doc_type_reference)))
-        course_doc_view_pager?.adapter = adapter
-        course_doc_tab_layout?.setupWithViewPager(course_doc_view_pager)
+        activity.course_doc_view_pager?.adapter = adapter
+        activity.course_doc_tab_layout?.setupWithViewPager(course_doc_view_pager)
     }
 }

@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:gravity="center"
     android:id="@+id/empty_request"
-    android:visibility="gone">
+    android:visibility="gone"
+    android:layout_gravity="center">
 
     <ImageView
         android:layout_width="150dp"
