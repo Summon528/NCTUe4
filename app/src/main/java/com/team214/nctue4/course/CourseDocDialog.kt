@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,6 +96,11 @@ class CourseDocDialog : DialogFragment() {
         } else {
             val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DOWNLOADS +
                     "/" + getString(R.string.app_name) + "/" + fileName)
+            val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
+            val type = if (extension != null) {
+                MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+            } else "application/octet-stream"
+
             if (file.exists()) {
                 AlertDialog.Builder(context!!)
                         .setMessage(getString(R.string.detect_same_file))
@@ -103,13 +109,10 @@ class CourseDocDialog : DialogFragment() {
                             downloadFile()
                         })
                         .setNegativeButton(R.string.open_existed, { dialog, which ->
-                            val intent = Intent(Intent.ACTION_VIEW)
-                            val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
-                            val type = if (extension != null) {
-                                MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
-                            } else null
                             val fileUri = FileProvider.getUriForFile(context!!, context!!.applicationContext.packageName +
                                     ".com.team214", file)
+
+                            val intent = Intent(Intent.ACTION_VIEW)
                             intent.setDataAndType(fileUri, type)
                             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             startActivity(intent)
@@ -123,6 +126,8 @@ class CourseDocDialog : DialogFragment() {
                 val manager = activity!!.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.app_name) + "/$fileName")
                 request.setVisibleInDownloadsUi(true)
+                request.setMimeType(type)
+                request.allowScanningByMediaScanner()
                 Toast.makeText(context, R.string.download_start, Toast.LENGTH_SHORT).show()
                 manager.enqueue(request)
                 dismiss()

@@ -56,6 +56,10 @@ class AnnActivity : AppCompatActivity() {
         } else {
             val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DOWNLOADS +
                     "/" + getString(R.string.app_name) + "/" + fileName)
+            val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
+            val type = if (extension != null) {
+                MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+            } else "application/octet-stream"
             if (file.exists()) {
                 AlertDialog.Builder(this)
                         .setMessage(getString(R.string.detect_same_file))
@@ -65,10 +69,6 @@ class AnnActivity : AppCompatActivity() {
                         })
                         .setNegativeButton(R.string.open_existed, { dialog, which ->
                             val intent = Intent(Intent.ACTION_VIEW)
-                            val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
-                            val type = if (extension != null) {
-                                MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
-                            } else null
                             val fileUri = FileProvider.getUriForFile(this, this.applicationContext.packageName +
                                     ".com.team214", file)
                             intent.setDataAndType(fileUri, type)
@@ -84,6 +84,7 @@ class AnnActivity : AppCompatActivity() {
                 val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.app_name) + "/$fileName")
                 request.setVisibleInDownloadsUi(true)
+                request.setMimeType(type)
                 Toast.makeText(this, R.string.download_start, Toast.LENGTH_SHORT).show()
                 manager.enqueue(request)
             }
