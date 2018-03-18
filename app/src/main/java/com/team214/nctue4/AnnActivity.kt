@@ -49,45 +49,50 @@ class AnnActivity : AppCompatActivity() {
     private lateinit var fileName: String
 
     private fun downloadFile() {
-        Log.d("FILENAME", fileName.toString())
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    0)
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(uri)
+            startActivity(intent)
         } else {
-            val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DOWNLOADS +
-                    "/" + getString(R.string.app_name) + "/" + fileName)
-            if (file.exists()) {
-                AlertDialog.Builder(this)
-                        .setMessage(getString(R.string.detect_same_file))
-                        .setPositiveButton(R.string.download_again, { dialog, which ->
-                            file.delete()
-                            downloadFile()
-                        })
-                        .setNegativeButton(R.string.open_existed, { dialog, which ->
-                            val intent = Intent(Intent.ACTION_VIEW)
-                            val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
-                            val type = if (extension != null) {
-                                MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
-                            } else null
-                            val fileUri = FileProvider.getUriForFile(this, this.applicationContext.packageName +
-                                    ".com.team214", file)
-                            intent.setDataAndType(fileUri, type)
-                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            startActivity(intent)
-
-                        })
-                        .show()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                    ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        0)
             } else {
-                val request = DownloadManager.Request(Uri.parse(uri))
-                request.setTitle(fileName)
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                request.setDestinationUri(Uri.fromFile(file))
-                request.setVisibleInDownloadsUi(true)
-                Toast.makeText(this, R.string.download_start, Toast.LENGTH_SHORT).show()
-                manager.enqueue(request)
+                val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DOWNLOADS +
+                        "/" + getString(R.string.app_name) + "/" + fileName)
+                if (file.exists()) {
+                    AlertDialog.Builder(this)
+                            .setMessage(getString(R.string.detect_same_file))
+                            .setPositiveButton(R.string.download_again, { dialog, which ->
+                                file.delete()
+                                downloadFile()
+                            })
+                            .setNegativeButton(R.string.open_existed, { dialog, which ->
+                                val intent = Intent(Intent.ACTION_VIEW)
+                                val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
+                                val type = if (extension != null) {
+                                    MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+                                } else null
+                                val fileUri = FileProvider.getUriForFile(this, this.applicationContext.packageName +
+                                        ".com.team214", file)
+                                intent.setDataAndType(fileUri, type)
+                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                startActivity(intent)
+
+                            })
+                            .show()
+                } else {
+                    val request = DownloadManager.Request(Uri.parse(uri))
+                    request.setTitle(fileName)
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                    request.setDestinationUri(Uri.fromFile(file))
+                    request.setVisibleInDownloadsUi(true)
+                    Toast.makeText(this, R.string.download_start, Toast.LENGTH_SHORT).show()
+                    manager.enqueue(request)
+                }
             }
         }
     }
