@@ -6,7 +6,7 @@
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.codytseng.nctue4.LoginActivity">
+    tools:context="com.team214.nctue4.LoginActivity">
 
     <ProgressBar
         android:id="@+id/login_progressbar"

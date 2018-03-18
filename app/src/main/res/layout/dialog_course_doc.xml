@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:minWidth="300dp"
     android:orientation="vertical"
-    tools:context="com.example.codytseng.nctue4.course.CourseDocDialog">
+    tools:context="com.team214.nctue4.course.CourseDocDialog">
 
     <LinearLayout
         android:layout_width="wrap_content"

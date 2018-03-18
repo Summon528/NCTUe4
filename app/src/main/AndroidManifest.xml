@@ -1,52 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.codytseng.nctue4">
+    package="com.team214.nctue4">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".utility.VolleyHandler"
+        android:name="com.team214.nctue4.utility.VolleyHandler"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_fox"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_fox_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider
+            android:name="com.team214.nctue4.utility.GenericFileProvider"
+            android:authorities="${applicationId}.com.team214"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
         <activity
-            android:name=".MainActivity"
+            android:name="com.team214.nctue4.MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.team214.nctue4.LoginActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.team214.nctue4.MainActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".course.CourseActivity"
+            android:name="com.team214.nctue4.course.CourseActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_course"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.team214.nctue4.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.codytseng.nctue4.MainActivity" />
+                android:value="com.team214.nctue4.MainActivity" />
         </activity>
         <activity
-            android:name=".AnnActivity"
+            android:name="com.team214.nctue4.AnnActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_ann"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.codytseng.nctue4.MainActivity" />
         </activity>
     </application>
 

@@ -49,5 +49,8 @@
     <string name="license">授權訊息</string>
     <string name="font_awesome_license">本程式使用 <a href="https://fontawesome.com/license">Font Awesome</a> 圖示</string>
     <string name="flat_icon_license">這個圖示是由<a href="https://www.flaticon.com/authors/freepik"> Freepik from Flaticon.</a>製作</string>
+    <string name="detect_same_file">下載目錄下已經有一個相同黨名的檔案，你想要開啟舊黨還是下載新的。</string>
+    <string name="download_again">重新下載</string>
+    <string name="open_existed">開啟舊檔</string>
 
 </resources>

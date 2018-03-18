@@ -6,7 +6,7 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:paddingBottom="16dp"
-    tools:context="com.example.codytseng.nctue4.LicenseDialog">
+    tools:context="com.team214.nctue4.LicenseDialog">
 
     <TextView
         android:layout_width="match_parent"
