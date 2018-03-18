@@ -4,7 +4,6 @@ package com.team214.nctue4.course
 import android.Manifest
 import android.app.DownloadManager
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -35,9 +34,9 @@ class CourseDocDialog : DialogFragment() {
     private lateinit var oldE3Service: OldE3Connect
     private var dataStatus = DataStatus.INIT
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.dialog_course_doc, container, false)
+        return inflater.inflate(R.layout.dialog_course_doc, container, false)
     }
 
     override fun onStop() {
@@ -52,7 +51,7 @@ class CourseDocDialog : DialogFragment() {
     }
 
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.window.requestFeature(Window.FEATURE_NO_TITLE)
         getData()
@@ -63,8 +62,8 @@ class CourseDocDialog : DialogFragment() {
 
     private fun getData() {
         oldE3Service = (activity as CourseActivity).oldE3Service
-        oldE3Service.getAttachFileList(arguments.getString("documentId"),
-                arguments.getString("courseId"), { status, response ->
+        oldE3Service.getAttachFileList(arguments!!.getString("documentId"),
+                arguments!!.getString("courseId"), { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
                     updateList(response!!)
@@ -89,7 +88,7 @@ class CourseDocDialog : DialogFragment() {
     }
 
     private fun downloadFile() {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     0)
@@ -97,23 +96,23 @@ class CourseDocDialog : DialogFragment() {
             val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DOWNLOADS +
                     "/" + getString(R.string.app_name) + "/" + fileName)
             if (file.exists()) {
-                AlertDialog.Builder(context)
+                AlertDialog.Builder(context!!)
                         .setMessage(getString(R.string.detect_same_file))
-                        .setPositiveButton(R.string.download_again, DialogInterface.OnClickListener { dialog, which ->
+                        .setPositiveButton(R.string.download_again, { dialog, which ->
                             file.delete()
                             downloadFile()
                         })
-                        .setNegativeButton(R.string.open_existed, DialogInterface.OnClickListener { dialog, which ->
+                        .setNegativeButton(R.string.open_existed, { dialog, which ->
                             val intent = Intent(Intent.ACTION_VIEW)
                             val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
                             val type = if (extension != null) {
                                 MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
                             } else null
-                            val fileUri = FileProvider.getUriForFile(context, context.applicationContext.packageName +
-                                    ".com.team214", file);
-                            intent.setDataAndType(fileUri, type);
-                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            startActivity(intent);
+                            val fileUri = FileProvider.getUriForFile(context!!, context!!.applicationContext.packageName +
+                                    ".com.team214", file)
+                            intent.setDataAndType(fileUri, type)
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            startActivity(intent)
                             dismiss()
                         })
                         .show()
@@ -121,7 +120,7 @@ class CourseDocDialog : DialogFragment() {
                 val request = DownloadManager.Request(Uri.parse(uri))
                 request.setTitle(fileName)
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                val manager = activity!!.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.app_name) + "/$fileName")
                 request.setVisibleInDownloadsUi(true)
                 Toast.makeText(context, R.string.download_start, Toast.LENGTH_SHORT).show()

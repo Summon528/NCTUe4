@@ -60,13 +60,13 @@ class LoginActivity : AppCompatActivity() {
                         finish()
                     }
                     OldE3Interface.Status.WRONG_CREDENTIALS -> {
-                        login_error_textview.text = getString(R.string.login_id_or_password_error)
-                        login_error_textview.visibility = View.VISIBLE
+                        login_error_text_view.text = getString(R.string.login_id_or_password_error)
+                        login_error_text_view.visibility = View.VISIBLE
                         login_progressbar.visibility = View.GONE
                     }
                     else -> {
-                        login_error_textview.text = getString(R.string.generic_error)
-                        login_error_textview.visibility = View.VISIBLE
+                        login_error_text_view.text = getString(R.string.generic_error)
+                        login_error_text_view.visibility = View.VISIBLE
                         login_progressbar.visibility = View.GONE
                     }
                 }

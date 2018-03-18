@@ -32,11 +32,11 @@ class CourseDocListFragment : Fragment() {
         if (dataStatus == DataStatus.STOPPED) getData()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_course_doc_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_course_doc_list, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getData()
     }
@@ -46,8 +46,8 @@ class CourseDocListFragment : Fragment() {
         progress_bar.visibility = View.VISIBLE
 
         oldE3Service = (activity as CourseActivity).oldE3Service
-        val docType = arguments.getString("docType")
-        val courseId = arguments.getString("courseId")
+        val docType = arguments!!.getString("docType")
+        val courseId = arguments!!.getString("courseId")
         oldE3Service.getMaterialDocList(courseId, docType) { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {

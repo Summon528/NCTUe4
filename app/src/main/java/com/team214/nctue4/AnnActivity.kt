@@ -4,10 +4,10 @@ package com.team214.nctue4
 import android.Manifest
 import android.app.DownloadManager
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.ContextCompat
@@ -48,7 +48,8 @@ class AnnActivity : AppCompatActivity() {
     private lateinit var fileName: String
 
     private fun downloadFile() {
-        if (ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     0)
@@ -58,21 +59,21 @@ class AnnActivity : AppCompatActivity() {
             if (file.exists()) {
                 AlertDialog.Builder(this)
                         .setMessage(getString(R.string.detect_same_file))
-                        .setPositiveButton(R.string.download_again, DialogInterface.OnClickListener { dialog, which ->
+                        .setPositiveButton(R.string.download_again, { dialog, which ->
                             file.delete()
                             downloadFile()
                         })
-                        .setNegativeButton(R.string.open_existed, DialogInterface.OnClickListener { dialog, which ->
+                        .setNegativeButton(R.string.open_existed, { dialog, which ->
                             val intent = Intent(Intent.ACTION_VIEW)
                             val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
                             val type = if (extension != null) {
                                 MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
                             } else null
                             val fileUri = FileProvider.getUriForFile(this, this.applicationContext.packageName +
-                                    ".com.team214", file);
-                            intent.setDataAndType(fileUri, type);
-                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            startActivity(intent);
+                                    ".com.team214", file)
+                            intent.setDataAndType(fileUri, type)
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            startActivity(intent)
 
                         })
                         .show()
@@ -117,7 +118,7 @@ class AnnActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ann)
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true);
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         getData()
     }
 

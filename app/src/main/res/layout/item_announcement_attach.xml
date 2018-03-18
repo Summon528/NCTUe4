@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:gravity="center_vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -14,7 +13,7 @@
             android:id="@+id/announcement_attach_button"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:contentDescription="button"/>
+            android:contentDescription="button" />
 
         <ImageView
             android:id="@+id/announcement_attach_url"
@@ -22,10 +21,10 @@
             android:layout_height="70dp"
             android:layout_alignBottom="@id/img"
             android:layout_alignTop="@id/img"
+            android:contentDescription="button"
             android:gravity="center"
             android:src="@drawable/ic_file_download_black_24dp"
             android:textColor="#FFFFFF"
-            android:contentDescription="button"
             android:textSize="32sp" />
     </RelativeLayout>
 
@@ -36,22 +35,21 @@
         android:layout_margin="10dp"
         android:gravity="center_vertical"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/announcement_attach_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:text="fdasffff.doc"/>
+            android:layout_marginTop="5dp"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/announcement_attach_fileSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
-            android:text="20MB"/>
+            android:layout_marginTop="10dp"
+            android:textSize="15sp" />
     </LinearLayout>
 </LinearLayout>

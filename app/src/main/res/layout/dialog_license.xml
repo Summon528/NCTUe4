@@ -54,6 +54,6 @@
             android:autoLink="web"
             android:clickable="true"
             android:text="@string/flat_icon_license" />
-    </LinearLayout>f
+    </LinearLayout>
 
 </LinearLayout>

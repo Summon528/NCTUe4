@@ -12,12 +12,12 @@ import kotlinx.android.synthetic.main.dialog_license.*
 
 
 class LicenseDialog : DialogFragment() {
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.dialog_license, container, false)
+        return inflater.inflate(R.layout.dialog_license, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         flat_icon_license.setOnClickListener {
             goToUrl("https://www.flaticon.com/authors/freepik")
