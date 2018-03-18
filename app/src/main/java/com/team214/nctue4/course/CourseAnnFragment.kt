@@ -43,12 +43,12 @@ class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         announcement_course_recycler_view.adapter?.notifyDataSetChanged()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_course_ann, container, false)
+        return inflater.inflate(R.layout.fragment_course_ann, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getData()
     }
@@ -59,8 +59,8 @@ class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         oldE3Service = (activity as CourseActivity).oldE3Service
         announcement_refreshLayout.setOnRefreshListener(this)
-        val courseId = arguments.getString("courseId")
-        val courseName = arguments.getString("courseName")
+        val courseId = arguments!!.getString("courseId")
+        val courseName = arguments!!.getString("courseName")
         oldE3Service.getCourseAnn(courseId, courseName) { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {

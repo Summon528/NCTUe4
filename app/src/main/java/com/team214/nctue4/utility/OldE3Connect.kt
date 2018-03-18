@@ -200,10 +200,10 @@ class OldE3Connect(private var studentId: String = "",
                 (0 until data.length()).map { data.getJSONObject(it) }
                         .forEach {
                             if (it.getString("BulletinId") == bulletinId) {
-                                var attachItemList = ArrayList<AttachItem>()
-                                var attachNames = it.forceGetJsonArray("AttachFileName")
-                                var attachUrls = it.forceGetJsonArray("AttachFileURL")
-                                var attachFileSizes = it.forceGetJsonArray("AttachFileFileSize")
+                                val attachItemList = ArrayList<AttachItem>()
+                                val attachNames = it.forceGetJsonArray("AttachFileName")
+                                val attachUrls = it.forceGetJsonArray("AttachFileURL")
+                                val attachFileSizes = it.forceGetJsonArray("AttachFileFileSize")
                                 if ((attachNames.get(0) as JSONObject).getString("string") != "") {
                                     (0 until attachNames.length()).map {
                                         AttachItem(

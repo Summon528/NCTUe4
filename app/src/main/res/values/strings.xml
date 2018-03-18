@@ -52,7 +52,7 @@
     <string name="flat_icon_license">This icon is made by<a href="https://www.flaticon.com/authors/freepik"> Freepik from Flaticon.</a></string>
 
     <!--SameFile Alert Dialog-->
-    <string name="detect_same_file">There is already a file with the same name under download directory.\nWould you like to open the old existed or get the fresh one?</string>
+    <string name="detect_same_file">There is already a file with the same name under download directory.\nWould you like to open the existed one or get the fresh one?</string>
     <string name="download_again">Download Again</string>
     <string name="open_existed">Open Existed</string>
 </resources>

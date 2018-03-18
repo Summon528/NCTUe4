@@ -13,30 +13,30 @@ import kotlinx.android.synthetic.main.fragment_course_doc.*
 class CourseDocFragment : Fragment() {
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_course_doc, container, false)
+        return inflater.inflate(R.layout.fragment_course_doc, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getData()
     }
 
     override fun onStop() {
-        activity.course_doc_tab_layout?.visibility = View.GONE
+        activity!!.course_doc_tab_layout?.visibility = View.GONE
         super.onStop()
     }
 
     override fun onStart() {
-        activity.course_doc_tab_layout?.visibility = View.VISIBLE
+        activity!!.course_doc_tab_layout?.visibility = View.VISIBLE
         super.onStart()
     }
 
     private fun getData() {
         val bundle0 = Bundle()
         val bundle1 = Bundle()
-        val courseId = arguments.getString("courseId")
+        val courseId = arguments!!.getString("courseId")
         bundle0.putString("docType", "0")
         bundle1.putString("docType", "1")
         bundle0.putString("courseId", courseId)
@@ -44,10 +44,10 @@ class CourseDocFragment : Fragment() {
         val fragments = listOf(CourseDocListFragment(), CourseDocListFragment())
         fragments[0].arguments = bundle0
         fragments[1].arguments = bundle1
-        val adapter = CourseDocGroupAdapter(activity.supportFragmentManager,
+        val adapter = CourseDocGroupAdapter(activity!!.supportFragmentManager,
                 fragments,
                 listOf(getString(R.string.course_doc_type_handout), getString(R.string.course_doc_type_reference)))
-        activity.course_doc_view_pager?.adapter = adapter
-        activity.course_doc_tab_layout?.setupWithViewPager(course_doc_view_pager)
+        activity!!.course_doc_view_pager?.adapter = adapter
+        activity!!.course_doc_tab_layout?.setupWithViewPager(course_doc_view_pager)
     }
 }

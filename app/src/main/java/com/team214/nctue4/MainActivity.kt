@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onStop() {
         super.onStop()
-        oldE3Service.cancelPendingRequests()
+        if (::oldE3Service.isInitialized) oldE3Service.cancelPendingRequests()
         if (dataStatus == DataStatus.INIT) dataStatus = DataStatus.STOPPED
     }
 
@@ -62,11 +62,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         studentPassword = prefs.getString("studentPassword", "")
         if (studentId == "" && studentPassword == "") {
             switchFragment(R.id.nav_switch_account)
+        } else {
+            currentFragment = if (savedInstanceState?.getInt("currentFragment") != null)
+                savedInstanceState.getInt("currentFragment")
+            else -1
+            getData { switchFragment(currentFragment) }
         }
-        currentFragment = if (savedInstanceState?.getInt("currentFragment") != null)
-            savedInstanceState.getInt("currentFragment")
-        else -1
-        getData { switchFragment(currentFragment) }
     }
 
     private fun getData(completionHandler: () -> Unit) {
