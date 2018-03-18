@@ -35,37 +35,38 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/announcement_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="什麼課"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:ellipsize="end"
-            android:maxLines="1" />
-
-        <TextView
             android:id="@+id/announcement_caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="課堂標題"
             android:textColor="@android:color/black"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:ellipsize="end"
             android:maxLines="1"/>
+
+        <TextView
+            android:id="@+id/announcement_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="什麼課"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_marginTop="3dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginRight="4dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="2dp"
                 android:src="@drawable/ic_timeline_black_24dp" />
             <TextView
                 android:id="@+id/announcement_beginDate"

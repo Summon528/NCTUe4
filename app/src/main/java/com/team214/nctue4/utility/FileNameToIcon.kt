@@ -50,7 +50,7 @@ class FileNameToIcon {
                 "xlsx" to R.drawable.file_excel,
                 "ods" to R.drawable.file_excel,
                 "pdf" to R.drawable.file_pdf,
-                "xls" to R.drawable.file_pdf,
+                "xls" to R.drawable.file_excel,
                 "ppt" to R.drawable.file_powerpoint,
                 "pptx" to R.drawable.file_powerpoint,
                 "pps" to R.drawable.file_powerpoint,

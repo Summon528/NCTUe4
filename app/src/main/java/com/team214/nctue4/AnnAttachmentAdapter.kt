@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.team214.nctue4.model.AttachItem
+import com.team214.nctue4.utility.FileNameToIcon
 import kotlinx.android.synthetic.main.item_announcement_attach.view.*
 
 class AnnAttachmentAdapter(private val dataSet: ArrayList<AttachItem>,
@@ -14,6 +15,7 @@ class AnnAttachmentAdapter(private val dataSet: ArrayList<AttachItem>,
    class ViewHolder(val view: View, private val itemClickListener: (AttachItem) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bind(attach: AttachItem) {
             view.announcement_attach_name.text = attach.name
+            view.announcement_attach_img.setImageResource(FileNameToIcon().getId(attach.name))
             view.announcement_attach_fileSize.text = attach.fileSize
             view.announcement_attach_button.setOnClickListener{
                 itemClickListener(attach)

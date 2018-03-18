@@ -1,57 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/announcement_attach_button"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:contentDescription="button"/>
-
-        <ImageView
-            android:id="@+id/announcement_attach_url"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignBottom="@id/img"
-            android:layout_alignTop="@id/img"
-            android:gravity="center"
-            android:src="@drawable/ic_file_download_black_24dp"
-            android:textColor="#FFFFFF"
-            android:contentDescription="button"
-            android:textSize="32sp" />
-    </RelativeLayout>
-
+    android:gravity="center_vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/announcement_attach_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="fdasffff.doc"/>
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp"
+        android:paddingTop="6dp">
 
-        <TextView
-            android:id="@+id/announcement_attach_fileSize"
+        <View
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:background="#000000" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/announcement_attach_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp">
+
+        <ImageView
+            android:id="@+id/announcement_attach_img"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:src="@drawable/ic_download"
+            android:tint="#000000" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="20MB"/>
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/announcement_attach_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="fdasffff.doc"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/announcement_attach_fileSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20MB"
+                android:textColor="#000000"
+                android:textSize="10sp" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
