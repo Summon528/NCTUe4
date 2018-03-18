@@ -137,6 +137,7 @@ class AnnActivity : AppCompatActivity() {
         oldE3Service.getAnnouncementDetail(annId, from, courseId) { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
+                    error_request.visibility = View.GONE
                     ann_caption.text = response!!.caption
                     ann_courseName.text = response.courseName
                     ann_date.text = response.beginDate
