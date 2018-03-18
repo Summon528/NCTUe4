@@ -14,7 +14,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -124,7 +123,7 @@ class CourseDocDialog : DialogFragment() {
                 request.setTitle(fileName)
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 val manager = activity!!.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.app_name) + "/$fileName")
+                request.setDestinationUri(Uri.fromFile(file))
                 request.setVisibleInDownloadsUi(true)
                 request.setMimeType(type)
                 request.allowScanningByMediaScanner()
