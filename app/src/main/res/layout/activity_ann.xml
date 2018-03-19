@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ann_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -96,16 +97,18 @@
 
             </LinearLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/announcement_attach"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <WebView
                 android:id="@+id/ann_content_web_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#fafafa" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/announcement_attach"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
