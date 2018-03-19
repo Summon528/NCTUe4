@@ -4,11 +4,13 @@ package com.team214.nctue4
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
+import android.webkit.WebSettings
 import com.team214.nctue4.utility.DataStatus
 import com.team214.nctue4.utility.OldE3Connect
 import com.team214.nctue4.utility.OldE3Interface
@@ -87,6 +89,7 @@ class AnnActivity : AppCompatActivity() {
                     ann_courseName.text = response.courseName
                     ann_date.text = response.beginDate
                     ann_content_web_view.settings.defaultTextEncodingName = "utf-8"
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) ann_content_web_view.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
                     ann_content_web_view.loadData(response.content, "text/html; charset=utf-8", "UTF-8")
                     ann_content_web_view.setBackgroundColor(Color.TRANSPARENT)
                     announcement_attach.layoutManager = LinearLayoutManager(this)
