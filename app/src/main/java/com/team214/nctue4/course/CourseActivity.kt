@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.team214.nctue4.BlankFragment
 import com.team214.nctue4.R
+import com.team214.nctue4.R.id.course_bottom_nav
 import com.team214.nctue4.utility.BottomNavigationViewHelper
 import com.team214.nctue4.utility.OldE3Connect
 import com.team214.nctue4.utility.OldE3Interface
@@ -50,7 +51,7 @@ class CourseActivity : AppCompatActivity() {
                 CourseAnnFragment()
             }
             R.id.course_nav_doc -> {
-                CourseDocFragment()
+                CourseDocListFragment()
             }
             R.id.course_nav_assignment -> {
                 BlankFragment()

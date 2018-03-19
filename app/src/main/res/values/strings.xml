@@ -55,4 +55,7 @@
     <string name="detect_same_file">There is already a file with the same name under download directory.\nWould you like to open the existed one or get the fresh one?</string>
     <string name="download_again">Download Again</string>
     <string name="open_existed">Open Existed</string>
+
+    <string name="download_completed">Download Completed</string>
+    <string name="open_file">Open</string>
 </resources>
