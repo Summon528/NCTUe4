@@ -62,4 +62,6 @@
     <!--Title-->
     <string name="title_ann">Announcement</string>
 
+    <string name="double_back_to_exit">Press the back button again to exit</string>
+
 </resources>

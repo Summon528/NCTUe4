@@ -2,12 +2,15 @@ package com.team214.nctue4
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -19,11 +22,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.status_login.*
+import android.widget.Toast
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var currentFragment = -1
+    private var backPressOnce = false
     lateinit var oldE3Service: OldE3Connect
     private lateinit var studentId: String
     private lateinit var studentPassword: String
@@ -99,7 +105,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            if (backPressOnce) {
+                super.onBackPressed()
+            } else {
+                backPressOnce = true
+                Toast.makeText(this, getString(R.string.double_back_to_exit), Toast.LENGTH_SHORT).show()
+                Handler().postDelayed(Runnable { backPressOnce = false }, 2000)
+            }
         }
     }
 
@@ -107,18 +119,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-                studentId = prefs.getString("studentId", "")
-                studentPassword = prefs.getString("studentPassword", "")
-                getData { switchFragment(currentFragment) }
-            }
-        }
     }
 
     private fun switchFragment(id: Int) {
@@ -141,7 +141,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_switch_account -> {
                 val intent = Intent(this, LoginActivity::class.java)
-                startActivityForResult(intent, 1)
+                intent.putExtra("logout", true)
+                startActivity(intent)
+                finish()
                 null
             }
             R.id.nav_about -> {

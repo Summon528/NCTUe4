@@ -20,23 +20,24 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
+
         <activity
             android:name="com.team214.nctue4.MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Main">
+            android:theme="@style/AppTheme.Main"/>
+
+        <activity
+            android:name="com.team214.nctue4.LoginActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.team214.nctue4.LoginActivity"
-            android:configChanges="orientation|screenSize"
-            android:parentActivityName="com.team214.nctue4.MainActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name="com.team214.nctue4.course.CourseActivity"
             android:configChanges="orientation|screenSize"
@@ -51,8 +52,7 @@
             android:name="com.team214.nctue4.AnnActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_ann"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
