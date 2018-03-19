@@ -32,13 +32,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
+                android:visibility="gone"
                 app:tabGravity="fill"
                 app:tabIndicatorHeight="2dp"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@android:color/white"
-                app:tabTextColor="@android:color/white"
-                android:visibility="gone">
-            </android.support.design.widget.TabLayout>
+                app:tabTextColor="@android:color/white"></android.support.design.widget.TabLayout>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -55,5 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="?android:attr/windowBackground"
         app:menu="@menu/navigation" />
+
 </LinearLayout>
