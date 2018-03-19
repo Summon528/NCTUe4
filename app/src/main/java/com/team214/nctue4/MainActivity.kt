@@ -1,8 +1,6 @@
 package com.team214.nctue4
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
@@ -10,7 +8,6 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,9 +18,7 @@ import com.team214.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.status_login.*
 import android.widget.Toast
-import java.util.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -66,38 +61,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         studentId = prefs.getString("studentId", "")
         studentPassword = prefs.getString("studentPassword", "")
-        if (studentId == "" && studentPassword == "") {
-            switchFragment(R.id.nav_switch_account)
-        } else {
-            currentFragment = if (savedInstanceState?.getInt("currentFragment") != null)
-                savedInstanceState.getInt("currentFragment")
-            else -1
-            getData { switchFragment(currentFragment) }
-        }
+        oldE3Service = OldE3Connect(studentId, studentPassword)
+        currentFragment = if (savedInstanceState?.getInt("currentFragment") != null)
+            savedInstanceState.getInt("currentFragment")
+        else -1
+        getData { switchFragment(currentFragment) }
     }
 
     private fun getData(completionHandler: () -> Unit) {
-        oldE3Service = OldE3Connect(studentId, studentPassword)
-        if (studentId == "" && studentPassword == "") {
-            login_request.visibility = View.VISIBLE
-            login_button.setOnClickListener {
-                switchFragment(R.id.nav_switch_account)
-            }
-            completionHandler()
-            main_container.visibility = View.GONE
-        } else {
-            login_request.visibility = View.GONE
-            oldE3Service.getLoginTicket { status, response ->
-                when (status) {
-                    OldE3Interface.Status.SUCCESS -> {
-                        nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_name).text = response!!.first
-                        nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_email).text = response.second
-                    }
+        oldE3Service.getLoginTicket { status, response ->
+            when (status) {
+                OldE3Interface.Status.SUCCESS -> {
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_name).text = response!!.first
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_email).text = response.second
                 }
-                main_container.visibility = View.VISIBLE
-                dataStatus = DataStatus.FINISHED
-                completionHandler()
             }
+            main_container.visibility = View.VISIBLE
+            dataStatus = DataStatus.FINISHED
+            completionHandler()
         }
     }
 
@@ -116,7 +97,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
@@ -139,7 +119,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 currentFragment = id
                 NewE3Fragment()
             }
-            R.id.nav_switch_account -> {
+            R.id.nav_log_out -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.putExtra("logout", true)
                 startActivity(intent)
@@ -165,7 +145,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun setActionBarTitle(title: String) {
-        supportActionBar!!.title = title
-    }
+
 }

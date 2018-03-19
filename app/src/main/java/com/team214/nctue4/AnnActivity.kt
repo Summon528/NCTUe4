@@ -65,6 +65,7 @@ class AnnActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ann)
+
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         getData()
@@ -85,12 +86,15 @@ class AnnActivity : AppCompatActivity() {
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
                     error_request.visibility = View.GONE
-                    ann_caption.text = response!!.caption
+                    // replace <img src="/...> to <img src="http://e3.nctu.edu.tw/..."
+                    val content = response!!.content.replace("(?<=(<img[.\\s\\S^>]{0,300}src[ \n]{0,300}=[ \n]{0,300}\"))(/)(?=([^/]))".toRegex(),
+                            "http://e3.nctu.edu.tw/")
+                    ann_caption.text = response.caption
                     ann_courseName.text = response.courseName
                     ann_date.text = response.beginDate
                     ann_content_web_view.settings.defaultTextEncodingName = "utf-8"
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) ann_content_web_view.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
-                    ann_content_web_view.loadData(response.content, "text/html; charset=utf-8", "UTF-8")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) ann_content_web_view.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
+                    ann_content_web_view.loadData(content, "text/html; charset=utf-8", "UTF-8")
                     ann_content_web_view.setBackgroundColor(Color.TRANSPARENT)
                     announcement_attach.layoutManager = LinearLayoutManager(this)
                     announcement_attach.adapter = AnnAttachmentAdapter(response.attachItems) {

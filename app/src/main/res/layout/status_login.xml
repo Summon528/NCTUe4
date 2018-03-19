@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/login_request"
+    android:id="@+id/status_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="gone">
@@ -21,13 +21,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/not_logged_in"
+            android:text="@string/login_error"
             android:textSize="25sp" />
 
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/login_relogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login" />
+            android:text="@string/login_again" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

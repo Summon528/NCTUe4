@@ -28,7 +28,8 @@
     <!--Status-->
     <string name="generic_error">Error</string>
     <string name="try_again">Try Again</string>
-    <string name="not_logged_in">Not Logged In</string>
+    <string name="login_error">Id or Password incorrect</string>
+    <string name="login_again">Login Again</string>
     <string name="constructing">This place is still under construction.</string>
     <string name="empty_request">There\'s nothing here</string>
 
