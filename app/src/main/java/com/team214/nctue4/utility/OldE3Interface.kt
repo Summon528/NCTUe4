@@ -1,5 +1,6 @@
 package com.team214.nctue4.utility
 
+import android.content.Context
 import com.team214.nctue4.model.*
 
 interface OldE3Interface {
@@ -24,7 +25,7 @@ interface OldE3Interface {
                      completionHandler: (status: OldE3Interface.Status,
                                          response: ArrayList<AnnItem>?) -> Unit)
 
-    fun getMaterialDocList(courseId: String, docType: String,
+    fun getMaterialDocList(courseId: String, context: Context,
                            completionHandler: (status: Status,
                                                response: ArrayList<DocGroupItem>?) -> Unit)
 
