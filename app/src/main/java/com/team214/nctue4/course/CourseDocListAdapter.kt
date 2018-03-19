@@ -16,7 +16,6 @@ class CourseDocListAdapter(private val dataSet: ArrayList<DocGroupItem>,
                      private val itemClickListener: (DocGroupItem) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bind(doc: DocGroupItem) {
             view.doc_group_display_name.text = doc.displayName
-            view.course_doc_date.text = doc.dateString
             view.course_doc_type.text = doc.docType
             view.course_doc_group_list_item.setOnClickListener {
                 itemClickListener(doc)

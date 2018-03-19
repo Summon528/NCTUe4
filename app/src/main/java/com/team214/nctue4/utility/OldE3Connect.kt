@@ -1,6 +1,7 @@
 package com.team214.nctue4.utility
 
 import android.content.Context
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -192,6 +193,7 @@ class OldE3Connect(private var studentId: String = "",
 
         val arrayOfMaterialDocData = response.getJSONObject("ArrayOfMaterialDocData")
         val data = arrayOfMaterialDocData.forceGetJsonArray("MaterialDocData")
+        Log.d("RESP",response.toString())
         (0 until data.length()).map { data.get(it) as JSONObject }
                 .forEach {
                     var dateArray: List<String> = it.getString("BeginDate").split("/")
@@ -200,14 +202,12 @@ class OldE3Connect(private var studentId: String = "",
                             it.getString("DocumentId"),
                             it.getString("CourseId"),
                             if (which == 0) context.getString(R.string.course_doc_type_handout)
-                            else context.getString(R.string.course_doc_type_reference),
-                            it.getString("BeginDate"),
-                            Date(dateArray[0].toInt(), dateArray[1].toInt(), dateArray[2].toInt())
+                            else context.getString(R.string.course_doc_type_reference)
                     ))
                 }
         getMaterialDocListStatus[which] = true
         if (getMaterialDocListStatus[0] && getMaterialDocListStatus[1]) {
-            docGroupItems?.sortByDescending { it.startDate }
+            docGroupItems?.sortByDescending { it.docType }
             completionHandler(OldE3Interface.Status.SUCCESS, docGroupItems)
             docGroupItems = null
         }

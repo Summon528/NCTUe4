@@ -61,6 +61,7 @@ class CourseAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         announcement_refreshLayout.setOnRefreshListener(this)
         val courseId = arguments!!.getString("courseId")
         val courseName = arguments!!.getString("courseName")
+        getActivity()!!.setTitle(courseName);
         oldE3Service.getCourseAnn(courseId, courseName) { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {

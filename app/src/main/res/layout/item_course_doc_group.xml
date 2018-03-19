@@ -38,27 +38,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:ellipsize="end"
             android:text="檔案的名字"
             android:textColor="#3d3d3d"
             android:textSize="20sp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
+             <TextView
                 android:id="@+id/course_doc_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="課程講義" />
 
-            <TextView
-                android:id="@+id/course_doc_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="2016/01/01" />
-        </RelativeLayout>
+
+
     </LinearLayout>
 
 
