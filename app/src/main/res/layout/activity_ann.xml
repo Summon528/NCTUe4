@@ -40,7 +40,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -96,16 +96,11 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/ann_content"
+            <WebView
+                android:id="@+id/ann_content_web_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
-                android:autoLink="all"
-                android:text="公告內容"
-                android:textColor="#434343"
-                android:textSize="18sp" />
+                android:layout_height="match_parent"
+                android:background="#fafafa" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/announcement_attach"

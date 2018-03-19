@@ -3,6 +3,7 @@ package com.team214.nctue4
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -83,15 +84,8 @@ class AnnActivity : AppCompatActivity() {
                     ann_caption.text = response!!.caption
                     ann_courseName.text = response.courseName
                     ann_date.text = response.beginDate
-                    ann_content.text =
-                            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
-                                Html.fromHtml(htmlCleaner(response.content))
-                                        .replace("\\n\\n+".toRegex(), "\n\n")
-                            } else {
-                                Html.fromHtml(htmlCleaner(response.content),
-                                        Html.FROM_HTML_MODE_COMPACT)
-                                        .replace("\\n\\n+".toRegex(), "\n\n")
-                            }
+                    ann_content_web_view.loadData(response.content,"text/html","UTF-8")
+                    ann_content_web_view.setBackgroundColor(Color.TRANSPARENT)
                     announcement_attach.layoutManager = LinearLayoutManager(this)
                     announcement_attach.adapter = AnnAttachmentAdapter(response.attachItems) {
                         uri = it.url
