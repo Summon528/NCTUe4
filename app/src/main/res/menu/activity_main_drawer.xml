@@ -27,11 +27,9 @@
     <group>
         <item
             android:id="@+id/nav_switch_account"
-            android:icon="@drawable/ic_account_circle_black_24dp"
-            android:title="@string/switch_account" />
+            android:title="@string/logout" />
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/ic_license"
             android:title="@string/license" />
     </group>
 
