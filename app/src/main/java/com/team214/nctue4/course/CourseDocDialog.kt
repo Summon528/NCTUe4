@@ -2,31 +2,23 @@ package com.team214.nctue4.course
 
 
 import android.Manifest
-import android.app.DownloadManager
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.FileProvider
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.webkit.MimeTypeMap
 import android.widget.Toast
 import com.team214.nctue4.R
 import com.team214.nctue4.model.AttachItem
 import com.team214.nctue4.utility.DataStatus
 import com.team214.nctue4.utility.OldE3Connect
 import com.team214.nctue4.utility.OldE3Interface
+import com.team214.nctue4.utility.downloadFile
 import kotlinx.android.synthetic.main.dialog_course_doc.*
-import java.io.File
 
 
 class CourseDocDialog : DialogFragment() {
@@ -81,59 +73,20 @@ class CourseDocDialog : DialogFragment() {
         course_doc_dialog_recycler_view?.adapter = CourseDocAdapter(docItems) {
             uri = it.url
             fileName = it.name
-            downloadFile()
+            downloadFile(fileName, uri, context!!, activity!!) {
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        0)
+            }
+            if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                dismiss()
+            }
+
         }
         progress_bar.visibility = View.GONE
 
     }
 
-    private fun downloadFile() {
-        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    0)
-        } else {
-            val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DOWNLOADS +
-                    "/" + getString(R.string.app_name) + "/" + fileName)
-            val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
-            val type = if (extension != null) {
-                MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
-            } else "application/octet-stream"
-
-            if (file.exists()) {
-                AlertDialog.Builder(context!!)
-                        .setMessage(getString(R.string.detect_same_file))
-                        .setPositiveButton(R.string.download_again, { dialog, which ->
-                            file.delete()
-                            downloadFile()
-                        })
-                        .setNegativeButton(R.string.open_existed, { dialog, which ->
-                            val fileUri = FileProvider.getUriForFile(context!!, context!!.applicationContext.packageName +
-                                    ".com.team214", file)
-
-                            val intent = Intent(Intent.ACTION_VIEW)
-                            intent.setDataAndType(fileUri, type)
-                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            startActivity(intent)
-                            dismiss()
-                        })
-                        .show()
-            } else {
-                val request = DownloadManager.Request(Uri.parse(uri))
-                request.setTitle(fileName)
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                val manager = activity!!.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                request.setDestinationUri(Uri.fromFile(file))
-                request.setVisibleInDownloadsUi(true)
-                request.setMimeType(type)
-                request.allowScanningByMediaScanner()
-                Toast.makeText(context, R.string.download_start, Toast.LENGTH_SHORT).show()
-                manager.enqueue(request)
-                dismiss()
-            }
-        }
-
-    }
 
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
@@ -141,7 +94,8 @@ class CourseDocDialog : DialogFragment() {
             0 -> {
                 if ((grantResults.isNotEmpty() &&
                                 grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    downloadFile()
+                    downloadFile(fileName, uri, context!!, activity!!, null)
+                    dismiss()
                 }
                 return
             }
