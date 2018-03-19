@@ -86,7 +86,8 @@ class AnnActivity : AppCompatActivity() {
                     ann_caption.text = response!!.caption
                     ann_courseName.text = response.courseName
                     ann_date.text = response.beginDate
-                    ann_content_web_view.loadData(response.content, "text/html", "UTF-8")
+                    ann_content_web_view.settings.defaultTextEncodingName = "utf-8"
+                    ann_content_web_view.loadData(response.content, "text/html; charset=utf-8", "UTF-8")
                     ann_content_web_view.setBackgroundColor(Color.TRANSPARENT)
                     announcement_attach.layoutManager = LinearLayoutManager(this)
                     announcement_attach.adapter = AnnAttachmentAdapter(response.attachItems) {
