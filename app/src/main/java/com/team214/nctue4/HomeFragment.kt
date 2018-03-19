@@ -41,6 +41,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        getActivity()!!.setTitle(R.string.app_name);
         return inflater.inflate(R.layout.fragment_home, container,false)
     }
 

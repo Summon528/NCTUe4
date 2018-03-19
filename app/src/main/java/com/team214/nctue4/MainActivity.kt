@@ -162,4 +162,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    fun setActionBarTitle(title: String) {
+        supportActionBar!!.title = title
+    }
 }

@@ -58,4 +58,8 @@
 
     <string name="download_completed">Download Completed</string>
     <string name="open_file">Open</string>
+
+    <!--Title-->
+    <string name="title_ann">Announcement</string>
+
 </resources>
