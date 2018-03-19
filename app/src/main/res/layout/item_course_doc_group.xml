@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/course_doc_group_list_item"
+    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp">
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
-        android:paddingRight="16dp"
-        android:gravity="right">
+        android:gravity="end"
+        android:paddingEnd="16dp">
 
         <ImageView
             android:layout_width="10dp"
@@ -31,7 +30,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="8.5"
-        android:paddingRight="10dp">
+        android:orientation="vertical"
+        android:paddingEnd="16dp">
 
         <TextView
             android:id="@+id/doc_group_display_name"
@@ -41,7 +41,26 @@
             android:text="檔案的名字"
             android:textColor="#3d3d3d"
             android:textSize="20sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/course_doc_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="課程講義" />
+
+            <TextView
+                android:id="@+id/course_doc_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="2016/01/01" />
+        </RelativeLayout>
     </LinearLayout>
 
 
 </LinearLayout>
+

@@ -11,8 +11,8 @@ import com.team214.nctue4.model.DocGroupItem
 import com.team214.nctue4.utility.DataStatus
 import com.team214.nctue4.utility.OldE3Connect
 import com.team214.nctue4.utility.OldE3Interface
+import kotlinx.android.synthetic.main.fragment_course_doc.*
 import kotlinx.android.synthetic.main.status_empty.*
-import kotlinx.android.synthetic.main.fragment_course_doc_list.*
 import kotlinx.android.synthetic.main.status_error.*
 
 
@@ -33,7 +33,7 @@ class CourseDocListFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_course_doc_list, container, false)
+        return inflater.inflate(R.layout.fragment_course_doc, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,9 +46,8 @@ class CourseDocListFragment : Fragment() {
         progress_bar.visibility = View.VISIBLE
 
         oldE3Service = (activity as CourseActivity).oldE3Service
-        val docType = arguments!!.getString("docType")
         val courseId = arguments!!.getString("courseId")
-        oldE3Service.getMaterialDocList(courseId, docType) { status, response ->
+        oldE3Service.getMaterialDocList(courseId, context!!) { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
                     updateList(response!!)
@@ -75,7 +74,7 @@ class CourseDocListFragment : Fragment() {
                 bundle.putString("documentId", it.documentId)
                 bundle.putString("courseId", it.courseId)
                 dialog.arguments = bundle
-                dialog.show(fragmentManager, "TAG")
+                dialog.show(fragmentManager,"TAG")
             }
             course_doc_list_recycler_view.visibility = View.VISIBLE
         }

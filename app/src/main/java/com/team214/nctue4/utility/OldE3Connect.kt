@@ -1,11 +1,17 @@
 package com.team214.nctue4.utility
 
+import android.content.Context
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
-import com.team214.nctue4.model.*
+import com.team214.nctue4.R
+import com.team214.nctue4.model.AnnItem
+import com.team214.nctue4.model.AttachItem
+import com.team214.nctue4.model.CourseItem
+import com.team214.nctue4.model.DocGroupItem
 import fr.arnaudguyon.xmltojsonlib.XmlToJson
 import org.json.JSONObject
+import java.util.*
 
 
 class OldE3Connect(private var studentId: String = "",
@@ -156,31 +162,57 @@ class OldE3Connect(private var studentId: String = "",
         }
     }
 
-    override fun getMaterialDocList(courseId: String, docType: String,
+
+    private lateinit var getMaterialDocListStatus: Array<Boolean>
+    private var docGroupItems: ArrayList<DocGroupItem>? = null
+    override fun getMaterialDocList(courseId: String, context: Context,
                                     completionHandler: (status: OldE3Interface.Status,
                                                         response: ArrayList<DocGroupItem>?) -> Unit) {
-        post("/GetMaterialDocList", hashMapOf(
-                "loginTicket" to loginTicket,
-                "courseId" to courseId,
-                "docType" to docType
-        )) { status, response ->
-            if (status == OldE3Interface.Status.SUCCESS) {
-                val arrayOfMaterialDocData = response!!.getJSONObject("ArrayOfMaterialDocData")
-                val data = arrayOfMaterialDocData.forceGetJsonArray("MaterialDocData")
-                val docGroupItems = ArrayList<DocGroupItem>()
-                (0 until data.length()).map { data.get(it) as JSONObject }
-                        .forEach {
-                            docGroupItems.add(DocGroupItem(
-                                    it.getString("DisplayName"),
-                                    it.getString("DocumentId"),
-                                    it.getString("CourseId")))
-                        }
-                completionHandler(status, docGroupItems)
-            } else {
-                completionHandler(status, null)
+        docGroupItems = ArrayList()
+        getMaterialDocListStatus = Array(2, { false })
+        for (i in 0..1) {
+            post("/GetMaterialDocList", hashMapOf(
+                    "loginTicket" to loginTicket,
+                    "courseId" to courseId,
+                    "docType" to i.toString()
+            )) { status, response ->
+                if (status == OldE3Interface.Status.SUCCESS) {
+                    processMaterialDocList(i, response!!, context, completionHandler)
+                } else {
+                    completionHandler(status, null)
+                }
             }
         }
     }
+
+
+    private fun processMaterialDocList(which: Int, response: JSONObject, context: Context,
+                                       completionHandler: (status: OldE3Interface.Status,
+                                                           response: ArrayList<DocGroupItem>?) -> Unit) {
+
+        val arrayOfMaterialDocData = response.getJSONObject("ArrayOfMaterialDocData")
+        val data = arrayOfMaterialDocData.forceGetJsonArray("MaterialDocData")
+        (0 until data.length()).map { data.get(it) as JSONObject }
+                .forEach {
+                    var dateArray: List<String> = it.getString("BeginDate").split("/")
+                    docGroupItems!!.add(DocGroupItem(
+                            it.getString("DisplayName"),
+                            it.getString("DocumentId"),
+                            it.getString("CourseId"),
+                            if (which == 0) context.getString(R.string.course_doc_type_handout)
+                            else context.getString(R.string.course_doc_type_reference),
+                            it.getString("BeginDate"),
+                            Date(dateArray[0].toInt(), dateArray[1].toInt(), dateArray[2].toInt())
+                    ))
+                }
+        getMaterialDocListStatus[which] = true
+        if (getMaterialDocListStatus[0] && getMaterialDocListStatus[1]) {
+            docGroupItems?.sortByDescending { it.startDate }
+            completionHandler(OldE3Interface.Status.SUCCESS, docGroupItems)
+            docGroupItems = null
+        }
+    }
+
 
     override fun getAnnouncementDetail(bulletinId: String, from: Int?, courseId: String,
                                        completionHandler: (status: OldE3Interface.Status,
@@ -195,8 +227,7 @@ class OldE3Connect(private var studentId: String = "",
                 "bulType" to "1"
         )) { status, response ->
             if (status == OldE3Interface.Status.SUCCESS) {
-                val data = response!!.getJSONObject("ArrayOfBulletinData").
-                        forceGetJsonArray("BulletinData")
+                val data = response!!.getJSONObject("ArrayOfBulletinData").forceGetJsonArray("BulletinData")
                 (0 until data.length()).map { data.getJSONObject(it) }
                         .forEach {
                             if (it.getString("BulletinId") == bulletinId) {

@@ -9,9 +9,9 @@ import com.team214.nctue4.model.AttachItem
 import com.team214.nctue4.utility.FileNameToIcon
 import kotlinx.android.synthetic.main.item_course_doc.view.*
 
-class CourseDocAdapter(private val dataSet: ArrayList<AttachItem>,
-                       private val itemClickListener: (AttachItem) -> Unit) :
-        RecyclerView.Adapter<CourseDocAdapter.ViewHolder>() {
+class CourseDocDialogAdapter(private val dataSet: ArrayList<AttachItem>,
+                             private val itemClickListener: (AttachItem) -> Unit) :
+        RecyclerView.Adapter<CourseDocDialogAdapter.ViewHolder>() {
     class ViewHolder(val view: View, private val itemClickListener: (AttachItem) -> Unit) :
             RecyclerView.ViewHolder(view) {
         fun bind(attach: AttachItem) {
@@ -24,7 +24,7 @@ class CourseDocAdapter(private val dataSet: ArrayList<AttachItem>,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): CourseDocAdapter.ViewHolder {
+                                    viewType: Int): CourseDocDialogAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_course_doc, parent, false)
         return ViewHolder(view, itemClickListener)
