@@ -74,6 +74,7 @@ class CourseDocListFragment : Fragment() {
                 bundle.putString("documentId", it.documentId)
                 bundle.putString("courseId", it.courseId)
                 dialog.arguments = bundle
+                dialog.show(fragmentManager, "TAG")
             }
             course_doc_list_recycler_view.visibility = View.VISIBLE
         }
