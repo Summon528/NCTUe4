@@ -8,8 +8,6 @@
     tools:context="com.team214.nctue4.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <include layout="@layout/status_login" />
-
     <FrameLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
