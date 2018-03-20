@@ -11,8 +11,8 @@ import okhttp3.Response
 import java.io.IOException
 
 
-class NewE3Connect(private var studentId: String = "0616074",
-                   private var studentPassword: String = "s0943920224"
+class NewE3Connect(private var studentId: String = "",
+                   private var studentPassword: String = ""
                    ) : NewE3Interface {
 
     private val tag = NewE3Connect::class.java.simpleName
