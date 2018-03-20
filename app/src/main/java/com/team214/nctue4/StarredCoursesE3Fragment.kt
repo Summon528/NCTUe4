@@ -74,6 +74,7 @@ class StarredCoursesE3Fragment : Fragment() {
                     ArrayList(courseItems.filter { oldE3StarredHome.contains(it.courseId) })
                 else ArrayList(courseItems.filter { oldE3Starred.contains(it.courseId) })
         old_e3_recycler_view?.layoutManager = LinearLayoutManager(context)
+        old_e3_recycler_view?.isNestedScrollingEnabled = false
         old_e3_recycler_view?.adapter = CourseAdapter(starredCourse, HashSet(oldE3Starred),
                 HashSet(oldE3StarredHome), context, fun(view: View, courseId: String) {
             if (oldE3StarredHome.contains(courseId)) {
@@ -87,8 +88,8 @@ class StarredCoursesE3Fragment : Fragment() {
                 oldE3Starred.add(courseId)
                 view.course_star.setColorFilter(ContextCompat.getColor(context!!, R.color.md_orange_500))
             }
-            prefs.edit().putStringSet("oldE3Starred", oldE3Starred).apply()
-            prefs.edit().putStringSet("oldE3StarredHome", oldE3StarredHome).apply()
+            prefs.edit().putStringSet("oldE3Starred", oldE3Starred).commit()
+            prefs.edit().putStringSet("oldE3StarredHome", oldE3StarredHome).commit()
         }, {
             val intent = Intent()
             intent.setClass(activity, CourseActivity::class.java)

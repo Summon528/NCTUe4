@@ -81,6 +81,7 @@ class HomeAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             ann_login_recycler_view?.layoutManager = LinearLayoutManager(context)
             ann_login_recycler_view?.addItemDecoration(DividerItemDecoration(context,
                     LinearLayoutManager.VERTICAL))
+            ann_login_recycler_view?.isNestedScrollingEnabled = false
             ann_login_recycler_view?.adapter = HomeAnnAdapter(
                     if (arguments?.getBoolean("home") != null)
                         annItems.slice(0..min(2, annItems.size - 1))

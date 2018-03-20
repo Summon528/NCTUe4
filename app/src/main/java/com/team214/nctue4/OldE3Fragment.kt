@@ -83,8 +83,8 @@ class OldE3Fragment : Fragment() {
                 oldE3Starred.add(courseId)
                 view.course_star.setColorFilter(ContextCompat.getColor(context!!, R.color.md_orange_500))
             }
-            prefs.edit().putStringSet("oldE3Starred", oldE3Starred).apply()
-            prefs.edit().putStringSet("oldE3StarredHome", oldE3StarredHome).apply()
+            prefs.edit().putStringSet("oldE3Starred", oldE3Starred).commit()
+            prefs.edit().putStringSet("oldE3StarredHome", oldE3StarredHome).commit()
         }, {
             val intent = Intent()
             intent.setClass(activity, CourseActivity::class.java)

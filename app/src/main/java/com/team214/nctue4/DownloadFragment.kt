@@ -33,6 +33,7 @@ class DownloadFragment : Fragment() {
             val files: Array<File> = dir.listFiles()
             files.sortByDescending { it.lastModified() }
             download_recycler?.layoutManager = LinearLayoutManager(context)
+            download_recycler?.isNestedScrollingEnabled = false
             download_recycler?.adapter = DownloadAdapter(context!!,
                     if (arguments?.getBoolean("home") != null)
                         files.slice(0..min(4, files.size - 1))
