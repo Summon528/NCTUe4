@@ -67,18 +67,16 @@ class OldE3Fragment : Fragment() {
     }
 
     private fun updateList(courseItems: ArrayList<CourseItem>) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val stringSet = prefs.getStringSet("oldE3Starred", HashSet<String>())
         old_e3_recycler_view?.layoutManager = LinearLayoutManager(context)
-        old_e3_recycler_view?.adapter = CourseAdapter(courseItems, fun(view: View, courseId: String) {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val stringSet = prefs.getStringSet("oldE3Starred", HashSet<String>())
+        old_e3_recycler_view?.adapter = CourseAdapter(courseItems, true, HashSet(stringSet), fun(view: View, courseId: String) {
             if (stringSet.contains(courseId)) {
                 stringSet.remove(courseId)
                 view.course_star.setImageResource(R.drawable.ic_star_border_black_24dp)
-                Log.d("1", "1")
             } else {
                 stringSet.add(courseId)
                 view.course_star.setImageResource(R.drawable.ic_star_black_24dp)
-                Log.d("2", "2")
             }
             prefs.edit().putStringSet("oldE3Starred", stringSet).apply()
         }, {
