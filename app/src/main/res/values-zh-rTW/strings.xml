@@ -41,7 +41,6 @@
     <!--Title Activity-->
     <string name="title_activity_ann">公告</string>
     <string name="try_again">再試一次</string>
-    <string name="not_logged_in">尚未登入</string>
     <string name="download_start">開始下載&#8230;</string>
     <string name="download">下載</string>
     <string name="empty_request">這裡空空如也</string>
