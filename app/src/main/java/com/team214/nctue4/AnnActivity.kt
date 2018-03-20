@@ -97,7 +97,7 @@ class AnnActivity : AppCompatActivity() {
                     ann_content_web_view.loadData(content, "text/html; charset=utf-8", "UTF-8")
                     ann_content_web_view.setBackgroundColor(Color.TRANSPARENT)
                     announcement_attach.layoutManager = LinearLayoutManager(this)
-                    announcement_attach.adapter = AnnAttachmentAdapter(response.attachItems) {
+                    announcement_attach.adapter = AnnAttachmentAdapter(this, response.attachItems) {
                         uri = it.url
                         fileName = it.name
                         downloadFile(fileName, uri, this, this, ann_root) {
