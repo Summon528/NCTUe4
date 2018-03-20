@@ -70,7 +70,7 @@ class CourseDocDialog : DialogFragment() {
 
     private fun updateList(docItems: ArrayList<AttachItem>) {
         course_doc_dialog_recycler_view?.layoutManager = LinearLayoutManager(context)
-        course_doc_dialog_recycler_view?.adapter = CourseDocDialogAdapter(docItems) {
+        course_doc_dialog_recycler_view?.adapter = CourseDocDialogAdapter(context!!, docItems) {
             uri = it.url
             fileName = it.name
             downloadFile(fileName, uri, context!!, activity!!, activity!!.findViewById(R.id.snack_bar)) {

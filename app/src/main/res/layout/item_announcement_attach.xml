@@ -8,9 +8,9 @@
     android:paddingTop="15dp">
 
     <View
+        android:id="@+id/announcement_attach_bar"
         android:layout_width="3dp"
-        android:layout_height="match_parent"
-        android:background="#000000" />
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:paddingTop="8dp"
