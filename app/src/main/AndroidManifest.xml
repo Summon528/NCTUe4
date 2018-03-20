@@ -32,7 +32,8 @@
         <activity
             android:name="com.team214.nctue4.LoginActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

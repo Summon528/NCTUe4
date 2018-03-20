@@ -2,6 +2,7 @@ package com.team214.nctue4
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
@@ -23,8 +24,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         if (intent.getBooleanExtra("logout", false)) {
             Toast.makeText(this@LoginActivity, getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
@@ -41,6 +42,8 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
         }
+
+        setContentView(R.layout.activity_login)
         login_button.setOnClickListener {
             student_id.isEnabled = false
             student_password.isEnabled = false

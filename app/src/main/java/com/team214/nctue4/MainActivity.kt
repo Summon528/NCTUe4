@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme_Main)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         studentId = prefs.getString("studentId", "")
         studentPassword = prefs.getString("studentPassword", "")
@@ -65,11 +67,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         currentFragment = if (savedInstanceState?.getInt("currentFragment") != null)
             savedInstanceState.getInt("currentFragment")
         else -1
-        getData { switchFragment(currentFragment) }
+        getData {
+            switchFragment(currentFragment)
+        }
+
+
     }
 
     private fun getData(completionHandler: () -> Unit) {
         oldE3Service.getLoginTicket { status, response ->
+            completionHandler()
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
                     nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_name).text = response!!.first
@@ -78,7 +85,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             main_container.visibility = View.VISIBLE
             dataStatus = DataStatus.FINISHED
-            completionHandler()
+
         }
     }
 
