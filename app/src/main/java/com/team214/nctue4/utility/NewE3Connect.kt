@@ -1,14 +1,14 @@
 package com.team214.nctue4.utility
 
 import android.util.Log
-import com.android.volley.toolbox.StringRequest
 import com.team214.nctue4.model.AnnItem
 import org.jsoup.Jsoup
 import kotlin.collections.ArrayList
-import com.android.volley.toolbox.HttpHeaderParser
-import com.android.volley.*
-import com.android.volley.AuthFailureError
 import kotlin.collections.HashMap
+import okhttp3.*
+import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
 
 
 class NewE3Connect(private var studentId: String = "0616074",
@@ -21,46 +21,34 @@ class NewE3Connect(private var studentId: String = "0616074",
                      secondTry: Boolean = false,
                      completionHandler: (status: NewE3Interface.Status,
                                          response: String?, cookie: String) -> Unit) {
-        var mCookie = ""
+        val client = OkHttpClient().newBuilder().followRedirects(false).followSslRedirects(false).build()
         val url = "https://e3new.nctu.edu.tw$path"
-        val stringRequest = object : StringRequest(Request.Method.POST, url,
-                Response.Listener<String> { response ->
-                    completionHandler(NewE3Interface.Status.SUCCESS, response, mCookie)
-                },
-                Response.ErrorListener { _ ->
-                    completionHandler(NewE3Interface.Status.SERVICE_ERROR, null, mCookie)
-                }) {
 
-            override fun getHeaders(): Map<String, String> {
-                val localHashMap = HashMap<String,String>()
-                localHashMap.put("Cookie", cookie)//向请求头部添加Cookie-本地得到cookie
-                Log.d("header", localHashMap.toString())
-                return localHashMap
-            }
+        val formBody = FormBody.Builder().add("username", studentId).add("password", studentPassword).build()
+        val request = Request.Builder().url(url).post(formBody).build()
 
-            override fun parseNetworkResponse(
-                    response: NetworkResponse): Response<String> {
-                    val responseHeaders = response.headers
-                    Log.d("key",response.headers.keys.toString())
-                    if (responseHeaders.containsKey("Set-Cookie")){
-                        mCookie = responseHeaders["Set-Cookie"]!!//此处获取到Cookie，可以保存到缓存中下次使用
-                        Log.d("cookie: ", cookie)
-                    }
-                    val dataString = String(response.data)
-                    return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response))
+        val call = client.newCall(request)
+        call.enqueue(object: Callback{
+            override fun onFailure(call: Call, e: IOException){
+                completionHandler(NewE3Interface.Status.SERVICE_ERROR, null, "")
             }
-
-            override fun getParams(): Map<String, String> {
-                return params
+            override fun onResponse(call: Call, response: Response){
+                Log.d("content", response.toString())
+                val mCookie = response.headers().toMultimap()["Set-Cookie"]!!
+                if (mCookie.size > 1){
+                    Log.d("cookies", mCookie.toString())
+                    completionHandler(NewE3Interface.Status.SUCCESS, response.body().string(), mCookie[1])
+                }
+                completionHandler(NewE3Interface.Status.SUCCESS, response.body().string(), "")
             }
-        }
-        VolleyHandler.instance?.addToRequestQueue(stringRequest, tag)
+        })
     }
 
     override fun getCookie(completionHandler: (status: NewE3Interface.Status, response: String?) -> Unit) {
         post("", "/login/index.php", hashMapOf(
-                "username" to studentId,
-                "password" to studentPassword
+                "username" to "0616074",
+                "password" to "s0943924",
+                "rememberusername" to "1"
         )) { status, response, cookie ->
             if (status == NewE3Interface.Status.SUCCESS) {
                 Log.d("get", cookie)
@@ -73,7 +61,7 @@ class NewE3Connect(private var studentId: String = "0616074",
 
     override fun getAnn(cookie: String, completionHandler: (status: NewE3Interface.Status, response: ArrayList<AnnItem>?) -> Unit) {
         Log.d("yescookie", cookie)
-        post(cookie, "/my/", params = HashMap()
+        post(cookie, "/my/", HashMap()
         ) { status, response, cookie ->
             if (status == NewE3Interface.Status.SUCCESS) {
                 Log.d("getmy", response)
