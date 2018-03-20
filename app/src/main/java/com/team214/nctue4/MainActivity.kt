@@ -12,13 +12,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import com.team214.nctue4.utility.DataStatus
 import com.team214.nctue4.utility.OldE3Connect
 import com.team214.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -114,9 +114,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 currentFragment = id
                 HomeFragment()
             }
+            R.id.nav_ann -> {
+                currentFragment = id
+                HomeAnnFragment()
+            }
             R.id.nav_starred_courses -> {
                 currentFragment = id
                 StarredCoursesE3Fragment()
+            }
+            R.id.nav_download -> {
+                currentFragment = id
+                DownloadFragment()
             }
             R.id.nav_old_e3 -> {
                 currentFragment = id

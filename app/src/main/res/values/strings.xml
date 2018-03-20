@@ -8,6 +8,8 @@
 
     <!--Nav Drawer-->
     <string name="home">Home</string>
+    <string name="latest_ann">Announcement</string>
+    <string name="download_history">Download History</string>
     <string name="starred_courses">Starred Courses</string>
     <string name="old_e3">Old e3</string>
     <string name="new_e3">New e3</string>

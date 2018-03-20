@@ -11,9 +11,17 @@
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/home" />
         <item
+            android:id="@+id/nav_ann"
+            android:icon="@drawable/ic_announcement_black_24dp"
+            android:title="@string/title_activity_ann" />
+        <item
             android:id="@+id/nav_starred_courses"
             android:icon="@drawable/ic_star_black_24dp"
             android:title="@string/starred_courses" />
+        <item
+            android:id="@+id/nav_download"
+            android:icon="@drawable/ic_file_download_black_24dp"
+            android:title="@string/download_history" />
         <item
             android:id="@+id/nav_old_e3"
             android:icon="@drawable/ic_keyboard_arrow_right_black_24dp"

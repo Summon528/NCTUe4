@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.team214.nctue4.model.AnnItem
 import kotlinx.android.synthetic.main.item_home_announcement.view.*
 
-class HomeAnnAdapter(private val dataSet: ArrayList<AnnItem>,
+class HomeAnnAdapter(private val dataSet: List<AnnItem>,
                      private val itemClickListener: (AnnItem) -> Unit) :
         RecyclerView.Adapter<HomeAnnAdapter.ViewHolder>() {
 
