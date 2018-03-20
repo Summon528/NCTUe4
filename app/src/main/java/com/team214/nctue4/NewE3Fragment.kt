@@ -2,6 +2,7 @@ package com.team214.nctue4
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ class NewE3Fragment : Fragment() {
         newE3Service.getCookie { status, response ->
             when (status) {
                 NewE3Interface.Status.SUCCESS -> {
-                    Toast.makeText(context, "get cookie", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(context, "get cookie", Toast.LENGTH_LONG).show()
                     getData(response!!)
                 }
             }
@@ -33,7 +34,8 @@ class NewE3Fragment : Fragment() {
         newE3Service.getAnn(cookie!!) { status, response ->
             when (status) {
                 NewE3Interface.Status.SUCCESS -> {
-                    Toast.makeText(context, "get ann", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(context, "get ann", Toast.LENGTH_LONG).show()
+                    Log.d("ya", "yaaaa")
                 }
             }
         }
