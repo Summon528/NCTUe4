@@ -31,7 +31,7 @@ class DownloadFragment : Fragment() {
         val dir = File(path + File.separator + "Download")
         if (dir.exists()) {
             val files: Array<File> = dir.listFiles()
-            files.sortBy { it.lastModified() }
+            files.sortByDescending { it.lastModified() }
             download_recycler?.layoutManager = LinearLayoutManager(context)
             download_recycler?.adapter = DownloadAdapter(context!!,
                     if (arguments?.getBoolean("home") != null)
