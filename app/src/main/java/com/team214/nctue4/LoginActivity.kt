@@ -2,6 +2,7 @@ package com.team214.nctue4
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
@@ -11,6 +12,7 @@ import android.widget.Toast
 import com.team214.nctue4.utility.OldE3Connect
 import com.team214.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_login.*
+import android.support.v4.content.ContextCompat.startActivity
 
 
 class LoginActivity : AppCompatActivity() {
@@ -21,22 +23,27 @@ class LoginActivity : AppCompatActivity() {
         if (::oldE3Service.isInitialized) oldE3Service.cancelPendingRequests()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                return true
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
+        super.onCreate(savedInstanceState)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        if (intent.getBooleanExtra("logout", false)) {
+            Toast.makeText(this@LoginActivity, getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
+            val prefsEditor = prefs.edit()
+            prefsEditor.remove("studentId")
+            prefsEditor.remove("studentPassword")
+            prefsEditor.apply()
+        } else {
+            val studentId = prefs.getString("studentId", "")
+            val studentPassword = prefs.getString("studentPassword", "")
+            if (studentId != "" && studentPassword != "") {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
-        return super.onOptionsItemSelected(item)
-    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        student_id.setText(prefs.getString("studentId", ""))
-        student_password.setText(prefs.getString("studentPassword", ""))
         login_button.setOnClickListener {
             student_id.isEnabled = false
             student_password.isEnabled = false
@@ -53,9 +60,8 @@ class LoginActivity : AppCompatActivity() {
                         prefsEditor.putString("studentName", response!!.first)
                         prefsEditor.putString("studentEmail", response.second)
                         prefsEditor.apply()
-                        login_progressbar.visibility = View.GONE
-                        val intent = Intent()
-                        setResult(Activity.RESULT_OK, intent)
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
                         Toast.makeText(this@LoginActivity, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
                         finish()
                     }
@@ -63,29 +69,19 @@ class LoginActivity : AppCompatActivity() {
                         login_error_text_view.text = getString(R.string.login_id_or_password_error)
                         login_error_text_view.visibility = View.VISIBLE
                         login_progressbar.visibility = View.GONE
+                        student_id.isEnabled = true
+                        student_password.isEnabled = true
                     }
                     else -> {
                         login_error_text_view.text = getString(R.string.generic_error)
                         login_error_text_view.visibility = View.VISIBLE
                         login_progressbar.visibility = View.GONE
+                        student_id.isEnabled = true
+                        student_password.isEnabled = true
                     }
                 }
-                student_id.isEnabled = true
-                student_password.isEnabled = true
             }
-        }
 
-        logout_button.setOnClickListener {
-            val prefsEditor = prefs.edit()
-            prefsEditor.remove("studentId")
-            prefsEditor.remove("studentPassword")
-            prefsEditor.remove("studentName")
-            prefsEditor.remove("studentEmail")
-            prefsEditor.apply()
-            val intent = Intent()
-            setResult(Activity.RESULT_OK, intent)
-            Toast.makeText(this@LoginActivity, getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
-            finish()
         }
     }
 }

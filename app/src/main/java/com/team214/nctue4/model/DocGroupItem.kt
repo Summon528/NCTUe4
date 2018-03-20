@@ -5,6 +5,4 @@ import java.util.*
 class DocGroupItem(val displayName: String,
                    val documentId: String,
                    val courseId: String,
-                   val docType: String,
-                   val dateString :String,
-                   val startDate :  Date)
+                   val docType: String)

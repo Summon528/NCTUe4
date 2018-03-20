@@ -32,6 +32,7 @@ class OldE3Fragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        getActivity()!!.setTitle(R.string.old_e3);
         return inflater.inflate(R.layout.fragment_old_e3, container,false)
     }
 

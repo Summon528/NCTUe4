@@ -1,8 +1,8 @@
 package com.team214.nctue4
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -18,12 +18,13 @@ import com.team214.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.status_login.*
+import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var currentFragment = -1
+    private var backPressOnce = false
     lateinit var oldE3Service: OldE3Connect
     private lateinit var studentId: String
     private lateinit var studentPassword: String
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme_Main)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -57,41 +59,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         studentId = prefs.getString("studentId", "")
         studentPassword = prefs.getString("studentPassword", "")
-        if (studentId == "" && studentPassword == "") {
-            switchFragment(R.id.nav_switch_account)
-        } else {
-            currentFragment = if (savedInstanceState?.getInt("currentFragment") != null)
-                savedInstanceState.getInt("currentFragment")
-            else -1
-            getData { switchFragment(currentFragment) }
+        oldE3Service = OldE3Connect(studentId, studentPassword)
+        currentFragment = if (savedInstanceState?.getInt("currentFragment") != null)
+            savedInstanceState.getInt("currentFragment")
+        else -1
+        getData {
+            switchFragment(currentFragment)
         }
+
+
     }
 
     private fun getData(completionHandler: () -> Unit) {
-        oldE3Service = OldE3Connect(studentId, studentPassword)
-        if (studentId == "" && studentPassword == "") {
-            login_request.visibility = View.VISIBLE
-            login_button.setOnClickListener {
-                switchFragment(R.id.nav_switch_account)
-            }
+        oldE3Service.getLoginTicket { status, response ->
             completionHandler()
-            main_container.visibility = View.GONE
-        } else {
-            login_request.visibility = View.GONE
-            oldE3Service.getLoginTicket { status, response ->
-                when (status) {
-                    OldE3Interface.Status.SUCCESS -> {
-                        nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_name).text = response!!.first
-                        nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_email).text = response.second
-                    }
+            when (status) {
+                OldE3Interface.Status.SUCCESS -> {
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_name).text = response!!.first
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.student_email).text = response.second
                 }
-                main_container.visibility = View.VISIBLE
-                dataStatus = DataStatus.FINISHED
-                completionHandler()
             }
+            main_container.visibility = View.VISIBLE
+            dataStatus = DataStatus.FINISHED
+
         }
     }
 
@@ -99,26 +93,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            if (backPressOnce) {
+                super.onBackPressed()
+            } else {
+                backPressOnce = true
+                Toast.makeText(this, getString(R.string.double_back_to_exit), Toast.LENGTH_SHORT).show()
+                Handler().postDelayed(Runnable { backPressOnce = false }, 2000)
+            }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-                studentId = prefs.getString("studentId", "")
-                studentPassword = prefs.getString("studentPassword", "")
-                getData { switchFragment(currentFragment) }
-            }
-        }
     }
 
     private fun switchFragment(id: Int) {
@@ -139,9 +126,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 currentFragment = id
                 NewE3Fragment()
             }
-            R.id.nav_switch_account -> {
+            R.id.nav_log_out -> {
                 val intent = Intent(this, LoginActivity::class.java)
-                startActivityForResult(intent, 1)
+                intent.putExtra("logout", true)
+                startActivity(intent)
+                finish()
                 null
             }
             R.id.nav_about -> {
@@ -162,4 +151,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
+
 }

@@ -55,4 +55,7 @@
     <string name="download_completed">下載完成</string>
     <string name="open_file">開啟</string>
 
+    <!--Title-->
+    <string name="title_ann">公告</string>
+    <string name="double_back_to_exit">再按一次返回鍵退出</string>
 </resources>

@@ -20,7 +20,7 @@
     <string name="student_password">Password</string>
     <string name="login_hint">Please enter ID and e3 password.</string>
     <string name="login">LogIn</string>
-    <string name="logout">LogOut</string>
+    <string name="logout">Log out</string>
     <string name="login_id_or_password_error">ID or Password incorrect</string>
     <string name="login_success">Login Success</string>
     <string name="logout_success">Logout Success</string>
@@ -28,7 +28,8 @@
     <!--Status-->
     <string name="generic_error">Error</string>
     <string name="try_again">Try Again</string>
-    <string name="not_logged_in">Not Logged In</string>
+    <string name="login_error">Id or Password incorrect</string>
+    <string name="login_again">Login Again</string>
     <string name="constructing">This place is still under construction.</string>
     <string name="empty_request">There\'s nothing here</string>
 
@@ -58,4 +59,10 @@
 
     <string name="download_completed">Download Completed</string>
     <string name="open_file">Open</string>
+
+    <!--Title-->
+    <string name="title_ann">Announcement</string>
+
+    <string name="double_back_to_exit">Press the back button again to exit</string>
+
 </resources>
