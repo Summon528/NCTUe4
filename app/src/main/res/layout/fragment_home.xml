@@ -40,6 +40,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:background="?attr/selectableItemBackground"
                     android:id="@+id/home_more_ann"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -81,9 +82,11 @@
                 <FrameLayout
                     android:id="@+id/home_download"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-8dp"/>
 
                 <TextView
+                    android:background="?attr/selectableItemBackground"
                     android:id="@+id/home_more_download"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -128,6 +131,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:background="?attr/selectableItemBackground"
                     android:id="@+id/home_more_course"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

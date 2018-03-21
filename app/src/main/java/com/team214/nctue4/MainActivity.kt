@@ -92,6 +92,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
+        } else if (currentFragment != R.id.nav_home) {
+            switchFragment(R.id.nav_home)
         } else {
             if (backPressOnce) {
                 super.onBackPressed()
@@ -100,6 +102,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, getString(R.string.double_back_to_exit), Toast.LENGTH_SHORT).show()
                 Handler().postDelayed(Runnable { backPressOnce = false }, 2000)
             }
+
         }
     }
 
@@ -109,6 +112,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun switchFragment(id: Int) {
+        nav_view.setCheckedItem(id)
         val fragment = when (id) {
             R.id.nav_home -> {
                 currentFragment = id

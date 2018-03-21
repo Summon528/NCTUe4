@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.team214.nctue4.model.AnnItem
 import kotlinx.android.synthetic.main.item_home_announcement.view.*
 
-class HomeAnnAdapter(private val dataSet: List<AnnItem>,
+class HomeAnnAdapter(private val dataSet: List<AnnItem>, private val fromHome: Boolean,
                      private val itemClickListener: (AnnItem) -> Unit) :
         RecyclerView.Adapter<HomeAnnAdapter.ViewHolder>() {
 
@@ -27,7 +27,8 @@ class HomeAnnAdapter(private val dataSet: List<AnnItem>,
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): HomeAnnAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_home_announcement, parent, false)
+                .inflate(if (fromHome) R.layout.item_home_announcement_compact else
+                    R.layout.item_home_announcement, parent, false)
         return ViewHolder(view, itemClickListener)
     }
 
