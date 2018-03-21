@@ -217,6 +217,7 @@ class OldE3Connect(private var studentId: String = "",
     override fun getAnnouncementDetail(bulletinId: String, from: Int?, courseId: String,
                                        completionHandler: (status: OldE3Interface.Status,
                                                            response: AnnItem?) -> Unit) {
+        Log.d("ann", loginTicket)
         val path = if (from == OldE3AnnFrom.HOME) "/GetAnnouncementList_LoginByCountWithAttach"
         else "/GetAnnouncementListWithAttach"
         post(path, hashMapOf(

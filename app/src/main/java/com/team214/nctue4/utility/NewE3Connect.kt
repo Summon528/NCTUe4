@@ -77,6 +77,7 @@ class NewE3Connect(private var studentId: String = "",
                     completionHandler(NewE3Interface.Status.SERVICE_ERROR, null, null)
                 }
                 completionHandler(NewE3Interface.Status.SUCCESS, newE3Cookie, res)
+
             }
         })
     }
@@ -87,6 +88,7 @@ class NewE3Connect(private var studentId: String = "",
                 "password" to studentPassword
         )) { status, cookie, response->
             if (status == NewE3Interface.Status.SUCCESS) {
+
                 completionHandler(NewE3Interface.Status.SUCCESS, cookie)
             } else {
                 completionHandler(status, null)

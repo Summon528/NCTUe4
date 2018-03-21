@@ -81,7 +81,7 @@ class AnnActivity : AppCompatActivity() {
         error_request?.visibility = View.GONE
         progress_bar.visibility = View.VISIBLE
 
-        oldE3Service = OldE3Connect(loginTicket, accountId)
+        oldE3Service = OldE3Connect(loginTicket = loginTicket, accountId = accountId)
         oldE3Service.getAnnouncementDetail(annId, from, courseId) { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {

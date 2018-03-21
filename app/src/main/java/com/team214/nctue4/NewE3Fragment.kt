@@ -36,6 +36,9 @@ class NewE3Fragment : Fragment() {
                     }
                     Log.d("ya", response.toString())
                 }
+                else -> {
+                    Log.d("error", response.toString())
+                }
             }
         }
     }
