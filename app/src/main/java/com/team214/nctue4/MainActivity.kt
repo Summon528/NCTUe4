@@ -19,6 +19,7 @@ import com.team214.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import com.team214.nctue4.utility.NewE3Connect
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var currentFragment = -1
     private var backPressOnce = false
     lateinit var oldE3Service: OldE3Connect
+    lateinit var newE3Service: NewE3Connect
     private lateinit var studentId: String
     private lateinit var studentPassword: String
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -64,6 +66,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         studentId = prefs.getString("studentId", "")
         studentPassword = prefs.getString("studentPassword", "")
         oldE3Service = OldE3Connect(studentId, studentPassword)
+
+        val studentPortalPassword = prefs.getString("studentPortalPassword", "")
+        val newE3Cookie = prefs.getString("newE3Cookie", "")
+        newE3Service = NewE3Connect(studentId, studentPortalPassword, newE3Cookie)
+
         currentFragment = if (savedInstanceState?.getInt("currentFragment") != null)
             savedInstanceState.getInt("currentFragment")
         else -1

@@ -12,7 +12,7 @@ interface NewE3Interface {
 //                                           response: ArrayList<AnnItem>?) -> Unit)
     fun getCookie(completionHandler: (status: NewE3Interface.Status,
                                    response: String?) -> Unit)
-    fun getAnn(cookie: String, completionHandler: (status: NewE3Interface.Status,
+    fun getAnn(completionHandler: (status: NewE3Interface.Status,
                                           response: ArrayList<AnnItem>?) -> Unit)
 //
 //    fun getAnnouncementDetail(bulletinId: String, from: Int?, courseId: String,
