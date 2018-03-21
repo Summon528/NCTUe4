@@ -20,7 +20,7 @@ class DownloadAdapter(val context: Context, private val dataSet: List<File>,
             view.doc_display_name.text = attach.name
             view.doc_file_icon.setImageResource(FileNameToIcon().getId(attach.name))
             view.doc_file_icon.setColorFilter(ContextCompat.getColor(context, R.color.md_white_1000))
-            view.doc_file_circle.setBackgroundColor(ContextCompat.getColor(context, FileNameToColor().getId(attach.name)))
+            view.doc_file_circle.setColorFilter(ContextCompat.getColor(context, FileNameToColor().getId(attach.name)))
             view.course_doc_card_layout.setOnClickListener {
                 itemClickListener(attach)
             }

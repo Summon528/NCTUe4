@@ -79,12 +79,11 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
             ann_login_recycler_view?.layoutManager = LinearLayoutManager(context)
             ann_login_recycler_view?.addItemDecoration(DividerItemDecoration(context,
                     LinearLayoutManager.VERTICAL))
-            if (arguments?.getBoolean("home") != null)
-                ann_login_recycler_view?.isNestedScrollingEnabled = false
+            val fromHome = arguments?.getBoolean("home") != null
+            if (fromHome) ann_login_recycler_view?.isNestedScrollingEnabled = false
             ann_login_recycler_view?.adapter = HomeAnnAdapter(
-                    if (arguments?.getBoolean("home") != null)
-                        annItems.slice(0..minOf(3, annItems.size - 1))
-                    else annItems.toList()) {
+                    if (fromHome) annItems.slice(0..minOf(4, annItems.size - 1))
+                    else annItems.toList(), fromHome) {
                 val intent = Intent()
                 intent.setClass(activity, AnnActivity::class.java)
                 intent.putExtra("annId", it.bulletinId)

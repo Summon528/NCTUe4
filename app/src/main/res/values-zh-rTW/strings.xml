@@ -59,4 +59,5 @@
     <string name="double_back_to_exit">再按一次返回鍵退出</string>
     <string name="latest_ann">最新公告</string>
     <string name="download_history">下載紀錄</string>
+    <string name="more">更多</string>
 </resources>

@@ -8,27 +8,29 @@
     android:gravity="center_vertical"
     android:background="?android:attr/selectableItemBackground">
 
-    <LinearLayout
-        android:layout_width="80dp"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="24dp">
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="8dp">
 
 
-        <LinearLayout
+        <ImageView
             android:id="@+id/doc_file_circle"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:background="@drawable/circle"
-            android:gravity="center">
+            android:src="@drawable/circle"
+            android:layout_centerInParent="true"/>
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:id="@+id/doc_file_icon"
-                android:src="@drawable/file_alt" />
-        </LinearLayout>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/doc_file_icon"
+            android:src="@drawable/file_alt"
+            android:layout_centerInParent="true"/>
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/doc_display_name"

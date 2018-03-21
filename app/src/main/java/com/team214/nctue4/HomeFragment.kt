@@ -38,7 +38,7 @@ class HomeFragment : Fragment() {
         transaction.add(R.id.home_starred, fragment3)
         transaction.commit()
         home_more_ann.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_ann) }
-        home_more_course.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_download) }
+        home_more_download.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_download) }
         home_more_course.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_starred_courses) }
 
 //        activity!!.supportFragmentManager.beginTransaction().replace(

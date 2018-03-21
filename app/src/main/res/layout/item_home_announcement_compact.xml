@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="10dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:src="@drawable/ic_brightness_1_black_24dp" />
+
+        <TextView
+            android:id="@+id/announcement_name_in_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="資"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:id="@+id/announcement_caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="課堂標題"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/announcement_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="什麼課"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/ic_timeline_black_24dp" />
+
+
+                <TextView
+                    android:id="@+id/announcement_beginDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="2002/10/23"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
