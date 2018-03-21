@@ -12,6 +12,11 @@ import java.io.IOException
 import okhttp3.Cookie
 import org.jsoup.select.Elements
 import java.net.URI
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Locale
+
+
 
 
 class NewE3Connect(private var studentId: String = "",
@@ -104,18 +109,19 @@ class NewE3Connect(private var studentId: String = "",
                 val annPage = Jsoup.parse(response).select("#pc-for-in-progress")[0].select(" .course-info-container .hidden-xs-down")
 //                Log.d("getan", annPage.toString())
                 var annItems =  ArrayList<AnnItem>()
+                val df = SimpleDateFormat("d LLL,  yyyy", Locale.US)
                 (0 until annPage.size).map {annPage[it] as org.jsoup.nodes.Element }
                         .forEach{
                             if (it.select("b").text() != "System"){
-                                Log.d("System", it.select("b").text())
+                                Log.d("System", it.select(".media div")[0].text().substring(0, 20).replace("([0-9]+[\\.|\\:,][0-9]*)".toRegex(), "") + "2018")
                                 annItems.add(AnnItem(
                                         1,
                                         "1",
                                         it.select("b").text().substring(10),
                                         it.select("h4").text(),
                                         it.select("a").text(),
-                                        it.select(".media div")[0].text().substring(1, 10),
-                                        it.select(".media div")[0].text().substring(1, 10),
+                                        df.parse(it.select(".media div")[0].text().substring(0, 20).replace("([0-9]+[\\.|\\:,][0-9]*)".toRegex(), "") + "2018").toLocaleString(),
+                                        df.parse(it.select(".media div")[0].text().substring(0, 20).replace("([0-9]+[\\.|\\:,][0-9]*)".toRegex(), "") + "2018").toLocaleString(),
                                         "",
                                         ArrayList()
                                 ))
