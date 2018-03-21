@@ -6,7 +6,7 @@ class FileNameToColor {
 
     fun getId(fileName: String): Int {
         val key = fileName.split(".").last()
-        return if (key in iconMap) iconMap[key]!! else R.drawable.file_alt
+        return if (key in iconMap) iconMap[key]!! else R.color.md_pink_700
     }
 
     companion object {
