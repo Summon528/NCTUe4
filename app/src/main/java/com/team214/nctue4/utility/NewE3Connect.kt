@@ -10,6 +10,7 @@ import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 import okhttp3.Cookie
+import org.jsoup.select.Elements
 import java.net.URI
 
 
@@ -81,7 +82,7 @@ class NewE3Connect(private var studentId: String = "",
     }
 
     override fun getCookie(completionHandler: (status: NewE3Interface.Status, response: String?) -> Unit) {
-        post("/login/index.php", hashMapOf(
+        post("/login/index.php?lang=en", hashMapOf(
                 "username" to studentId,
                 "password" to studentPassword
         )) { status, cookie, response->
@@ -94,16 +95,28 @@ class NewE3Connect(private var studentId: String = "",
     }
 
     override fun getAnn(completionHandler: (status: NewE3Interface.Status, response: ArrayList<AnnItem>?) -> Unit) {
-        post("/my/", HashMap()
+        post("/my/index.php?lang=en", HashMap()
         ) { status, cookie, response->
             if (status == NewE3Interface.Status.SUCCESS) {
-                Log.d("getmy", response)
-                val annPage = Jsoup.parse(response).select("#pc-for-in-progress div")
-                Log.d("getan", annPage.toString())
-                for (i in annPage) {
-                    Log.d("text", i.toString())
-                }
-                completionHandler(NewE3Interface.Status.WRONG_CREDENTIALS, null)
+//                Log.d("getmy", response)
+                val annPage = Jsoup.parse(response).select("#pc-for-in-progress")[0].select(" .course-info-container .hidden-xs-down")
+//                Log.d("getan", annPage.toString())
+                var annItems =  ArrayList<AnnItem>()
+                (0 until annPage.size).map {annPage[it] as org.jsoup.nodes.Element }
+                        .forEach{
+                            annItems.add(AnnItem(
+                                    1,
+                                    "1",
+                                    it.select("b").toString(),
+                                    it.select("h4").toString(),
+                                    it.select("a").toString(),
+                                    it.select(".media div")[0].toString().substring(4, 10),
+                                    it.select(".media div")[0].toString().substring(4, 10),
+                                    "",
+                                    ArrayList()
+                            ))
+                        }
+                completionHandler(NewE3Interface.Status.SUCCESS, annItems)
             } else {
                 completionHandler(status, null)
             }

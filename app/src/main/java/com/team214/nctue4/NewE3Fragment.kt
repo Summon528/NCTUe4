@@ -29,7 +29,12 @@ class NewE3Fragment : Fragment() {
         newE3Service.getAnn { status, response ->
             when (status) {
                 NewE3Interface.Status.SUCCESS -> {
-                    Log.d("ya", "yaaaa")
+
+                    Log.d("ya", response!!.size.toString())
+                    for (i in response){
+                        Log.d("i", i.toString())
+                    }
+                    Log.d("ya", response.toString())
                 }
             }
         }
