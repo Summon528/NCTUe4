@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.team214.nctue4.model.AnnItem
-import com.team214.nctue4.utility.DataStatus
-import com.team214.nctue4.utility.OldE3AnnFrom
-import com.team214.nctue4.utility.OldE3Connect
-import com.team214.nctue4.utility.OldE3Interface
+import com.team214.nctue4.utility.*
 import kotlinx.android.synthetic.main.fragment_ann.*
 import kotlinx.android.synthetic.main.status_empty.*
 import kotlinx.android.synthetic.main.status_error.*
@@ -20,7 +18,12 @@ import kotlinx.android.synthetic.main.status_error.*
 
 class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
     private lateinit var oldE3Service: OldE3Connect
+    private lateinit var newE3Service: NewE3Connect
     private var dataStatus = DataStatus.INIT
+    private var oldE3get = false
+    private var newE3get = false
+    private var oldE3AnnItems = ArrayList<AnnItem>()
+    private var newE3AnnItems = ArrayList<AnnItem>()
 
     override fun onStop() {
         super.onStop()
@@ -48,6 +51,21 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
         super.onViewCreated(view, savedInstanceState)
         getData()
     }
+    private fun race() {
+        if (oldE3get && newE3get){
+            val annItems = ArrayList<AnnItem>()
+            annItems.addAll(newE3AnnItems)
+            annItems.addAll(oldE3AnnItems)
+            (activity as MainActivity).runOnUiThread{
+                Runnable {
+                    updateList(annItems)
+                    dataStatus = DataStatus.FINISHED
+                    progress_bar.visibility = View.GONE
+                }.run()
+
+            }
+        }
+    }
 
     private fun getData() {
         error_request?.visibility = View.GONE
@@ -58,7 +76,9 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
         oldE3Service.getAnnouncementListLogin { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
-                    updateList(response!!)
+                    oldE3AnnItems = response!!
+                    oldE3get = true
+                    race()
                 }
                 else -> {
                     error_request.visibility = View.VISIBLE
@@ -66,13 +86,27 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
                     error_request_retry.setOnClickListener { getData() }
                 }
             }
-            dataStatus = DataStatus.FINISHED
-            progress_bar.visibility = View.GONE
         }
 
+        newE3Service = (activity as MainActivity).newE3Service
+        newE3Service.getAnn { status, response ->
+            when (status) {
+                OldE3Interface.Status.SUCCESS -> {
+                    newE3AnnItems = response!!
+                    newE3get = true
+                    race()
+                }
+                else -> {
+                    error_request.visibility = View.VISIBLE
+                    dataStatus = DataStatus.INIT
+                    error_request_retry.setOnClickListener { getData() }
+                }
+            }
+        }
     }
 
     private fun updateList(annItems: ArrayList<AnnItem>) {
+        Log.d("upatelset", "gettingggggggggg")
         if (annItems.size == 0) {
             empty_request.visibility = View.VISIBLE
         } else {
@@ -97,6 +131,8 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
             ann_login_recycler_view.visibility = View.VISIBLE
 //            announcement_refreshLayout.visibility = View.VISIBLE
         }
+        oldE3get = false
+        newE3get = false
     }
 }
 

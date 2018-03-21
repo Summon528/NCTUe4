@@ -30,8 +30,8 @@ class NewE3Connect(private var studentId: String = "",
             override fun loadForRequest(url: HttpUrl?): MutableList<Cookie>? {
                 Log.d("send cookie", newE3Cookie)
                 if (cookieStore[url!!.host()] != null) {
-                    newE3Cookie = cookieStore[url!!.host()]!![0].value()
-                    return cookieStore[url!!.host()]
+                    newE3Cookie = cookieStore[url.host()]!![0].value()
+                    return cookieStore[url.host()]
                 } else {
                     if(newE3Cookie!=""){
                         val tmp = emptyList<Cookie>().toMutableList()
@@ -104,17 +104,21 @@ class NewE3Connect(private var studentId: String = "",
                 var annItems =  ArrayList<AnnItem>()
                 (0 until annPage.size).map {annPage[it] as org.jsoup.nodes.Element }
                         .forEach{
-                            annItems.add(AnnItem(
-                                    1,
-                                    "1",
-                                    it.select("b").toString(),
-                                    it.select("h4").toString(),
-                                    it.select("a").toString(),
-                                    it.select(".media div")[0].toString().substring(4, 10),
-                                    it.select(".media div")[0].toString().substring(4, 10),
-                                    "",
-                                    ArrayList()
-                            ))
+                            if (it.select("b").text() != "System"){
+                                Log.d("System", it.select("b").text())
+                                annItems.add(AnnItem(
+                                        1,
+                                        "1",
+                                        it.select("b").text().substring(10),
+                                        it.select("h4").text(),
+                                        it.select("a").text(),
+                                        it.select(".media div")[0].text().substring(1, 10),
+                                        it.select(".media div")[0].text().substring(1, 10),
+                                        "",
+                                        ArrayList()
+                                ))
+                            }
+
                         }
                 completionHandler(NewE3Interface.Status.SUCCESS, annItems)
             } else {
