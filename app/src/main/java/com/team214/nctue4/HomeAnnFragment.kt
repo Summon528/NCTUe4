@@ -3,7 +3,6 @@ package com.team214.nctue4
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -17,10 +16,9 @@ import com.team214.nctue4.utility.OldE3Interface
 import kotlinx.android.synthetic.main.fragment_ann.*
 import kotlinx.android.synthetic.main.status_empty.*
 import kotlinx.android.synthetic.main.status_error.*
-import kotlin.math.min
 
 
-class HomeAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
     private lateinit var oldE3Service: OldE3Connect
     private var dataStatus = DataStatus.INIT
 
@@ -35,10 +33,10 @@ class HomeAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         if (dataStatus == DataStatus.STOPPED) getData()
     }
 
-    override fun onRefresh() {
-        announcement_refreshLayout.isRefreshing = false
-        ann_login_recycler_view.adapter.notifyDataSetChanged()
-    }
+//    override fun onRefresh() {
+//        announcement_refreshLayout.isRefreshing = false
+//        ann_login_recycler_view.adapter.notifyDataSetChanged()
+//    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,7 +54,7 @@ class HomeAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         progress_bar.visibility = View.VISIBLE
 
         oldE3Service = (activity as MainActivity).oldE3Service
-        announcement_refreshLayout.setOnRefreshListener(this)
+//        announcement_refreshLayout.setOnRefreshListener(this)
         oldE3Service.getAnnouncementListLogin { status, response ->
             when (status) {
                 OldE3Interface.Status.SUCCESS -> {
@@ -81,10 +79,11 @@ class HomeAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             ann_login_recycler_view?.layoutManager = LinearLayoutManager(context)
             ann_login_recycler_view?.addItemDecoration(DividerItemDecoration(context,
                     LinearLayoutManager.VERTICAL))
-            ann_login_recycler_view?.isNestedScrollingEnabled = false
+            if (arguments?.getBoolean("home") != null)
+                ann_login_recycler_view?.isNestedScrollingEnabled = false
             ann_login_recycler_view?.adapter = HomeAnnAdapter(
                     if (arguments?.getBoolean("home") != null)
-                        annItems.slice(0..min(2, annItems.size - 1))
+                        annItems.slice(0..minOf(3, annItems.size - 1))
                     else annItems.toList()) {
                 val intent = Intent()
                 intent.setClass(activity, AnnActivity::class.java)
@@ -96,7 +95,8 @@ class HomeAnnFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 intent.putExtra("from", OldE3AnnFrom.HOME)
                 startActivity(intent)
             }
-            announcement_refreshLayout.visibility = View.VISIBLE
+            ann_login_recycler_view.visibility = View.VISIBLE
+//            announcement_refreshLayout.visibility = View.VISIBLE
         }
     }
 }

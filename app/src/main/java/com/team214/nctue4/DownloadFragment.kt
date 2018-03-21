@@ -3,15 +3,16 @@ package com.team214.nctue4
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.team214.nctue4.utility.openFile
 import kotlinx.android.synthetic.main.fragment_download.*
+import kotlinx.android.synthetic.main.status_empty.*
 import java.io.File
 import kotlin.math.min
-
 
 /**
  * A simple [Fragment] subclass.
@@ -31,15 +32,21 @@ class DownloadFragment : Fragment() {
         val dir = File(path + File.separator + "Download")
         if (dir.exists()) {
             val files: Array<File> = dir.listFiles()
+            if(files.isEmpty()) empty_request.visibility = View.VISIBLE
             files.sortByDescending { it.lastModified() }
             download_recycler?.layoutManager = LinearLayoutManager(context)
-            download_recycler?.isNestedScrollingEnabled = false
+            if (arguments?.getBoolean("home") != null)
+                download_recycler?.isNestedScrollingEnabled = false
+            download_recycler?.addItemDecoration(DividerItemDecoration(context,
+                    LinearLayoutManager.VERTICAL))
             download_recycler?.adapter = DownloadAdapter(context!!,
                     if (arguments?.getBoolean("home") != null)
-                        files.slice(0..min(4, files.size - 1))
+                        files.slice(0..minOf(4, files.size - 1))
                     else files.toList()) {
                 openFile(it.name, it, context!!, activity!!)
             }
+        }else{
+            empty_request.visibility = View.VISIBLE
         }
     }
 

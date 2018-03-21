@@ -13,16 +13,18 @@
 
     <include layout="@layout/status_error" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/announcement_refreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible">
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+        <!--android:id="@+id/announcement_refreshLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:visibility="gone">-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ann_login_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 /**
@@ -36,6 +37,9 @@ class HomeFragment : Fragment() {
         fragment3.arguments = bundle
         transaction.add(R.id.home_starred, fragment3)
         transaction.commit()
+        home_more_ann.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_ann) }
+        home_more_course.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_download) }
+        home_more_course.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_starred_courses) }
 
 //        activity!!.supportFragmentManager.beginTransaction().replace(
 //                R.id.home_ann, HomeAnnFragment(), "main_fragment").commit()

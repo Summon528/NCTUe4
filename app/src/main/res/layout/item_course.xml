@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView android:elevation="8dp"
+<LinearLayout
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
     android:layout_marginTop="4dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
     android:layout_width="match_parent"
     android:padding="8dp"
-    card:cardCornerRadius="10dp"
-    card:cardPreventCornerOverlap="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card="http://schemas.android.com/apk/res-auto">
+  >
 
     <View
         android:background="@color/colorPrimaryDark"
@@ -27,8 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:orientation="vertical">
 
         <TextView
             android:ellipsize="end"
@@ -63,5 +58,5 @@
                 android:tint="@color/md_grey_500"/>
         </RelativeLayout>
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</LinearLayout>
 

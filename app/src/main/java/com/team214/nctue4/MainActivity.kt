@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    private fun switchFragment(id: Int) {
+    fun switchFragment(id: Int) {
         val fragment = when (id) {
             R.id.nav_home -> {
                 currentFragment = id

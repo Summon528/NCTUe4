@@ -4,9 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.team214.nctue4.DownloadFragment">
 
+    <include layout="@layout/status_empty" />
+
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/download_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id = "@+id/download_recycler"/>
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
