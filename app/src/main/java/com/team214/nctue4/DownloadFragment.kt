@@ -15,15 +15,12 @@ import kotlinx.android.synthetic.main.fragment_download.*
 import kotlinx.android.synthetic.main.status_empty.*
 import java.io.File
 
-/**
- * A simple [Fragment] subclass.
- */
 class DownloadFragment : Fragment() {
-
-
+    
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        if (arguments?.getBoolean("home") == null)
+            activity!!.setTitle(R.string.download_history)
         return inflater.inflate(R.layout.fragment_download, container, false)
     }
 

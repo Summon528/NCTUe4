@@ -9,15 +9,12 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
-/**
- * A simple [Fragment] subclass.
- */
 class HomeFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        activity!!.setTitle(R.string.home)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -41,7 +38,6 @@ class HomeFragment : Fragment() {
         home_more_download.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_download) }
         home_more_course.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_starred_courses) }
 
-//
     }
 
-}// Required empty public constructor
+}
