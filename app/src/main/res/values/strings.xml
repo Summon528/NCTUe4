@@ -66,4 +66,7 @@
 
     <string name="double_back_to_exit">Press the back button again to exit</string>
     <string name="more">More&#8230;</string>
+    <string name="more_ann">More announcement</string>
+    <string name="more_downloadhistory">More history</string>
+    <string name="more_starredcourse">More starred course</string>
 </resources>

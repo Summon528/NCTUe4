@@ -17,7 +17,7 @@ class HomeAnnAdapter(private val dataSet: List<AnnItem>, private val fromHome: B
             view.announcement_name_in_image.text = ann.courseName.first().toString()
             view.announcement_name.text = ann.courseName
             view.announcement_caption.text = ann.caption
-            view.announcement_beginDate.text = ann.beginDate.toLocaleString().replace(" \\d\\d:\\d\\d:\\d\\d.*".toRegex(), "")
+            view.announcement_beginDate.text = ann.beginDate.toLocaleString().replace("\\d\\d:\\d\\d:\\d\\d.*".toRegex(), "")
             view.setOnClickListener {
                 itemClickListener(ann)
             }

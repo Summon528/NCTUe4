@@ -61,4 +61,7 @@
     <string name="latest_ann">最新公告</string>
     <string name="download_history">下載紀錄</string>
     <string name="more">更多</string>
+    <string name="more_ann">更多公告</string>
+    <string name="more_downloadhistory">更多下載紀錄</string>
+    <string name="more_starredcourse">更多收藏課程</string>
 </resources>
