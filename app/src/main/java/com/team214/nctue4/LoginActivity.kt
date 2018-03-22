@@ -54,7 +54,8 @@ class LoginActivity : AppCompatActivity() {
         } else {
             val studentId = prefs.getString("studentId", "")
             val studentPassword = prefs.getString("studentPassword", "")
-            if (studentId != "" && studentPassword != "") {
+            val studentPortalPassword = prefs.getString("studentPortalPassword", "")
+            if (studentId != "" && studentPassword != "" && studentPortalPassword != "") {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
