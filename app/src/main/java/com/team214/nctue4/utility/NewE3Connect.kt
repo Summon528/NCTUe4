@@ -27,6 +27,9 @@ class NewE3Connect(private var studentId: String = "",
 
     private val tag = NewE3Connect::class.java.simpleName
     private var cookieStore: HashMap<String, MutableList<Cookie>> = HashMap()
+
+    override fun getCredential() = newE3Cookie
+
     private fun post(path: String, params: HashMap<String, String>,
                      secondTry: Boolean = false,
                      completionHandler: (status: NewE3Interface.Status, cookie: String?,
@@ -39,6 +42,7 @@ class NewE3Connect(private var studentId: String = "",
                     return cookieStore[url.host()]
                 } else {
                     if(newE3Cookie!=""){
+                        Log.d("has cookie", url.toString())
                         val tmp = emptyList<Cookie>().toMutableList()
                         tmp.add(Cookie.parse(url, "MoodleSession=" + newE3Cookie))
                         return tmp
@@ -107,19 +111,16 @@ class NewE3Connect(private var studentId: String = "",
         post("/my/index.php?lang=en", HashMap()
         ) { status, cookie, response->
             if (status == NewE3Interface.Status.SUCCESS) {
-//                Log.d("getmy", response)
                 val annPage = Jsoup.parse(response).select("#pc-for-in-progress")[0].select(" .course-info-container .hidden-xs-down")
-//                Log.d("getan", annPage.toString())
                 var annItems =  ArrayList<AnnItem>()
                 val df = SimpleDateFormat("d LLL,  yyyy", Locale.US)
                 (0 until annPage.size).map {annPage[it] as org.jsoup.nodes.Element }
                         .forEach{
                             if (it.select("b").text() != "System"){
-                                Log.d("System", it.select(".media div")[0].text().substring(0, 20).replace("([0-9]+[\\.|\\:,][0-9]*)".toRegex(), "") + "2018")
                                 annItems.add(AnnItem(
                                         1,
-                                        "1",
-                                        it.select("b").text().substring(10),
+                                        it.select("a").attr("href").substring(25) + "&lang=en",
+                                        it.select("b").text().substring(10).replace(" .*".toRegex(), ""),
                                         it.select("h4").text(),
                                         it.select("a").text(),
                                         df.parse(it.select(".media div")[0].text().substring(0, 20).replace("([0-9]+[\\.|\\:,][0-9]*)".toRegex(), "") + "2018"),
@@ -131,6 +132,38 @@ class NewE3Connect(private var studentId: String = "",
 
                         }
                 completionHandler(NewE3Interface.Status.SUCCESS, annItems)
+            } else {
+                completionHandler(status, null)
+            }
+        }
+    }
+
+    override fun getAnnDetail(bulletinId: String, completionHandler: (status: NewE3Interface.Status, response: AnnItem?) -> Unit) {
+        Log.d("buul id", bulletinId)
+        post(bulletinId, HashMap()
+        ) { status, cookie, response->
+//            Log.d("detail cookie", cookie)
+            if (status == NewE3Interface.Status.SUCCESS) {
+                Log.d("getanndetail", response)
+                val annPage = Jsoup.parse(response)
+                val df = SimpleDateFormat("EEEE, d MMMM yyyy", Locale.US)
+                val caption = if(annPage.select(".name").size > 0){
+                    annPage.select(".name").text().substring(5)
+                } else {
+                    annPage.select(".subject").text().substring(5)
+                }
+                val annItem = AnnItem(
+                        1,
+                        bulletinId,
+                        annPage.select(".page-header-headings").text().replace("【.*】\\d*".toRegex(), "").replace(" .*".toRegex(), ""),
+                        caption,
+                        annPage.select(".content").html(),
+                        df.parse(annPage.select(".author").text().replace(", \\d+:\\d+.*".toRegex(), "")),
+                        df.parse(annPage.select(".author").text().replace(", \\d+:\\d+.*".toRegex(), "")),
+                        "",
+                        ArrayList()
+                )
+                completionHandler(NewE3Interface.Status.SUCCESS, annItem)
             } else {
                 completionHandler(status, null)
             }

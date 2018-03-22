@@ -15,9 +15,9 @@ interface NewE3Interface {
     fun getAnn(completionHandler: (status: NewE3Interface.Status,
                                           response: ArrayList<AnnItem>?) -> Unit)
 //
-//    fun getAnnouncementDetail(bulletinId: String, from: Int?, courseId: String,
-//                              completionHandler: (status: NewE3Interface.Status,
-//                                                  response: AnnItem?) -> Unit)
+    fun getAnnDetail(bulletinId: String,
+                              completionHandler: (status: NewE3Interface.Status,
+                                                  response: AnnItem?) -> Unit)
 //
 //    fun getAnnouncementListLogin(completionHandler: (status: NewE3Interface.Status,
 //                                                     response: ArrayList<AnnItem>?) -> Unit)
@@ -36,5 +36,5 @@ interface NewE3Interface {
 
     fun cancelPendingRequests()
 
-//    fun getCredential() : Pair<String,String>
+    fun getCredential(): String
 }

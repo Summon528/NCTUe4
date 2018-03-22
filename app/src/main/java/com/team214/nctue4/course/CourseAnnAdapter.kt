@@ -25,7 +25,7 @@ class CourseAnnAdapter(private val dataSet: ArrayList<AnnItem>,
                 view.announcement_content.text = Html.fromHtml(htmlCleaner(ann.content),
                         Html.FROM_HTML_MODE_COMPACT).replace("\\s+".toRegex(), " ")
             }
-            view.announcement_beginDate.text = ann.beginDate.toLocaleString().dropLast(12)
+            view.announcement_beginDate.text = ann.beginDate.toLocaleString().replace(" \\d\\d:\\d\\d:\\d\\d.*".toRegex(), "")
             view.setOnClickListener{
                 itemClickListener(ann)
             }

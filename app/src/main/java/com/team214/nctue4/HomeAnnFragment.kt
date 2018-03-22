@@ -63,7 +63,6 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
                     dataStatus = DataStatus.FINISHED
                     progress_bar.visibility = View.GONE
                 }.run()
-
             }
         }
     }
@@ -107,7 +106,6 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
     }
 
     private fun updateList(annItems: ArrayList<AnnItem>) {
-        Log.d("upatelset", "gettingggggggggg")
         if (annItems.size == 0) {
             empty_request.visibility = View.VISIBLE
         } else {
@@ -119,6 +117,8 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
             ann_login_recycler_view?.adapter = HomeAnnAdapter(
                     if (fromHome) annItems.slice(0..minOf(4, annItems.size - 1))
                     else annItems.toList(), fromHome) {
+
+                Log.d("dd", "start ann acti")
                 val intent = Intent()
                 intent.setClass(activity, AnnActivity::class.java)
                 intent.putExtra("annId", it.bulletinId)
@@ -127,6 +127,7 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
                 intent.putExtra("accountId", oldE3Service.getCredential().second)
                 intent.putExtra("courseId", it.courseId)
                 intent.putExtra("from", OldE3AnnFrom.HOME)
+                intent.putExtra("newE3Cookie", newE3Service.getCredential())
                 startActivity(intent)
             }
             ann_login_recycler_view.visibility = View.VISIBLE
