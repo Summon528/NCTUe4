@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var newE3Service: NewE3Connect
     private lateinit var studentId: String
     private lateinit var studentPassword: String
+
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putInt("currentFragment", currentFragment)
@@ -92,7 +93,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             main_container.visibility = View.VISIBLE
             dataStatus = DataStatus.FINISHED
+        }
 
+        newE3Service.getCookie { status, response ->
+            completionHandler()
         }
     }
 

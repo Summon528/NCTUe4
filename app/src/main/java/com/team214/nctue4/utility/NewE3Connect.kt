@@ -1,5 +1,6 @@
 package com.team214.nctue4.utility
 
+import android.preference.PreferenceManager
 import android.util.Log
 import com.team214.nctue4.model.AnnItem
 import org.jsoup.Jsoup
@@ -23,8 +24,6 @@ class NewE3Connect(private var studentId: String = "",
                    private var studentPassword: String = "",
                    private var newE3Cookie: String = "") : NewE3Interface {
 
-
-
     private val tag = NewE3Connect::class.java.simpleName
     private var cookieStore: HashMap<String, MutableList<Cookie>> = HashMap()
 
@@ -39,17 +38,16 @@ class NewE3Connect(private var studentId: String = "",
                 Log.d("send cookie", newE3Cookie)
                 if (cookieStore[url!!.host()] != null) {
                     newE3Cookie = cookieStore[url.host()]!![0].value()
-                    return cookieStore[url.host()]
-                } else {
-                    if(newE3Cookie!=""){
-                        Log.d("has cookie", url.toString())
-                        val tmp = emptyList<Cookie>().toMutableList()
-                        tmp.add(Cookie.parse(url, "MoodleSession=" + newE3Cookie))
-                        return tmp
-                    }
-                    else
-                        return emptyList<Cookie>().toMutableList()
                 }
+                if(newE3Cookie!=""){
+                    Log.d("has cookie", url.toString())
+                    val tmp = emptyList<Cookie>().toMutableList()
+                    tmp.add(Cookie.parse(url, "MoodleSession=" + newE3Cookie))
+                    return tmp
+                }
+                else
+                    return emptyList<Cookie>().toMutableList()
+
             }
             override fun saveFromResponse(url: HttpUrl?, cookies: MutableList<Cookie>?) {
                 if (cookies!!.size>1)
@@ -69,6 +67,7 @@ class NewE3Connect(private var studentId: String = "",
             override fun onFailure(call: Call, e: IOException){
                 if (!secondTry) {
                     cookieStore.clear()
+                    newE3Cookie = ""
                     getCookie { _, _ ->
                         post(path, params, true, completionHandler)
                     }
@@ -77,9 +76,10 @@ class NewE3Connect(private var studentId: String = "",
             }
             override fun onResponse(call: Call, response: Response){
                 val res = response.body().string()
-                if (res.contains("New E3 數位教學平台: 登入本網站")){
+                if (res.contains("Log in to the site")){
                     Log.d("fail", cookieStore.toString())
                     cookieStore.clear()
+                    newE3Cookie = ""
                     if (!secondTry) {
                         getCookie { _, _ ->
                             post(path, params, true, completionHandler)
@@ -87,8 +87,10 @@ class NewE3Connect(private var studentId: String = "",
                     }
                     completionHandler(NewE3Interface.Status.SERVICE_ERROR, null, null)
                 }
+                if (res.contains("pc-for-in-progress")){
+                    Log.d("con", "yes")
+                }
                 completionHandler(NewE3Interface.Status.SUCCESS, newE3Cookie, res)
-
             }
         })
     }
@@ -99,7 +101,6 @@ class NewE3Connect(private var studentId: String = "",
                 "password" to studentPassword
         )) { status, cookie, response->
             if (status == NewE3Interface.Status.SUCCESS) {
-
                 completionHandler(NewE3Interface.Status.SUCCESS, cookie)
             } else {
                 completionHandler(status, null)
@@ -111,6 +112,10 @@ class NewE3Connect(private var studentId: String = "",
         post("/my/index.php?lang=en", HashMap()
         ) { status, cookie, response->
             if (status == NewE3Interface.Status.SUCCESS) {
+                Log.d("loca", response!!)
+                if (response.contains("pc-for-in-progress")){
+                    Log.d("con", "yes")
+                }
                 val annPage = Jsoup.parse(response).select("#pc-for-in-progress")[0].select(" .course-info-container .hidden-xs-down")
                 var annItems =  ArrayList<AnnItem>()
                 val df = SimpleDateFormat("d LLL,  yyyy", Locale.US)

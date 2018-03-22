@@ -81,9 +81,13 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
                     race()
                 }
                 else -> {
-                    error_request.visibility = View.VISIBLE
-                    dataStatus = DataStatus.INIT
-                    error_request_retry.setOnClickListener { getData() }
+                    (activity as MainActivity).runOnUiThread{
+                        Runnable {
+                            error_request.visibility = View.VISIBLE
+                            dataStatus = DataStatus.INIT
+                            error_request_retry.setOnClickListener { getData() }
+                        }.run()
+                    }
                 }
             }
         }
@@ -97,9 +101,13 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
                     race()
                 }
                 else -> {
-                    error_request.visibility = View.VISIBLE
-                    dataStatus = DataStatus.INIT
-                    error_request_retry.setOnClickListener { getData() }
+                    (activity as MainActivity).runOnUiThread{
+                        Runnable {
+                            error_request.visibility = View.VISIBLE
+                            dataStatus = DataStatus.INIT
+                            error_request_retry.setOnClickListener { getData() }
+                        }.run()
+                    }
                 }
             }
         }
