@@ -58,6 +58,7 @@ class HomeAnnFragment : Fragment()/*, SwipeRefreshLayout.OnRefreshListener*/ {
             annItems.addAll(oldE3AnnItems)
             (activity as MainActivity).runOnUiThread{
                 Runnable {
+                    annItems.sortByDescending { it.beginDate }
                     updateList(annItems)
                     dataStatus = DataStatus.FINISHED
                     progress_bar.visibility = View.GONE

@@ -52,7 +52,7 @@ class NewE3Connect(private var studentId: String = "",
                     cookieStore[url!!.host()] = cookies.subList(1, 2)
                 else
                     cookieStore[url!!.host()] = cookies
-                Log.d("saved cookie", cookieStore[url!!.host()].toString())
+                Log.d("saved cookie", cookieStore[url.host()].toString())
             }
         }).build()
         val url = "https://e3new.nctu.edu.tw$path"
@@ -64,6 +64,7 @@ class NewE3Connect(private var studentId: String = "",
         call.enqueue(object: Callback{
             override fun onFailure(call: Call, e: IOException){
                 if (!secondTry) {
+                    cookieStore.clear()
                     getCookie { _, _ ->
                         post(path, params, true, completionHandler)
                     }
@@ -74,6 +75,7 @@ class NewE3Connect(private var studentId: String = "",
                 val res = response.body().string()
                 if (res.contains("New E3 數位教學平台: 登入本網站")){
                     Log.d("fail", cookieStore.toString())
+                    cookieStore.clear()
                     if (!secondTry) {
                         getCookie { _, _ ->
                             post(path, params, true, completionHandler)
@@ -120,8 +122,8 @@ class NewE3Connect(private var studentId: String = "",
                                         it.select("b").text().substring(10),
                                         it.select("h4").text(),
                                         it.select("a").text(),
-                                        df.parse(it.select(".media div")[0].text().substring(0, 20).replace("([0-9]+[\\.|\\:,][0-9]*)".toRegex(), "") + "2018").toLocaleString(),
-                                        df.parse(it.select(".media div")[0].text().substring(0, 20).replace("([0-9]+[\\.|\\:,][0-9]*)".toRegex(), "") + "2018").toLocaleString(),
+                                        df.parse(it.select(".media div")[0].text().substring(0, 20).replace("([0-9]+[\\.|\\:,][0-9]*)".toRegex(), "") + "2018"),
+                                        df.parse(it.select(".media div")[0].text().substring(0, 20).replace("([0-9]+[\\.|\\:,][0-9]*)".toRegex(), "") + "2018"),
                                         "",
                                         ArrayList()
                                 ))

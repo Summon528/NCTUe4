@@ -12,6 +12,7 @@ import com.team214.nctue4.model.CourseItem
 import com.team214.nctue4.model.DocGroupItem
 import fr.arnaudguyon.xmltojsonlib.XmlToJson
 import org.json.JSONObject
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -109,6 +110,7 @@ class OldE3Connect(private var studentId: String = "",
                 val annData = response!!.getJSONObject("ArrayOfBulletinData")
                         .forceGetJsonArray("BulletinData")
                 val annItems = ArrayList<AnnItem>()
+                val df = SimpleDateFormat("yyyy/M/d", Locale.US)
                 (0 until annData.length()).map { annData.get(it) as JSONObject }
                         .forEach {
                             annItems.add(AnnItem(
@@ -117,8 +119,8 @@ class OldE3Connect(private var studentId: String = "",
                                     it.getString("CourseName"),
                                     it.getString("Caption"),
                                     it.getString("Content"),
-                                    it.getString("BeginDate"),
-                                    it.getString("EndDate"),
+                                    df.parse(it.getString("BeginDate")),
+                                    df.parse(it.getString("EndDate")),
                                     it.getString("CourseId"),
                                     ArrayList()
                             ))
@@ -142,6 +144,7 @@ class OldE3Connect(private var studentId: String = "",
                 val arrayOfBulletinData = response!!.getJSONObject("ArrayOfBulletinData")
                 val data = arrayOfBulletinData.forceGetJsonArray("BulletinData")
                 val annItems = ArrayList<AnnItem>()
+                val df = SimpleDateFormat("yyyy/M/d", Locale.US)
                 (0 until data.length()).map { data.get(it) as JSONObject }
                         .forEach {
                             annItems.add(AnnItem(
@@ -150,8 +153,8 @@ class OldE3Connect(private var studentId: String = "",
                                     courseName,
                                     it.getString("Caption"),
                                     htmlCleaner(it.getString("Content")),
-                                    it.getString("BeginDate"),
-                                    it.getString("EndDate"),
+                                    df.parse(it.getString("BeginDate")),
+                                    df.parse(it.getString("EndDate")),
                                     it.getString("CourseId"),
                                     ArrayList()
                             ))
@@ -229,6 +232,7 @@ class OldE3Connect(private var studentId: String = "",
         )) { status, response ->
             if (status == OldE3Interface.Status.SUCCESS) {
                 val data = response!!.getJSONObject("ArrayOfBulletinData").forceGetJsonArray("BulletinData")
+                val df = SimpleDateFormat("yyyy/M/d", Locale.US)
                 (0 until data.length()).map { data.getJSONObject(it) }
                         .forEach {
                             if (it.getString("BulletinId") == bulletinId) {
@@ -252,8 +256,8 @@ class OldE3Connect(private var studentId: String = "",
                                         it.getString("CourseName"),
                                         it.getString("Caption"),
                                         htmlCleaner(it.getString("Content")),
-                                        it.getString("BeginDate"),
-                                        it.getString("EndDate"),
+                                        df.parse(it.getString("BeginDate")),
+                                        df.parse(it.getString("EndDate")),
                                         it.getString("CourseId"),
                                         attachItemList
                                 )

@@ -91,7 +91,7 @@ class AnnActivity : AppCompatActivity() {
                             "http://e3.nctu.edu.tw/")
                     ann_caption.text = response.caption
                     ann_courseName.text = response.courseName
-                    ann_date.text = response.beginDate
+                    ann_date.text = response.beginDate.toLocaleString().dropLast(12)
                     ann_content_web_view.settings.defaultTextEncodingName = "utf-8"
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) ann_content_web_view.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
                     ann_content_web_view.loadData(content, "text/html; charset=utf-8", "UTF-8")
