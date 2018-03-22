@@ -1,0 +1,53 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    tools:context="com.team214.nctue4.DownloadDialog">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            android:paddingBottom="8dp"
+            android:textSize="24sp"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:id="@+id/download_delete"/>
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rename"
+            android:paddingBottom="8dp"
+            android:textSize="24sp"
+              android:clickable="true"
+              android:focusableInTouchMode="false"
+              android:focusable="false"
+              android:foreground="?android:attr/selectableItemBackground"
+              android:id="@+id/download_rename" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/share"
+            android:textSize="24sp"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:id="@+id/download_share"/>
+
+    </LinearLayout>
+
+
+</FrameLayout>

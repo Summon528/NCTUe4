@@ -16,4 +16,3 @@ fun JSONObject.forceGetJsonArray(name: String): JSONArray {
         }
     } else JSONArray()
 }
-

@@ -41,11 +41,7 @@ class HomeFragment : Fragment() {
         home_more_download.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_download) }
         home_more_course.setOnClickListener { (activity!! as MainActivity).switchFragment(R.id.nav_starred_courses) }
 
-//        activity!!.supportFragmentManager.beginTransaction().replace(
-//                R.id.home_ann, HomeAnnFragment(), "main_fragment").commit()
-//        activity!!.supportFragmentManager.beginTransaction().replace(
-//                R.id.home_starred, StarredCoursesE3Fragment(), "main_fragment").commit()
-
+//
     }
 
 }// Required empty public constructor

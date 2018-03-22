@@ -56,8 +56,12 @@
 
     <!--Title-->
     <string name="title_ann">公告</string>
-    <string name="double_back_to_exit">再按一次返回鍵退出</string>
     <string name="latest_ann">最新公告</string>
     <string name="download_history">下載紀錄</string>
     <string name="more">更多</string>
+    <string name="confirm_delete">你確定要刪除%s嗎？</string>
+    <string name="delete">刪除</string>
+    <string name="rename">重新命名</string>
+    <string name="share">分享</string>
+    <string name="positive">確定</string>
 </resources>
