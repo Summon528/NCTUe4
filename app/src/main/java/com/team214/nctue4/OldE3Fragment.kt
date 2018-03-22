@@ -37,7 +37,7 @@ class OldE3Fragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity!!.setTitle(R.string.old_e3);
+        activity!!.setTitle(R.string.old_e3)
         return inflater.inflate(R.layout.fragment_old_e3, container, false)
     }
 
@@ -71,25 +71,19 @@ class OldE3Fragment : Fragment() {
         else {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val oldE3Starred = prefs.getStringSet("oldE3Starred", HashSet<String>())
-            val oldE3StarredHome = prefs.getStringSet("oldE3StarredHome", HashSet<String>())
             old_e3_recycler_view?.layoutManager = LinearLayoutManager(context)
             old_e3_recycler_view?.addItemDecoration(DividerItemDecoration(context,
                     LinearLayoutManager.VERTICAL))
             old_e3_recycler_view?.adapter = CourseAdapter(courseItems, HashSet(oldE3Starred),
-                    HashSet(oldE3StarredHome), context, fun(view: View, courseId: String) {
-                if (oldE3StarredHome.contains(courseId)) {
+                    context, fun(view: View, courseId: String) {
+                if (oldE3Starred.contains(courseId)) {
                     oldE3Starred.remove(courseId)
-                    oldE3StarredHome.remove(courseId)
                     view.course_star.setColorFilter(ContextCompat.getColor(context!!, R.color.md_grey_500))
-                } else if (oldE3Starred.contains(courseId)) {
-                    oldE3StarredHome.add(courseId)
-                    view.course_star.setColorFilter(ContextCompat.getColor(context!!, R.color.md_red_500))
                 } else {
                     oldE3Starred.add(courseId)
                     view.course_star.setColorFilter(ContextCompat.getColor(context!!, R.color.md_orange_500))
                 }
                 prefs.edit().putStringSet("oldE3Starred", oldE3Starred).commit()
-                prefs.edit().putStringSet("oldE3StarredHome", oldE3StarredHome).commit()
             }, {
                 val intent = Intent()
                 intent.setClass(activity, CourseActivity::class.java)

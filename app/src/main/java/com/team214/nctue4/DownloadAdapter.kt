@@ -11,10 +11,14 @@ import com.team214.nctue4.utility.FileNameToIcon
 import kotlinx.android.synthetic.main.item_course_doc.view.*
 import java.io.File
 
-class DownloadAdapter(val context: Context, private val dataSet: List<File>,
-                      private val itemClickListener: (File) -> Unit) :
+class DownloadAdapter(val context: Context,
+                      private val dataSet: ArrayList<File>,
+                      private val itemClickListener: (File) -> Unit,
+                      private val longClickListener: (File) -> Unit) :
         RecyclerView.Adapter<DownloadAdapter.ViewHolder>() {
-    class ViewHolder(val context: Context, val view: View, private val itemClickListener: (File) -> Unit) :
+    class ViewHolder(val context: Context, val view: View,
+                     private val itemClickListener: (File) -> Unit,
+                     private val longClickListener: (File) -> Unit) :
             RecyclerView.ViewHolder(view) {
         fun bind(attach: File) {
             view.doc_display_name.text = attach.name
@@ -24,6 +28,10 @@ class DownloadAdapter(val context: Context, private val dataSet: List<File>,
             view.course_doc_card_layout.setOnClickListener {
                 itemClickListener(attach)
             }
+            view.course_doc_card_layout.setOnLongClickListener {
+                longClickListener(attach)
+                true
+            }
         }
     }
 
@@ -31,7 +39,7 @@ class DownloadAdapter(val context: Context, private val dataSet: List<File>,
                                     viewType: Int): DownloadAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_course_doc, parent, false)
-        return ViewHolder(context, view, itemClickListener)
+        return ViewHolder(context, view,  itemClickListener, longClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -15,8 +15,8 @@ class NewE3Fragment : Fragment() {
 
     private lateinit var newE3Service: NewE3Connect
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        getActivity()!!.setTitle(R.string.new_e3);
 
+        activity!!.setTitle(R.string.new_e3)
         return inflater.inflate(R.layout.fragment_blank, container,false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

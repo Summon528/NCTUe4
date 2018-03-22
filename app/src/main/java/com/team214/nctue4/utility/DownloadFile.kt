@@ -42,10 +42,10 @@ fun downloadFile(fileName: String, uri: String, context: Context, activity: Acti
             != PackageManager.PERMISSION_GRANTED) {
         requestPermissions?.invoke()
     } else {
-        val path = activity.getExternalFilesDir(null).toString()
-        val dir = File(path + File.separator + "Download")
+        val path = activity.getExternalFilesDir(null)
+        val dir = File(path, "Download")
         if (!dir.exists()) dir.mkdirs()
-        val file = File(path + File.separator + "Download" + File.separator + fileName)
+        val file = File(dir, fileName)
         if (file.exists()) {
             AlertDialog.Builder(context)
                     .setMessage(context.getString(R.string.detect_same_file))

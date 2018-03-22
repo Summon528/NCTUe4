@@ -64,9 +64,16 @@
     <!--Title-->
     <string name="title_ann">Announcement</string>
 
-    <string name="double_back_to_exit">Press the back button again to exit</string>
+    <!--Home Fragment-->
     <string name="more">More&#8230;</string>
     <string name="more_ann">More announcement</string>
     <string name="more_downloadhistory">More history</string>
     <string name="more_starredcourse">More starred course</string>
+
+    <!--Download Fragment-->
+    <string name="confirm_delete">Are you sure you want to delete %1s ?</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+    <string name="share">Share</string>
+    <string name="positive">OK</string>
 </resources>

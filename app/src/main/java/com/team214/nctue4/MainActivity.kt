@@ -2,7 +2,6 @@ package com.team214.nctue4
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -12,7 +11,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import com.team214.nctue4.utility.DataStatus
 import com.team214.nctue4.utility.OldE3Connect
 import com.team214.nctue4.utility.OldE3Interface
@@ -25,7 +23,6 @@ import com.team214.nctue4.utility.NewE3Connect
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var currentFragment = -1
-    private var backPressOnce = false
     lateinit var oldE3Service: OldE3Connect
     lateinit var newE3Service: NewE3Connect
     private lateinit var studentId: String
@@ -105,15 +102,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawer_layout.closeDrawer(GravityCompat.START)
         } else if (currentFragment != R.id.nav_home) {
             switchFragment(R.id.nav_home)
-        } else {
-            if (backPressOnce) {
-                super.onBackPressed()
-            } else {
-                backPressOnce = true
-                Toast.makeText(this, getString(R.string.double_back_to_exit), Toast.LENGTH_SHORT).show()
-                Handler().postDelayed(Runnable { backPressOnce = false }, 2000)
-            }
-
+        } else{
+            super.onBackPressed()
         }
     }
 

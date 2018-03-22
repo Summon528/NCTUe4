@@ -37,7 +37,8 @@ class StarredCoursesE3Fragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity!!.setTitle(R.string.old_e3);
+        if (arguments?.getBoolean("home") == null)
+            activity!!.setTitle(R.string.starred_courses)
         return inflater.inflate(R.layout.fragment_old_e3, container, false)
     }
 
@@ -70,12 +71,12 @@ class StarredCoursesE3Fragment : Fragment() {
     private fun updateList(courseItems: ArrayList<CourseItem>) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val oldE3Starred = prefs.getStringSet("oldE3Starred", HashSet<String>())
-        val oldE3StarredHome = prefs.getStringSet("oldE3StarredHome", HashSet<String>())
-        if(oldE3Starred.isEmpty())  empty_request.visibility = View.VISIBLE
+        if (oldE3Starred.isEmpty()) empty_request.visibility = View.VISIBLE
         val starredCourse =
-                if (arguments?.getBoolean("home") != null)
-                    ArrayList(courseItems.filter { oldE3StarredHome.contains(it.courseId) })
-                else ArrayList(courseItems.filter { oldE3Starred.contains(it.courseId) })
+                if (arguments?.getBoolean("home") != null) {
+                    val tmp = courseItems.filter { oldE3Starred.contains(it.courseId) }
+                    ArrayList(tmp.subList(0, minOf(5, tmp.size)))
+                } else ArrayList(courseItems.filter { oldE3Starred.contains(it.courseId) })
         if (starredCourse.isEmpty()) empty_request.visibility = View.VISIBLE
         else {
             old_e3_recycler_view?.layoutManager = LinearLayoutManager(context)
@@ -84,20 +85,15 @@ class StarredCoursesE3Fragment : Fragment() {
             old_e3_recycler_view?.addItemDecoration(DividerItemDecoration(context,
                     LinearLayoutManager.VERTICAL))
             old_e3_recycler_view?.adapter = CourseAdapter(starredCourse, HashSet(oldE3Starred),
-                    HashSet(oldE3StarredHome), context, fun(view: View, courseId: String) {
-                if (oldE3StarredHome.contains(courseId)) {
+                    context, fun(view: View, courseId: String) {
+                if (oldE3Starred.contains(courseId)) {
                     oldE3Starred.remove(courseId)
-                    oldE3StarredHome.remove(courseId)
                     view.course_star.setColorFilter(ContextCompat.getColor(context!!, R.color.md_grey_500))
-                } else if (oldE3Starred.contains(courseId)) {
-                    oldE3StarredHome.add(courseId)
-                    view.course_star.setColorFilter(ContextCompat.getColor(context!!, R.color.md_red_500))
                 } else {
                     oldE3Starred.add(courseId)
                     view.course_star.setColorFilter(ContextCompat.getColor(context!!, R.color.md_orange_500))
                 }
                 prefs.edit().putStringSet("oldE3Starred", oldE3Starred).commit()
-                prefs.edit().putStringSet("oldE3StarredHome", oldE3StarredHome).commit()
             }, {
                 val intent = Intent()
                 intent.setClass(activity, CourseActivity::class.java)
